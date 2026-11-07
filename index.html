@@ -2,46 +2,60 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>IC Depan Belakang</title>
-<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#020298">
+<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0b7a43">
 <link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
 <style>
-:root{--bg:#f4f5f9;--fg:#15171f;--card:#fff;--ac:#020298;--ln:#cfd3e0;color-scheme:light}
-@media(prefers-color-scheme:dark){:root{--bg:#10121a;--fg:#eceef6;--card:#1a1d29;--ac:#7f86ff;--ln:#343950;color-scheme:dark}}
+:root{--bg:#eef3ef;--fg:#142018;--card:#fff;--ac:#0b7a43;--ac2:#0a6a3a;--ln:#d3ddd6;--mu:#5d6b62;color-scheme:light}
+@media(prefers-color-scheme:dark){:root{--bg:#0e1511;--fg:#e8f0ea;--card:#17211b;--ac:#34c27a;--ac2:#2bb06b;--ln:#2c3b32;--mu:#93a499;color-scheme:dark}}
 *{box-sizing:border-box}html,body{margin:0}
-body{font:16px/1.4 system-ui,sans-serif;background:var(--bg);color:var(--fg);padding:env(safe-area-inset-top) 14px calc(env(safe-area-inset-bottom) + 20px)}
-main{max-width:520px;margin:0 auto}h1{font-size:1.2rem;margin:16px 0 4px}p.s{margin:0 0 14px;opacity:.7;font-size:.85rem}
+body{font:16px/1.4 system-ui,sans-serif;background:var(--bg);color:var(--fg);padding-bottom:calc(env(safe-area-inset-bottom) + 16px)}
+header{background:linear-gradient(135deg,#0b7a43,#075c32);color:#fff;padding:calc(env(safe-area-inset-top) + 14px) 16px 18px;display:flex;gap:12px;align-items:center}
+header .lg{width:52px;height:52px;border-radius:50%;background:#fff;display:grid;place-items:center;flex:none;box-shadow:0 2px 8px #0004}
+header img{width:42px;height:42px}header h1{font-size:1.15rem;margin:0}header p{margin:2px 0 0;font-size:.78rem;opacity:.85}
+main{max-width:520px;margin:0 auto;padding:14px}
+section{background:var(--card);border:1px solid var(--ln);border-radius:16px;padding:14px;margin-bottom:12px;box-shadow:0 1px 3px #0001}
+h2{font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--mu);margin:0 0 10px;display:flex;align-items:center;gap:8px}
+h2 i{font-style:normal;background:var(--ac);color:#fff;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:.72rem}
 .row{display:flex;gap:10px}.row>*{flex:1}
-button,.slot{font:inherit;border-radius:12px;border:1px solid var(--ln);background:var(--card);color:var(--fg);padding:12px;cursor:pointer}
-button.p{background:var(--ac);color:#fff;border-color:var(--ac);font-weight:600}
-@media(prefers-color-scheme:dark){button.p{color:#10121a}}
-button:disabled{opacity:.4}
-.slot{aspect-ratio:1.586;display:flex;align-items:center;justify-content:center;flex-direction:column;overflow:hidden;padding:0;position:relative;font-weight:600;border-style:dashed}
-.slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.slot img:not([src]){display:none}
-.slot b{position:absolute;left:6px;top:6px;background:#000a;color:#fff;font-size:.7rem;padding:2px 8px;border-radius:8px}
-.opt{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin:14px 0;font-size:.9rem}
-.opt input[type=number]{width:64px;font:inherit;padding:6px;border-radius:8px;border:1px solid var(--ln);background:var(--card);color:var(--fg)}
-#pg{width:100%;height:auto;aspect-ratio:210/297;background:#fff;border:1px solid var(--ln);border-radius:6px;margin:6px 0 14px;display:block}
+button{font:inherit;border-radius:12px;border:1px solid var(--ln);background:var(--card);color:var(--fg);padding:13px;cursor:pointer;font-weight:600}
+button.p{background:var(--ac);color:#fff;border-color:var(--ac)}@media(prefers-color-scheme:dark){button.p{color:#07140d}}
+button:disabled{opacity:.4}button:active:not(:disabled){transform:scale(.98)}
+.slot{aspect-ratio:1.586;border:2px dashed var(--ln);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;overflow:hidden;position:relative;color:var(--mu);font-size:.85rem;cursor:pointer;background:var(--bg)}
+.slot svg{width:28px;height:28px;stroke:var(--ac)}.slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.slot img:not([src]){display:none}
+.slot b{position:absolute;left:8px;top:8px;background:var(--ac);color:#fff;font-size:.7rem;padding:2px 9px;border-radius:9px;z-index:1}
+.opt{display:flex;gap:8px;flex-wrap:wrap}
+.chip{display:flex;align-items:center;gap:6px;border:1px solid var(--ln);border-radius:20px;padding:7px 12px;font-size:.88rem;background:var(--bg)}
+.chip input[type=checkbox]{accent-color:var(--ac);width:16px;height:16px}
+.chip input[type=number]{width:56px;font:inherit;border:0;background:transparent;color:var(--fg);text-align:right;padding:0}
+#pg{width:100%;height:auto;aspect-ratio:210/297;background:#fff;border-radius:4px;display:block;box-shadow:0 4px 18px #0003}
+.paper{background:var(--bg);padding:14px;border-radius:12px}
+footer{text-align:center;font-size:.76rem;color:var(--mu);padding:6px 16px 0}
 #cr{position:fixed;inset:0;background:#000;z-index:9;display:flex;flex-direction:column;align-items:center;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
 #cr[hidden]{display:none}#cv{touch-action:none;margin-top:8px;border-radius:8px}
-#cr .bar{width:100%;max-width:520px;padding:12px 14px;color:#fff;display:grid;gap:10px}#cr input{width:100%}#cr p{margin:0;font-size:.8rem;opacity:.75;text-align:center}
-</style></head><body><main>
-<h1>IC Depan Belakang</h1><p class="s">Two screenshots in, one tidy A4 PDF out. Nothing leaves this phone.</p>
-<div class="row">
-<label class="slot" id="s0"><b>Depan</b>Tap to choose<img alt=""><input type="file" accept="image/*" hidden></label>
-<label class="slot" id="s1"><b>Belakang</b>Tap to choose<img alt=""><input type="file" accept="image/*" hidden></label>
-</div>
-<div class="opt">
-<label><input type="checkbox" id="bd" checked> Border</label>
-<label><input type="checkbox" id="gr"> Grayscale</label>
-<label>Size <input type="number" id="sc" value="100" min="70" max="130"> %</label>
-</div>
-<canvas id="pg" width="2480" height="3508"></canvas>
+#cr .bar{width:100%;max-width:520px;padding:12px 14px;color:#fff;display:grid;gap:10px}#cr input{width:100%;accent-color:#34c27a}#cr p{margin:0;font-size:.8rem;opacity:.75;text-align:center}
+#cr button{background:#222;color:#fff;border-color:#444}#cr button.p{background:#34c27a;color:#07140d;border-color:#34c27a}
+</style></head><body>
+<header><div class="lg"><img src="logo.png" alt="Synly"></div><div><h1>IC Depan Belakang</h1><p>Synly Trading &amp; Bookstore</p></div></header>
+<main>
+<section><h2><i>1</i>Choose screenshots</h2><div class="row">
+<label class="slot" id="s0"><b>Depan</b><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Tap to choose<img alt=""><input type="file" accept="image/*" hidden></label>
+<label class="slot" id="s1"><b>Belakang</b><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Tap to choose<img alt=""><input type="file" accept="image/*" hidden></label>
+</div></section>
+<section><h2><i>2</i>Options</h2><div class="opt">
+<label class="chip"><input type="checkbox" id="rd" checked>Rounded corners</label>
+<label class="chip"><input type="checkbox" id="bd" checked>Border</label>
+<label class="chip"><input type="checkbox" id="gr">Grayscale</label>
+<label class="chip">Size<input type="number" id="sc" value="100" min="70" max="130">%</label>
+</div></section>
+<section><h2><i>3</i>Preview (A4)</h2><div class="paper"><canvas id="pg" width="2480" height="3508"></canvas></div></section>
+<section><h2><i>4</i>Print or save</h2>
 <div class="row" style="margin-bottom:10px"><button class="p" id="bp" disabled>Save PDF</button><button id="bs" disabled>Share</button></div>
-<div class="row"><button id="bj" disabled>Save JPEG</button><button id="br">Clear all</button></div>
+<div class="row"><button id="bj" disabled>Save JPEG</button><button id="br">Clear all</button></div></section>
+<footer>Created by AhChai for Synly Trading &amp; Bookstore S/B<br>Everything stays on this phone.</footer>
 </main>
 <div id="cr" hidden><canvas id="cv"></canvas>
 <div class="bar"><input type="range" id="zm" min=".5" max="12" step=".01" value="1"><p>Drag to move, pinch or slide to zoom. Fit the card inside the frame.</p>
-<div class="row"><button id="cx">Cancel</button><button class="p" id="ok">Use crop</button></div></div></div>
+<div class="row"><button id="rotL">&#8634; Left</button><button id="rotR">&#8635; Right</button></div><div class="row"><button id="cx">Cancel</button><button class="p" id="ok">Use crop</button></div></div></div>
 <script>
 const $=s=>document.querySelector(s),MM=300/25.4,CW=1011,CH=638,PW=2480,PH=3508,R=1.586;
 const pg=$('#pg'),pc=pg.getContext('2d'),cards=[null,null];
@@ -59,7 +73,11 @@ function openCrop(){$('#cr').hidden=false;
  const W=Math.min(innerWidth,520),H=Math.round(Math.min(innerHeight-170,680)),d=devicePixelRatio||1;
  cv.style.width=W+'px';cv.style.height=H+'px';cv.width=W*d;cv.height=H*d;cx.setTransform(d,0,0,d,0,0);
  const fw=W*.92,fh=fw/R;F={W,H,fw,fh,fx:(W-fw)/2,fy:(H-fh)/2};
- s0=s=Math.min(W/img.width,H/img.height);ox=(W-img.width*s)/2;oy=(H-img.height*s)/2;zm.value=1;draw()}
+ fit()}
+function fit(){const{W,H}=F;s0=s=Math.min(W/img.width,H/img.height);ox=(W-img.width*s)/2;oy=(H-img.height*s)/2;zm.value=1;draw()}
+function rot(d){const c=document.createElement('canvas');c.width=img.height;c.height=img.width;const x=c.getContext('2d');
+ x.translate(c.width/2,c.height/2);x.rotate(d*Math.PI/2);x.drawImage(img,-img.width/2,-img.height/2);img=c;fit()}
+$("#rotL").onclick=()=>rot(-1);$("#rotR").onclick=()=>rot(1);
 
 function draw(){const{W,H,fx,fy,fw,fh}=F;cx.fillStyle='#111';cx.fillRect(0,0,W,H);
  cx.drawImage(img,ox,oy,img.width*s,img.height*s);cx.fillStyle='rgba(0,0,0,.62)';
@@ -87,13 +105,15 @@ function gray(c){const t=document.createElement('canvas');t.width=c.width;t.heig
  x.drawImage(c,0,0);const d=x.getImageData(0,0,t.width,t.height),a=d.data;
  for(let i=0;i<a.length;i+=4)a[i]=a[i+1]=a[i+2]=.299*a[i]+.587*a[i+1]+.114*a[i+2];x.putImageData(d,0,0);return t}
 
+function rr(x,y,w,h,r){pc.beginPath();pc.moveTo(x+r,y);pc.arcTo(x+w,y,x+w,y+h,r);pc.arcTo(x+w,y+h,x,y+h,r);pc.arcTo(x,y+h,x,y,r);pc.arcTo(x,y,x+w,y,r);pc.closePath()}
 function render(){const k=(+$('#sc').value||100)/100;try{localStorage.sc=$('#sc').value}catch(e){}
  pc.fillStyle='#fff';pc.fillRect(0,0,PW,PH);
- cards.forEach((c,i)=>{if(!c)return;const w=CW*k,h=CH*k,x=(PW-w)/2,y=(40+i*(54*k+12))*MM;
-  pc.drawImage($('#gr').checked?gray(c):c,x,y,w,h);
-  if($('#bd').checked){pc.strokeStyle='#777';pc.lineWidth=3;pc.strokeRect(x,y,w,h)}});
- ['#bp','#bs','#bj'].forEach(b=>$(b).disabled=!cards.some(Boolean))}
-['#bd','#gr','#sc'].forEach(q=>$(q).onchange=render);$('#sc').oninput=render;
+ const L=[0,1].filter(i=>cards[i]),n=L.length,GAP=12,bh=n*54*k+(n-1)*GAP,top=(297-bh)/2,w=CW*k,h=CH*k,x=(PW-w)/2,r=3.18*MM*k;
+ L.forEach((i,j)=>{const y=(top+j*(54*k+GAP))*MM,c=cards[i];
+  pc.save();if($('#rd').checked){rr(x,y,w,h,r);pc.clip()}pc.drawImage($('#gr').checked?gray(c):c,x,y,w,h);pc.restore();
+  if($('#bd').checked){pc.strokeStyle='#777';pc.lineWidth=3;if($('#rd').checked){rr(x,y,w,h,r);pc.stroke()}else pc.strokeRect(x,y,w,h)}});
+ ['#bp','#bs','#bj'].forEach(b=>$(b).disabled=!n)}
+['#rd','#bd','#gr','#sc'].forEach(q=>$(q).onchange=render);$('#sc').oninput=render;
 
 function buildPdf(jpg,w,h){const enc=new TextEncoder(),parts=[],off=[];let len=0;
  const add=d=>{const b=typeof d=='string'?enc.encode(d):d;parts.push(b);len+=b.length};
