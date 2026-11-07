@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>IC Depan Belakang</title>
+<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#020298">
+<link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{--bg:#f4f5f9;--fg:#15171f;--card:#fff;--ac:#020298;--ln:#cfd3e0;color-scheme:light}
+@media(prefers-color-scheme:dark){:root{--bg:#10121a;--fg:#eceef6;--card:#1a1d29;--ac:#7f86ff;--ln:#343950;color-scheme:dark}}
+*{box-sizing:border-box}html,body{margin:0}
+body{font:16px/1.4 system-ui,sans-serif;background:var(--bg);color:var(--fg);padding:env(safe-area-inset-top) 14px calc(env(safe-area-inset-bottom) + 20px)}
+main{max-width:520px;margin:0 auto}h1{font-size:1.2rem;margin:16px 0 4px}p.s{margin:0 0 14px;opacity:.7;font-size:.85rem}
+.row{display:flex;gap:10px}.row>*{flex:1}
+button,.slot{font:inherit;border-radius:12px;border:1px solid var(--ln);background:var(--card);color:var(--fg);padding:12px;cursor:pointer}
+button.p{background:var(--ac);color:#fff;border-color:var(--ac);font-weight:600}
+@media(prefers-color-scheme:dark){button.p{color:#10121a}}
+button:disabled{opacity:.4}
+.slot{aspect-ratio:1.586;display:flex;align-items:center;justify-content:center;flex-direction:column;overflow:hidden;padding:0;position:relative;font-weight:600;border-style:dashed}
+.slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.slot img:not([src]){display:none}
+.slot b{position:absolute;left:6px;top:6px;background:#000a;color:#fff;font-size:.7rem;padding:2px 8px;border-radius:8px}
+.opt{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin:14px 0;font-size:.9rem}
+.opt input[type=number]{width:64px;font:inherit;padding:6px;border-radius:8px;border:1px solid var(--ln);background:var(--card);color:var(--fg)}
+#pg{width:100%;height:auto;aspect-ratio:210/297;background:#fff;border:1px solid var(--ln);border-radius:6px;margin:6px 0 14px;display:block}
+#cr{position:fixed;inset:0;background:#000;z-index:9;display:flex;flex-direction:column;align-items:center;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+#cr[hidden]{display:none}#cv{touch-action:none;margin-top:8px;border-radius:8px}
+#cr .bar{width:100%;max-width:520px;padding:12px 14px;color:#fff;display:grid;gap:10px}#cr input{width:100%}#cr p{margin:0;font-size:.8rem;opacity:.75;text-align:center}
+</style></head><body><main>
+<h1>IC Depan Belakang</h1><p class="s">Two screenshots in, one tidy A4 PDF out. Nothing leaves this phone.</p>
+<div class="row">
+<label class="slot" id="s0"><b>Depan</b>Tap to choose<img alt=""><input type="file" accept="image/*" hidden></label>
+<label class="slot" id="s1"><b>Belakang</b>Tap to choose<img alt=""><input type="file" accept="image/*" hidden></label>
+</div>
+<div class="opt">
+<label><input type="checkbox" id="bd" checked> Border</label>
+<label><input type="checkbox" id="gr"> Grayscale</label>
+<label>Size <input type="number" id="sc" value="100" min="70" max="130"> %</label>
+</div>
+<canvas id="pg" width="2480" height="3508"></canvas>
+<div class="row" style="margin-bottom:10px"><button class="p" id="bp" disabled>Save PDF</button><button id="bs" disabled>Share</button></div>
+<div class="row"><button id="bj" disabled>Save JPEG</button><button id="br">Clear all</button></div>
+</main>
+<div id="cr" hidden><canvas id="cv"></canvas>
+<div class="bar"><input type="range" id="zm" min=".5" max="12" step=".01" value="1"><p>Drag to move, pinch or slide to zoom. Fit the card inside the frame.</p>
+<div class="row"><button id="cx">Cancel</button><button class="p" id="ok">Use crop</button></div></div></div>
+<script>
+const $=s=>document.querySelector(s),MM=300/25.4,CW=1011,CH=638,PW=2480,PH=3508,R=1.586;
+const pg=$('#pg'),pc=pg.getContext('2d'),cards=[null,null];
+let cur=0,img,s=1,s0=1,ox=0,oy=0,F={},ptrs=new Map(),url;
+try{$('#sc').value=localStorage.sc||100}catch(e){}
+const cv=$('#cv'),cx=cv.getContext('2d'),zm=$('#zm');
+
+[0,1].forEach(i=>{const el=$('#s'+i),inp=el.querySelector('input');
+ inp.onchange=()=>{if(inp.files[0])load(inp.files[0],i);inp.value=''}});
+
+function load(f,i){cur=i;if(url)URL.revokeObjectURL(url);url=URL.createObjectURL(f);img=new Image();
+ img.onload=openCrop;img.onerror=()=>alert('This image format is not supported. Ask the customer to resend as PNG or JPG.');img.src=url}
+
+function openCrop(){$('#cr').hidden=false;
+ const W=Math.min(innerWidth,520),H=Math.round(Math.min(innerHeight-170,680)),d=devicePixelRatio||1;
+ cv.style.width=W+'px';cv.style.height=H+'px';cv.width=W*d;cv.height=H*d;cx.setTransform(d,0,0,d,0,0);
+ const fw=W*.92,fh=fw/R;F={W,H,fw,fh,fx:(W-fw)/2,fy:(H-fh)/2};
+ s0=s=Math.min(W/img.width,H/img.height);ox=(W-img.width*s)/2;oy=(H-img.height*s)/2;zm.value=1;draw()}
+
+function draw(){const{W,H,fx,fy,fw,fh}=F;cx.fillStyle='#111';cx.fillRect(0,0,W,H);
+ cx.drawImage(img,ox,oy,img.width*s,img.height*s);cx.fillStyle='rgba(0,0,0,.62)';
+ cx.fillRect(0,0,W,fy);cx.fillRect(0,fy+fh,W,H-fy-fh);cx.fillRect(0,fy,fx,fh);cx.fillRect(fx+fw,fy,fx,fh);
+ cx.strokeStyle='#fff';cx.lineWidth=1.5;cx.strokeRect(fx,fy,fw,fh)}
+
+function zoomAt(px,py,n){n=Math.max(s0*.5,Math.min(s0*12,n));ox=px-(px-ox)*n/s;oy=py-(py-oy)*n/s;s=n;zm.value=s/s0}
+zm.oninput=()=>{zoomAt(F.W/2,F.H/2,zm.value*s0);draw()};
+cv.onwheel=e=>{e.preventDefault();zoomAt(e.offsetX,e.offsetY,s*(e.deltaY<0?1.1:.9));draw()};
+cv.onpointerdown=e=>{cv.setPointerCapture(e.pointerId);ptrs.set(e.pointerId,{x:e.offsetX,y:e.offsetY})};
+cv.onpointermove=e=>{const p=ptrs.get(e.pointerId);if(!p)return;const o=[...ptrs.values()];
+ if(o.length==1){ox+=e.offsetX-p.x;oy+=e.offsetY-p.y}
+ else{const q=o.find(v=>v!==p),d0=Math.hypot(p.x-q.x,p.y-q.y),d1=Math.hypot(e.offsetX-q.x,e.offsetY-q.y);
+  if(d0>0)zoomAt((e.offsetX+q.x)/2,(e.offsetY+q.y)/2,s*d1/d0)}
+ p.x=e.offsetX;p.y=e.offsetY;draw()};
+cv.onpointerup=cv.onpointercancel=e=>ptrs.delete(e.pointerId);
+
+$('#cx').onclick=()=>$('#cr').hidden=true;
+$('#ok').onclick=()=>{const{fx,fy,fw,fh}=F,c=document.createElement('canvas');c.width=CW;c.height=CH;
+ const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,CW,CH);
+ x.drawImage(img,(fx-ox)/s,(fy-oy)/s,fw/s,fh/s,0,0,CW,CH);
+ cards[cur]=c;const t=$('#s'+cur+' img');t.src=c.toDataURL('image/jpeg',.7);$('#cr').hidden=true;render()};
+
+function gray(c){const t=document.createElement('canvas');t.width=c.width;t.height=c.height;const x=t.getContext('2d');
+ x.drawImage(c,0,0);const d=x.getImageData(0,0,t.width,t.height),a=d.data;
+ for(let i=0;i<a.length;i+=4)a[i]=a[i+1]=a[i+2]=.299*a[i]+.587*a[i+1]+.114*a[i+2];x.putImageData(d,0,0);return t}
+
+function render(){const k=(+$('#sc').value||100)/100;try{localStorage.sc=$('#sc').value}catch(e){}
+ pc.fillStyle='#fff';pc.fillRect(0,0,PW,PH);
+ cards.forEach((c,i)=>{if(!c)return;const w=CW*k,h=CH*k,x=(PW-w)/2,y=(40+i*(54*k+12))*MM;
+  pc.drawImage($('#gr').checked?gray(c):c,x,y,w,h);
+  if($('#bd').checked){pc.strokeStyle='#777';pc.lineWidth=3;pc.strokeRect(x,y,w,h)}});
+ ['#bp','#bs','#bj'].forEach(b=>$(b).disabled=!cards.some(Boolean))}
+['#bd','#gr','#sc'].forEach(q=>$(q).onchange=render);$('#sc').oninput=render;
+
+function buildPdf(jpg,w,h){const enc=new TextEncoder(),parts=[],off=[];let len=0;
+ const add=d=>{const b=typeof d=='string'?enc.encode(d):d;parts.push(b);len+=b.length};
+ const obj=(n,b)=>{off[n]=len;add(`${n} 0 obj\n${b}\nendobj\n`)};
+ add('%PDF-1.4\n');obj(1,'<</Type/Catalog/Pages 2 0 R>>');obj(2,'<</Type/Pages/Kids[3 0 R]/Count 1>>');
+ obj(3,'<</Type/Page/Parent 2 0 R/MediaBox[0 0 595.28 841.89]/Resources<</XObject<</I 4 0 R>>>>/Contents 5 0 R>>');
+ off[4]=len;add(`4 0 obj\n<</Type/XObject/Subtype/Image/Width ${w}/Height ${h}/ColorSpace/DeviceRGB/BitsPerComponent 8/Filter/DCTDecode/Length ${jpg.length}>>\nstream\n`);add(jpg);add('\nendstream\nendobj\n');
+ const c='q 595.28 0 0 841.89 0 0 cm /I Do Q';obj(5,`<</Length ${c.length}>>\nstream\n${c}\nendstream`);
+ const xr=len;let t='xref\n0 6\n0000000000 65535 f \n';for(let i=1;i<6;i++)t+=String(off[i]).padStart(10,'0')+' 00000 n \n';
+ add(t+`trailer\n<</Size 6/Root 1 0 R>>\nstartxref\n${xr}\n%%EOF`);return new Blob(parts,{type:'application/pdf'})}
+
+const jpeg=()=>new Promise(r=>pg.toBlob(r,'image/jpeg',.92));
+const name=e=>'IC-'+new Date().toISOString().slice(0,10)+'.'+e;
+function save(b,n){const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=n;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),4e3)}
+async function pdf(){return buildPdf(new Uint8Array(await(await jpeg()).arrayBuffer()),PW,PH)}
+$('#bp').onclick=async()=>save(await pdf(),name('pdf'));
+$('#bj').onclick=async()=>save(await jpeg(),name('jpg'));
+$('#bs').onclick=async()=>{const f=new File([await pdf()],name('pdf'),{type:'application/pdf'});
+ if(navigator.canShare&&navigator.canShare({files:[f]}))try{await navigator.share({files:[f]})}catch(e){}else save(f,f.name)};
+$('#br').onclick=()=>{cards.fill(null);document.querySelectorAll('.slot img').forEach(i=>i.removeAttribute('src'));render()};
+render();
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script></body></html>
