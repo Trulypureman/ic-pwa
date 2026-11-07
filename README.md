@@ -15,8 +15,10 @@ Customers send IC or driving licence screenshots to the shop phone. Printing the
 - Rotate left or right if the screenshot is the wrong way round
 - Both cards centred on A4 at real size
 - Rounded corners (3.18 mm radius), optional border, optional grayscale
-- Size % setting for print calibration (saved on the device)
-- Output: PDF, A4 JPEG, or Share straight to the printing app
+- Size % setting for print calibration (all options saved on the device)
+- Share photos straight from WhatsApp or Gallery to the installed app (Android); paste or drag-and-drop also works
+- Re-crop or remove a card after choosing it, and swap Depan / Belakang
+- Output: PDF, A4 JPEG, Print, or Share straight to the printing app
 - Works offline once installed; nothing is uploaded or stored
 
 ## Files
@@ -39,11 +41,11 @@ Customers send IC or driving licence screenshots to the shop phone. Printing the
 
 ## Update
 
-Upload the new files with the same names and commit. Open the app twice; the second open loads the new version. If the old one persists, clear the site data in Chrome, or remove and re-add the home-screen icon.
+Upload the new files with the same names and commit. Open the app; when a "new version is ready" message appears, tap Reload. If the old one persists, clear the site data in Chrome, or remove and re-add the home-screen icon.
 
 ## How to use
 
-1. Tap Depan and choose the front screenshot. Crop it inside the frame, then tap Use crop.
+1. In WhatsApp, select both IC photos and share them to **IC PDF**. They open one after another in the crop screen. Or tap Depan and choose the front screenshot. Crop it inside the frame, then tap Use crop.
 2. Repeat for Belakang.
 3. Set options if needed, and check the A4 preview.
 4. Tap Share (or Save PDF) and print from the Canon printing app.
@@ -68,6 +70,17 @@ Upload the new files with the same names and commit. Open the app twice; the sec
 Everything runs in the browser on the phone. No server, no upload, no storage of customer images. Handle printed and shared copies of IC carefully.
 
 ## Changelog
+
+### v1.2 (8 Nov 2026)
+- Receive images shared from WhatsApp or Gallery (Android, installed app)
+- Crop and remove buttons on each card; Swap button; Clear all now asks first
+- Print button (true A4, no margins)
+- Paste and drag-and-drop images
+- Crop screen: Fit button, double-tap to fit, thirds grid, title shows which side
+- Android back button and Escape close the crop screen instead of the app
+- Offline fallback fixed; only good responses are cached; update notice with Reload
+- All options remembered; size clamped to 70-130%; large photos downscaled
+- Manifest: separate any/maskable icons, app id and description
 
 ### v1.1 (7 Nov 2026)
 - Cards now centred horizontally and vertically on A4
