@@ -1,7 +1,7 @@
 {
   "id": "./",
   "name": "Synly Printing Services",
-  "short_name": "Synly Print",
+  "short_name": "Synly PS",
   "description": "Print IC front and back on one A4 page, and merchant QR posters at A5. Works offline; images never leave the phone.",
   "lang": "en",
   "start_url": "./index.html",

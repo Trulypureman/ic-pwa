@@ -46,7 +46,7 @@ Upload the new files with the same names and commit. Open the app; when a "new v
 
 ## How to use
 
-1. In WhatsApp, select both IC photos and share them to **Synly Print**. They open one after another in the crop screen. Or tap Depan and choose the front screenshot. Crop it inside the frame, then tap Use crop.
+1. In WhatsApp, select both IC photos and share them to **Synly PS**. They open one after another in the crop screen. Or tap Depan and choose the front screenshot. Crop it inside the frame, then tap Use crop.
 2. Repeat for Belakang.
 3. Set options if needed, and check the A4 preview.
 4. Tap Share (or Save PDF) and print from the Canon printing app.
