@@ -46,6 +46,7 @@ footer{text-align:center;font-size:.76rem;color:var(--mu);padding:6px 16px 0}
 #cr{position:fixed;inset:0;background:#000;z-index:9;display:flex;flex-direction:column;align-items:center;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
 #cr[hidden]{display:none}#cv{touch-action:none;margin-top:8px;border-radius:8px}
 #cr .bar{width:100%;max-width:520px;padding:12px 14px;color:#fff;display:grid;gap:10px}#cr input{width:100%;accent-color:#34c27a}#cr p{margin:0;font-size:.8rem;opacity:.75;text-align:center}
+#cr .lk{display:flex;gap:8px;align-items:center;justify-content:center;font-size:.85rem}#cr .lk[hidden]{display:none}#cr .lk input{width:18px;height:18px}
 #cr h3{margin:8px 0 0;color:#fff;font-size:.95rem;font-weight:600}
 #cr button{background:#222;color:#fff;border-color:#444}#cr button.p{background:#34c27a;color:#07140d;border-color:#34c27a}
 #tst{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 18px);transform:translate(-50%,20px);background:#1d2a22;color:#fff;padding:10px 14px;border-radius:12px;font-size:.88rem;display:flex;gap:12px;align-items:center;box-shadow:0 6px 20px #0005;opacity:0;pointer-events:none;transition:.2s;z-index:20;max-width:calc(100% - 32px)}
@@ -77,7 +78,7 @@ footer{text-align:center;font-size:.76rem;color:var(--mu);padding:6px 16px 0}
 </div>
 <div id="mQR" hidden>
 <section><h2><i>1</i>Choose QR image</h2>
-<div class="slot qs" id="q0" tabindex="0" role="button" aria-label="Choose QR image"><b>A5</b><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Tap to choose<img alt="QR image"><div class="act"><button data-a="r">&#8635; Rotate</button><button data-a="x" aria-label="Remove">&#10005;</button></div><input type="file" accept="image/*" hidden></div>
+<div class="slot qs" id="q0" tabindex="0" role="button" aria-label="Choose QR image"><b>A5</b><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Tap to choose<img alt="QR image"><div class="act"><button data-a="e">Crop</button><button data-a="x" aria-label="Remove">&#10005;</button></div><input type="file" accept="image/*" hidden></div>
 <p class="hint">Merchant DuitNow QR or any poster. Paste, drop or share from WhatsApp also works while this tab is open.</p></section>
 <section><h2><i>2</i>Options</h2><div class="opt">
 <label class="chip"><input type="checkbox" id="q2">2 per sheet</label>
@@ -92,14 +93,15 @@ footer{text-align:center;font-size:.76rem;color:var(--mu);padding:6px 16px 0}
 <footer>Created by AhChai for Synly Trading &amp; Bookstore S/B<br>Everything stays on this phone.</footer>
 </main>
 <div id="cr" hidden role="dialog" aria-modal="true" aria-labelledby="ct"><h3 id="ct">Crop</h3><canvas id="cv"></canvas>
-<div class="bar"><input type="range" id="zm" min=".5" max="12" step=".01" value="1" aria-label="Zoom"><p>Drag to move, pinch or slide to zoom. Double-tap to fit. Fit the card inside the frame.</p>
+<div class="bar"><input type="range" id="zm" min=".5" max="12" step=".01" value="1" aria-label="Zoom"><p>Drag the corners or edges to crop, drag inside the box to move it. Pinch or slide to zoom, double-tap outside to fit.</p>
+<label class="lk" id="lkw"><input type="checkbox" id="lk">Lock card shape</label>
 <div class="row"><button id="rotL">&#8634; Left</button><button id="fitB">Fit</button><button id="rotR">&#8635; Right</button></div><div class="row"><button id="cx">Cancel</button><button class="p" id="ok">Use crop</button></div></div></div>
 <div id="tst" role="status" aria-live="polite"><span></span><button hidden></button></div>
 <img id="pi" alt="">
 <script>
 const $=s=>document.querySelector(s),MM=300/25.4,CW=1011,CH=638,PW=2480,PH=3508,R=1.586,MAX=4096,NM=['Depan','Belakang'];
 const pg=$('#pg'),pc=pg.getContext('2d'),cards=[null,null],src=[null,null],Q=[];
-let cur=0,img,s=1,s0=1,ox=0,oy=0,F={},ptrs=new Map(),lastTap=0;
+let cur=0,img,s=1,s0=1,ox=0,oy=0,F={},ptrs=new Map(),lastTap=0,box,drag=null,qimg=null,qsrc=null;
 const cv=$('#cv'),cx=cv.getContext('2d'),zm=$('#zm'),cr=$('#cr');
 
 /* ---------- toast ---------- */
@@ -142,48 +144,74 @@ async function takeShared(){if(!/[?&]shared=/.test(location.search))return;histo
  try{const c=await caches.open('ic-share'),fs=[];for(const k of await c.keys()){const r=await c.match(k);if(r)fs.push(await r.blob());await c.delete(k)}
   if(fs.length){if(mode=='qr')qload(fs);else{cards.fill(null);src.fill(null);thumbs();render();enqueue(fs)}}}catch(e){}}
 
-/* ---------- crop ---------- */
-function layout(){const W=Math.min(innerWidth,520),H=Math.max(200,Math.round(Math.min(innerHeight-210,680))),d=devicePixelRatio||1;
- cv.style.width=W+'px';cv.style.height=H+'px';cv.width=W*d;cv.height=H*d;cx.setTransform(d,0,0,d,0,0);
- const fw=Math.min(W*.92,H*.92*R),fh=fw/R;F={W,H,fw,fh,fx:(W-fw)/2,fy:(H-fh)/2}}
-function openCrop(i,im,st){cur=i;img=im;$('#ct').textContent='Crop '+NM[i];
+/* ---------- crop: free, resizable box (image coordinates) ---------- */
+// cur = 0/1 for the IC cards, 'q' for the A5 QR image. box = {x,y,w,h} in image pixels.
+const HS=[[-1,-1],[1,-1],[1,1],[-1,1],[0,-1],[1,0],[0,1],[-1,0]],PAD=24;
+function layout(){const W=Math.min(innerWidth,520),H=Math.max(180,Math.round(Math.min(cr.clientHeight-$('#cr .bar').offsetHeight-$('#ct').offsetHeight-30,680))),d=devicePixelRatio||1;
+ cv.style.width=W+'px';cv.style.height=H+'px';cv.width=W*d;cv.height=H*d;cx.setTransform(d,0,0,d,0,0);F={W,H}}
+const lock=()=>cur!=='q'&&$('#lk').checked;
+try{$('#lk').checked=!!localStorage.lk}catch(e){}
+function ratioBox(){let{x,y,w,h}=box;if(w/h>R){const n=h*R;x+=(w-n)/2;w=n}else{const n=w/R;y+=(h-n)/2;h=n}box={x,y,w,h}}
+$('#lk').onchange=()=>{try{localStorage.lk=$('#lk').checked?1:''}catch(e){}if(lock())ratioBox();draw()};
+function openCrop(i,im,st){cur=i;img=im;$('#ct').textContent='Crop '+(i==='q'?'QR':NM[i]);$('#lkw').hidden=i==='q';
  if(cr.hidden){cr.hidden=false;history.pushState({crop:1},'')}layout();
- if(st&&st.W==F.W&&st.H==F.H){({s,s0,ox,oy}=st);zm.value=s/s0;draw()}else fit();$('#ok').focus()}
-function hideCrop(){if(cr.hidden)return;cr.hidden=true;ptrs.clear();next()}
+ box=st?{...st}:{x:0,y:0,w:img.width,h:img.height};if(!st&&lock())ratioBox();fit();$('#ok').focus()}
+function hideCrop(){if(cr.hidden)return;cr.hidden=true;ptrs.clear();drag=null;next()}
 function closeCrop(){if(history.state&&history.state.crop)history.back();else hideCrop()}
 addEventListener('popstate',hideCrop);
 addEventListener('keydown',e=>{if(!cr.hidden&&e.key=='Escape')closeCrop()});
 addEventListener('resize',()=>{if(!cr.hidden){layout();fit()}});
 
-function fit(){const{W,H}=F;s0=s=Math.min(W/img.width,H/img.height);ox=(W-img.width*s)/2;oy=(H-img.height*s)/2;zm.value=1;draw()}
+function fit(){const{W,H}=F;s0=s=Math.min((W-2*PAD)/img.width,(H-2*PAD)/img.height);ox=(W-img.width*s)/2;oy=(H-img.height*s)/2;zm.value=1;draw()}
 function rot(d){const c=document.createElement('canvas');c.width=img.height;c.height=img.width;const x=c.getContext('2d');
- x.translate(c.width/2,c.height/2);x.rotate(d*Math.PI/2);x.drawImage(img,-img.width/2,-img.height/2);img=c;fit()}
+ x.translate(c.width/2,c.height/2);x.rotate(d*Math.PI/2);x.drawImage(img,-img.width/2,-img.height/2);img=c;
+ box={x:0,y:0,w:img.width,h:img.height};if(lock())ratioBox();fit()}
 $('#rotL').onclick=()=>rot(-1);$('#rotR').onclick=()=>rot(1);$('#fitB').onclick=fit;
 
-function draw(){const{W,H,fx,fy,fw,fh}=F;cx.fillStyle='#111';cx.fillRect(0,0,W,H);
+const sb=()=>({x:ox+box.x*s,y:oy+box.y*s,w:box.w*s,h:box.h*s});
+function draw(){const{W,H}=F,b=sb();cx.fillStyle='#111';cx.fillRect(0,0,W,H);
  cx.drawImage(img,ox,oy,img.width*s,img.height*s);cx.fillStyle='rgba(0,0,0,.62)';
- cx.fillRect(0,0,W,fy);cx.fillRect(0,fy+fh,W,H-fy-fh);cx.fillRect(0,fy,fx,fh);cx.fillRect(fx+fw,fy,W-fx-fw,fh);
- cx.strokeStyle='#fff';cx.lineWidth=1.5;cx.strokeRect(fx,fy,fw,fh);
+ cx.fillRect(0,0,W,b.y);cx.fillRect(0,b.y+b.h,W,H-b.y-b.h);cx.fillRect(0,b.y,b.x,b.h);cx.fillRect(b.x+b.w,b.y,W-b.x-b.w,b.h);
  cx.strokeStyle='rgba(255,255,255,.35)';cx.lineWidth=1;cx.beginPath();
- for(let k=1;k<3;k++){cx.moveTo(fx+fw*k/3,fy);cx.lineTo(fx+fw*k/3,fy+fh);cx.moveTo(fx,fy+fh*k/3);cx.lineTo(fx+fw,fy+fh*k/3)}cx.stroke()}
+ for(let k=1;k<3;k++){cx.moveTo(b.x+b.w*k/3,b.y);cx.lineTo(b.x+b.w*k/3,b.y+b.h);cx.moveTo(b.x,b.y+b.h*k/3);cx.lineTo(b.x+b.w,b.y+b.h*k/3)}cx.stroke();
+ cx.strokeStyle='#fff';cx.lineWidth=1.5;cx.strokeRect(b.x,b.y,b.w,b.h);
+ cx.fillStyle='#fff';cx.strokeStyle='#000';cx.lineWidth=1;
+ HS.forEach(([hx,hy],j)=>{const z=j<4?14:10,px=b.x+b.w*(hx+1)/2-z/2,py=b.y+b.h*(hy+1)/2-z/2;cx.fillRect(px,py,z,z);cx.strokeRect(px,py,z,z)})}
+
+// what the finger grabbed: a handle, the box itself, or the picture
+function hit(px,py){const b=sb(),t=22;
+ for(const[hx,hy]of HS){const x=b.x+b.w*(hx+1)/2,y=b.y+b.h*(hy+1)/2;if(Math.abs(px-x)<t&&Math.abs(py-y)<t)return{k:'h',hx,hy,dx:x-px,dy:y-py}}
+ if(px>b.x&&px<b.x+b.w&&py>b.y&&py<b.y+b.h)return{k:'m',dx:b.x-px,dy:b.y-py};return{k:'p'}}
+const cl=(v,a,b)=>Math.max(a,Math.min(b,v));
+function resize(d,px,py){const iw=img.width,ih=img.height,mn=Math.max(8,30/s),X=(px+d.dx-ox)/s,Y=(py+d.dy-oy)/s;
+ let L=box.x,T=box.y,Rt=box.x+box.w,B=box.y+box.h;
+ if(d.hx<0)L=cl(X,0,Rt-mn);if(d.hx>0)Rt=cl(X,L+mn,iw);if(d.hy<0)T=cl(Y,0,B-mn);if(d.hy>0)B=cl(Y,T+mn,ih);
+ if(lock()){
+  if(d.hx&&d.hy){let w=Rt-L,h=w/R,mh=d.hy<0?B:ih-T;if(h>mh){h=mh;w=h*R}if(d.hx<0)L=Rt-w;else Rt=L+w;if(d.hy<0)T=B-h;else B=T+h}
+  else if(d.hx){let w=Rt-L,h=w/R,c=(T+B)/2,mh=2*Math.min(c,ih-c);if(h>mh){h=mh;w=h*R;if(d.hx<0)L=Rt-w;else Rt=L+w}T=c-h/2;B=c+h/2}
+  else{let h=B-T,w=h*R,c=(L+Rt)/2,mw=2*Math.min(c,iw-c);if(w>mw){w=mw;h=w/R;if(d.hy<0)T=B-h;else B=T+h}L=c-w/2;Rt=c+w/2}}
+ box={x:L,y:T,w:Rt-L,h:B-T}}
 
 function zoomAt(px,py,n){n=Math.max(s0*.5,Math.min(s0*12,n));ox=px-(px-ox)*n/s;oy=py-(py-oy)*n/s;s=n;zm.value=s/s0}
 zm.oninput=()=>{zoomAt(F.W/2,F.H/2,zm.value*s0);draw()};
 cv.onwheel=e=>{e.preventDefault();zoomAt(e.offsetX,e.offsetY,s*(e.deltaY<0?1.1:.9));draw()};
 cv.onpointerdown=e=>{cv.setPointerCapture(e.pointerId);ptrs.set(e.pointerId,{x:e.offsetX,y:e.offsetY});
- if(ptrs.size==1){const t=e.timeStamp;if(t-lastTap<300){fit();lastTap=0}else lastTap=t}};
-cv.onpointermove=e=>{const p=ptrs.get(e.pointerId);if(!p)return;const o=[...ptrs.values()];
- if(o.length==1){ox+=e.offsetX-p.x;oy+=e.offsetY-p.y}
- else{const q=o.find(v=>v!==p),d0=Math.hypot(p.x-q.x,p.y-q.y),d1=Math.hypot(e.offsetX-q.x,e.offsetY-q.y);
+ if(ptrs.size==1){drag=hit(e.offsetX,e.offsetY);if(drag.k=='p'){const t=e.timeStamp;if(t-lastTap<300){fit();lastTap=0}else lastTap=t}}else drag={k:'z'}};
+cv.onpointermove=e=>{const p=ptrs.get(e.pointerId);if(!p||!drag)return;const o=[...ptrs.values()];
+ if(o.length>1){const q=o.find(v=>v!==p),d0=Math.hypot(p.x-q.x,p.y-q.y),d1=Math.hypot(e.offsetX-q.x,e.offsetY-q.y);
   if(d0>0)zoomAt((e.offsetX+q.x)/2,(e.offsetY+q.y)/2,s*d1/d0)}
+ else if(drag.k=='p'){ox+=e.offsetX-p.x;oy+=e.offsetY-p.y}
+ else if(drag.k=='m'){box.x=cl((e.offsetX+drag.dx-ox)/s,0,img.width-box.w);box.y=cl((e.offsetY+drag.dy-oy)/s,0,img.height-box.h)}
+ else if(drag.k=='h')resize(drag,e.offsetX,e.offsetY);
  p.x=e.offsetX;p.y=e.offsetY;draw()};
-cv.onpointerup=cv.onpointercancel=e=>ptrs.delete(e.pointerId);
+cv.onpointerup=cv.onpointercancel=e=>{ptrs.delete(e.pointerId);if(!ptrs.size)drag=null};
 
 $('#cx').onclick=closeCrop;
-$('#ok').onclick=()=>{const{fx,fy,fw,fh,W,H}=F,c=document.createElement('canvas');c.width=CW;c.height=CH;
- const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,CW,CH);x.imageSmoothingQuality='high';
- x.drawImage(img,(fx-ox)/s,(fy-oy)/s,fw/s,fh/s,0,0,CW,CH);
- cards[cur]=c;src[cur]={img,st:{s,s0,ox,oy,W,H}};thumbs();render();closeCrop()};
+$('#ok').onclick=()=>{const{x,y,w,h}=box,q=cur==='q',k=q?Math.min(1,MAX/Math.max(w,h)):0,c=document.createElement('canvas');
+ c.width=q?Math.round(w*k):CW;c.height=q?Math.round(h*k):CH;
+ const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);g.imageSmoothingQuality='high';
+ g.drawImage(img,x,y,w,h,0,0,c.width,c.height);
+ if(q){qimg=c;qsrc={img,st:{...box}};qpaint()}else{cards[cur]=c;src[cur]={img,st:{...box}};thumbs();render()}closeCrop()};
 
 /* ---------- A4 page ---------- */
 const gc=new WeakMap();
@@ -232,9 +260,9 @@ const outs=(c,q,[p,sh,j,t])=>{
 outs(pg,0,['#bp','#bs','#bj','#bt']);
 
 /* ---------- A5 QR: one image fitted to the top half of an A4 sheet (A5), optionally twice ---------- */
-const qg=$('#qg'),qx=qg.getContext('2d'),qslot=$('#q0'),qin=qslot.querySelector('input'),QO=['q2','qc'];let qimg=null,mode='ic';
+const qg=$('#qg'),qx=qg.getContext('2d'),qslot=$('#q0'),qin=qslot.querySelector('input'),QO=['q2','qc'];let mode='ic';
 try{const o=JSON.parse(localStorage.qopt||'{}');QO.forEach(k=>{if(k in o)$('#'+k).checked=o[k]})}catch(e){}
-function qload(fs){const f=fs.find(f=>f&&/^image\//.test(f.type||'image/'));if(f)readImg(f,c=>{if(c){qimg=c;qpaint()}})}
+function qload(fs){const f=fs.find(f=>f&&/^image\//.test(f.type||'image/'));if(f)readImg(f,c=>{if(c)openCrop('q',c)})}
 function qbtn(){['#qp','#qs','#qj','#qt'].forEach(b=>$(b).disabled=!qimg||busy)}
 // Fit inside the A5 half with a 6 mm margin; portrait images turn sideways (top to the left), as 2-in-1 does.
 function qfit(im,y){const H=PH/2,m=6*MM,bw=PW-2*m,bh=H-2*m,rot=im.height>im.width,iw=rot?im.height:im.width,ih=rot?im.width:im.height,k=Math.min(bw/iw,bh/ih);
@@ -247,8 +275,7 @@ function qpaint(){try{const o={};QO.forEach(k=>o[k]=$('#'+k).checked);localStora
 QO.forEach(k=>$('#'+k).onchange=qpaint);
 qin.onchange=()=>{qload([...qin.files]);qin.value=''};
 qslot.onclick=e=>{const a=e.target.closest('[data-a]');if(!a)return qin.click();e.stopPropagation();
- if(a.dataset.a=='r'){const c=document.createElement('canvas');c.width=qimg.height;c.height=qimg.width;const x=c.getContext('2d');
-  x.translate(c.width/2,c.height/2);x.rotate(Math.PI/2);x.drawImage(qimg,-qimg.width/2,-qimg.height/2);qimg=c}else qimg=null;qpaint()};
+ if(a.dataset.a=='e')openCrop('q',qsrc.img,qsrc.st);else{qimg=qsrc=null;qpaint()}};
 qslot.onkeydown=e=>{if(e.target===qslot&&(e.key=='Enter'||e.key==' ')){e.preventDefault();qin.click()}};
 qslot.ondragover=e=>{e.preventDefault();qslot.classList.add('drag')};qslot.ondragleave=()=>qslot.classList.remove('drag');
 qslot.ondrop=e=>{e.preventDefault();e.stopPropagation();qslot.classList.remove('drag');qload([...e.dataTransfer.files])};

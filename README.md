@@ -11,7 +11,7 @@ Customers send IC or driving licence screenshots to the shop phone. Printing the
 ## Features
 
 - Pick Depan and Belakang screenshots (PNG, JPG, WebP; HEIC only where the browser supports it)
-- Crop with a fixed card-ratio frame (1.586): drag to move, pinch or slide to zoom
+- Free crop box for both IC and A5 QR: drag corners or edges to resize, drag inside to move, pinch or slide to zoom. Optional "Lock card shape" for IC (the cropped IC area is fitted to the 85.6 × 54 mm card)
 - Rotate left or right if the screenshot is the wrong way round
 - Both cards centred on A4 at real size
 - Rounded corners (3.18 mm radius), optional border, optional grayscale
@@ -46,7 +46,7 @@ Upload the new files with the same names and commit. Open the app; when a "new v
 
 ## How to use
 
-1. In WhatsApp, select both IC photos and share them to **Synly PS**. They open one after another in the crop screen. Or tap Depan and choose the front screenshot. Crop it inside the frame, then tap Use crop.
+1. In WhatsApp, select both IC photos and share them to **Synly PS**. They open one after another in the crop screen. Or tap Depan and choose the front screenshot. Drag the crop box corners to the card edges, then tap Use crop.
 2. Repeat for Belakang.
 3. Set options if needed, and check the A4 preview.
 4. Tap Share (or Save PDF) and print from the Canon printing app.
