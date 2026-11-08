@@ -1,6 +1,6 @@
-# IC Depan Belakang
+# Synly Printing Services
 
-A lightweight mobile PWA that turns two screenshots (front and back of an IC or digital driving licence) into one tidy A4 PDF, with both cards at real size, centred on the page like a physical photocopy.
+A lightweight mobile PWA for Synly print jobs: IC or digital driving licence front and back on one tidy A4 page (cards at real size, like a photocopy), and merchant DuitNow QR posters at A5.
 
 Created by AhChai for Synly Trading & Bookstore S/B.
 
@@ -46,7 +46,7 @@ Upload the new files with the same names and commit. Open the app; when a "new v
 
 ## How to use
 
-1. In WhatsApp, select both IC photos and share them to **IC PDF**. They open one after another in the crop screen. Or tap Depan and choose the front screenshot. Crop it inside the frame, then tap Use crop.
+1. In WhatsApp, select both IC photos and share them to **Synly Print**. They open one after another in the crop screen. Or tap Depan and choose the front screenshot. Crop it inside the frame, then tap Use crop.
 2. Repeat for Belakang.
 3. Set options if needed, and check the A4 preview.
 4. Tap Share (or Save PDF) and print from the Canon printing app.

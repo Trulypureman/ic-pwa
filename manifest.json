@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "IC Depan Belakang",
-  "short_name": "IC PDF",
-  "description": "Crop the front and back of an IC and print them on one A4 page. Works offline; images never leave the phone.",
+  "name": "Synly Printing Services",
+  "short_name": "Synly Print",
+  "description": "Print IC front and back on one A4 page, and merchant QR posters at A5. Works offline; images never leave the phone.",
   "lang": "en",
   "start_url": "./index.html",
   "scope": "./",
