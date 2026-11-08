@@ -31,6 +31,7 @@ Customers send IC or driving licence screenshots to the shop phone. Printing the
 | `manifest.json` | PWA install details |
 | `sw.js` | Service worker (offline support, network-first updates) |
 | `lib/` | docx-preview (Apache-2.0), JSZip (MIT), html2canvas (MIT) for .docx conversion, loaded only when a .docx is added |
+| `donate-qr.png` | DuitNow QR shown by the "Buy me a coffee" button in the footer |
 | `logo.png` | Synly logo shown in the header |
 | `icon-192.png`, `icon-512.png` | Home-screen icons |
 

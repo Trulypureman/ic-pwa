@@ -56,6 +56,12 @@ a{color:var(--ac)}
 #bz div{background:var(--card);color:var(--fg);padding:18px 22px;border-radius:14px;display:flex;gap:12px;align-items:center}
 #bz i{width:20px;height:20px;border:3px solid var(--ln);border-top-color:var(--ac);border-radius:50%;animation:sp 1s linear infinite}
 @keyframes sp{to{transform:rotate(1turn)}}
+.cof{margin-top:10px;padding:6px 14px;font-size:.78rem;font-weight:600;border-radius:20px;background:transparent;color:var(--mu)}
+#cd{border:0;border-radius:18px;padding:16px;max-width:min(360px,calc(100vw - 32px));background:var(--card);color:var(--fg);box-shadow:0 10px 40px #0006}
+#cd::backdrop{background:#000a}#cd h3{margin:0 0 10px;font-size:1rem;text-align:center}
+#cd img{display:block;width:100%;height:auto;max-height:60vh;object-fit:contain;border-radius:10px;background:#fff}
+#cd p{font-size:.82rem;color:var(--mu);text-align:center;margin:10px 0}
+a.btn{font:inherit;font-weight:600;border-radius:12px;border:1px solid var(--ln);background:var(--card);color:var(--fg);padding:13px;text-align:center;text-decoration:none}
 .hint{font-size:.78rem;color:var(--mu);margin:10px 0 0}
 footer{text-align:center;font-size:.76rem;color:var(--mu);padding:6px 16px 0}
 #cr{position:fixed;inset:0;background:#000;z-index:9;display:flex;flex-direction:column;align-items:center;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
@@ -120,13 +126,17 @@ footer{text-align:center;font-size:.76rem;color:var(--mu);padding:6px 16px 0}
 <div class="row" style="margin-top:10px"><button id="ps" disabled>Share</button><button id="pp" disabled>Save PDF</button></div>
 <p class="hint">Choose <b>WhatsApp</b>, then <b>Synly</b> (+60 12-766 4819). Number not saved yet? <a id="wa" href="https://wa.me/60127664819" target="_blank" rel="noopener">Chat with Synly</a> first.</p></section>
 </div>
-<footer>Created by AhChai for Synly Trading &amp; Bookstore S/B<br>Everything stays on this phone.</footer>
+<footer>Created by AhChai for Synly Trading &amp; Bookstore S/B<br>Everything stays on this phone.<br><button class="cof" id="cof">&#9749; Buy me a coffee</button></footer>
 </main>
 <div id="cr" hidden role="dialog" aria-modal="true" aria-labelledby="ct"><h3 id="ct">Crop</h3><canvas id="cv"></canvas>
 <div class="bar"><input type="range" id="zm" min=".5" max="12" step=".01" value="1" aria-label="Zoom"><p>Drag the corners or edges to crop, drag inside the box to move it. Pinch or slide to zoom, double-tap outside to fit.</p>
 <label class="lk" id="lkw"><input type="checkbox" id="lk">Lock card shape</label>
 <div class="row"><button id="rotL">&#8634; Left</button><button id="fitB">Fit</button><button id="rotR">&#8635; Right</button></div><div class="row"><button id="cx">Cancel</button><button class="p" id="ok">Use crop</button></div></div></div>
 <div id="bz" hidden role="alert" aria-live="assertive"><div><i></i><span>Converting…</span></div></div>
+<dialog id="cd" aria-labelledby="cdt"><h3 id="cdt">Buy me a coffee &#9749;</h3>
+<img src="donate-qr.png" alt="DuitNow QR" width="680" height="1030">
+<p>Scan with any banking or e-wallet app (DuitNow). Thank you for your support!</p>
+<div class="row"><a class="btn" href="donate-qr.png" download="Buy-me-a-coffee-QR.png">Save QR</a><button class="p" id="cdx">Close</button></div></dialog>
 <div id="tst" role="status" aria-live="polite"><span></span><button hidden></button></div>
 <img id="pi" alt="">
 <script>
@@ -390,6 +400,10 @@ $('#pw').onclick=pjob(async f=>{const txt='Print request for Synly Printing Serv
 $('#ps').onclick=pjob(async f=>{if(canShare(f))try{await navigator.share({files:[f]})}catch(e){}else save(f,f.name)});
 $('#pp').onclick=pjob(async f=>{save(f,f.name);toast('PDF saved to Downloads')});
 qpaint();
+
+/* ---------- Buy me a coffee ---------- */
+const cd=$('#cd');$('#cof').onclick=()=>cd.showModal?cd.showModal():cd.setAttribute('open','');$('#cdx').onclick=()=>cd.close?cd.close():cd.removeAttribute('open');
+cd.onclick=e=>{if(e.target===cd)cd.close()};
 
 /* ---------- start ---------- */
 render();takeShared();
