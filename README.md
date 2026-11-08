@@ -20,6 +20,7 @@ Customers send IC or driving licence screenshots to the shop phone. Printing the
 - Re-crop or remove a card after choosing it, and swap Depan / Belakang
 - Output: PDF, A4 JPEG, Print, or Share straight to the printing app
 - **A5 QR** tab for merchant DuitNow QR posters: one image enlarged to fit the A5 half of an A4 sheet (portrait images turned sideways, like 2-in-1), optional 2 per sheet and cut line. Print at 100% with 2-in-1 off, then cut
+- **To PDF** tab for customers and staff: add photos and Word (.docx) files, reorder, crop photos, optional margins and black & white, name the file, then **Send PDF to Synly on WhatsApp** (+60 12-766 4819), Share, or Save. Send customers the link ending in `#pdf` to open this tab directly. DOCX is converted on the phone (docx-preview + html2canvas, in `lib/`); complex Word layouts or fonts may differ slightly, so check the preview. Old .doc files are not supported
 - Works offline once installed; nothing is uploaded or stored
 
 ## Files
@@ -29,6 +30,7 @@ Customers send IC or driving licence screenshots to the shop phone. Printing the
 | `index.html` | The whole app (HTML, CSS, JavaScript, PDF writer) |
 | `manifest.json` | PWA install details |
 | `sw.js` | Service worker (offline support, network-first updates) |
+| `lib/` | docx-preview (Apache-2.0), JSZip (MIT), html2canvas (MIT) for .docx conversion, loaded only when a .docx is added |
 | `logo.png` | Synly logo shown in the header |
 | `icon-192.png`, `icon-512.png` | Home-screen icons |
 
