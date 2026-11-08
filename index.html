@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>IC Depan Belakang</title>
-<meta name="description" content="Crop the front and back of an IC and print them on one A4 page, or half-size A5 on A4. Works offline.">
+<meta name="description" content="Crop the front and back of an IC and print them on one A4 page, and print merchant QR posters at A5. Works offline.">
 <link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0b7a43">
 <meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="IC PDF">
@@ -35,9 +35,12 @@ button:disabled{opacity:.4;cursor:default}button:active:not(:disabled){transform
 .chip{display:flex;align-items:center;gap:6px;border:1px solid var(--ln);border-radius:20px;padding:7px 12px;font-size:.88rem;background:var(--bg)}
 .chip input[type=checkbox]{accent-color:var(--ac);width:16px;height:16px}
 .chip input[type=number]{width:56px;font:inherit;border:0;background:transparent;color:var(--fg);text-align:right;padding:0}
-#pg{width:100%;height:auto;aspect-ratio:210/297;background:#fff;border-radius:4px;display:block;box-shadow:0 4px 18px #0003}
+#pg,#qg{width:100%;height:auto;aspect-ratio:210/297;background:#fff;border-radius:4px;display:block;box-shadow:0 4px 18px #0003}
 .paper{background:var(--bg);padding:14px;border-radius:12px}
-.sub{font-size:.78rem;font-weight:600;color:var(--mu);margin:14px 0 8px}
+.tabs{display:flex;gap:4px;background:var(--card);border:1px solid var(--ln);border-radius:14px;padding:4px;margin-bottom:12px}
+.tabs button{flex:1;border:0;padding:10px;background:transparent;color:var(--mu)}.tabs button.on{background:var(--ac);color:#fff}
+@media(prefers-color-scheme:dark){.tabs button.on{color:#07140d}}
+.slot.qs{aspect-ratio:auto;height:200px}.slot.qs img{object-fit:contain;background:#fff}
 .hint{font-size:.78rem;color:var(--mu);margin:10px 0 0}
 footer{text-align:center;font-size:.76rem;color:var(--mu);padding:6px 16px 0}
 #cr{position:fixed;inset:0;background:#000;z-index:9;display:flex;flex-direction:column;align-items:center;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
@@ -53,6 +56,8 @@ footer{text-align:center;font-size:.76rem;color:var(--mu);padding:6px 16px 0}
 </style></head><body>
 <header><div class="lg"><img src="logo.png" alt="Synly"></div><div><h1>IC Depan Belakang</h1><p>Synly Trading &amp; Bookstore</p></div></header>
 <main>
+<nav class="tabs" aria-label="Mode"><button id="tIC" class="on" aria-pressed="true">IC Depan Belakang</button><button id="tQR" aria-pressed="false">A5 QR</button></nav>
+<div id="mIC">
 <section><h2><i>1</i>Choose screenshots</h2><div class="row">
 <div class="slot" id="s0" tabindex="0" role="button" aria-label="Choose front (Depan) image"><b>Depan</b><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Tap to choose<img alt="Front of IC"><div class="act"><button data-a="e">Crop</button><button data-a="x" aria-label="Remove">&#10005;</button></div><input type="file" accept="image/*" hidden></div>
 <div class="slot" id="s1" tabindex="0" role="button" aria-label="Choose back (Belakang) image"><b>Belakang</b><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Tap to choose<img alt="Back of IC"><div class="act"><button data-a="e">Crop</button><button data-a="x" aria-label="Remove">&#10005;</button></div><input type="file" accept="image/*" hidden></div>
@@ -68,10 +73,22 @@ footer{text-align:center;font-size:.76rem;color:var(--mu);padding:6px 16px 0}
 <section><h2><i>3</i>Preview (A4)</h2><div class="paper"><canvas id="pg" width="2480" height="3508" role="img" aria-label="A4 preview"></canvas></div></section>
 <section><h2><i>4</i>Print or save</h2>
 <div class="row" style="margin-bottom:10px"><button class="p" id="bp" disabled>Save PDF</button><button id="bs" disabled>Share</button></div>
-<div class="row"><button id="bj" disabled>Save JPEG</button><button id="bt" disabled>Print</button></div>
-<h3 class="sub">A5 (half page, same as 2-in-1)</h3>
-<div class="row"><button id="ap" disabled>A5 PDF</button><button id="as" disabled>A5 Share</button><button id="at" disabled>A5 Print</button></div>
-<p class="hint">A5 shrinks the page above to half size (cards about 71%) on the top half of an A4 sheet. Print at 100% with 2-in-1 <b>off</b>, then cut in half.</p></section>
+<div class="row"><button id="bj" disabled>Save JPEG</button><button id="bt" disabled>Print</button></div></section>
+</div>
+<div id="mQR" hidden>
+<section><h2><i>1</i>Choose QR image</h2>
+<div class="slot qs" id="q0" tabindex="0" role="button" aria-label="Choose QR image"><b>A5</b><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Tap to choose<img alt="QR image"><div class="act"><button data-a="r">&#8635; Rotate</button><button data-a="x" aria-label="Remove">&#10005;</button></div><input type="file" accept="image/*" hidden></div>
+<p class="hint">Merchant DuitNow QR or any poster. Paste, drop or share from WhatsApp also works while this tab is open.</p></section>
+<section><h2><i>2</i>Options</h2><div class="opt">
+<label class="chip"><input type="checkbox" id="q2">2 per sheet</label>
+<label class="chip"><input type="checkbox" id="qc" checked>Cut line</label>
+</div></section>
+<section><h2><i>3</i>Preview (A5 on A4)</h2><div class="paper"><canvas id="qg" width="2480" height="3508" role="img" aria-label="A5 on A4 preview"></canvas></div></section>
+<section><h2><i>4</i>Print or save</h2>
+<div class="row" style="margin-bottom:10px"><button class="p" id="qp" disabled>Save PDF</button><button id="qs" disabled>Share</button></div>
+<div class="row"><button id="qj" disabled>Save JPEG</button><button id="qt" disabled>Print</button></div>
+<p class="hint">Prints on A4 paper. Use 100% / actual size with 2-in-1 <b>off</b>, then cut along the line.</p></section>
+</div>
 <footer>Created by AhChai for Synly Trading &amp; Bookstore S/B<br>Everything stays on this phone.</footer>
 </main>
 <div id="cr" hidden role="dialog" aria-modal="true" aria-labelledby="ct"><h3 id="ct">Crop</h3><canvas id="cv"></canvas>
@@ -112,16 +129,18 @@ function enqueue(fs,slot){fs=fs.filter(f=>f&&/^image\//.test(f.type||'image/'));
   fs.slice(0,2).forEach((f,j)=>Q.push([f,ord[j]]));if(fs.length>2)toast('Only the first 2 images were used.')}
  if(cr.hidden)next()}
 function next(){if(!Q.length)return;const[f,i]=Q.shift();load(f,i)}
-function load(f,i){const u=URL.createObjectURL(f),im=new Image();
+function readImg(f,cb){const u=URL.createObjectURL(f),im=new Image();
  im.onload=()=>{const k=Math.min(1,MAX/Math.max(im.width,im.height)),c=document.createElement('canvas');
-  c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);openCrop(i,c)};
- im.onerror=()=>{URL.revokeObjectURL(u);alert('This image format is not supported. Ask the customer to resend as PNG or JPG.');next()};im.src=u}
-document.addEventListener('paste',e=>{if(e.clipboardData)enqueue([...e.clipboardData.files])});
+  c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);cb(c)};
+ im.onerror=()=>{URL.revokeObjectURL(u);alert('This image format is not supported. Ask the customer to resend as PNG or JPG.');cb(null)};im.src=u}
+function load(f,i){readImg(f,c=>c?openCrop(i,c):next())}
+const take=fs=>mode=='qr'?qload(fs):enqueue(fs);
+document.addEventListener('paste',e=>{if(e.clipboardData)take([...e.clipboardData.files])});
 document.addEventListener('dragover',e=>e.preventDefault());
-document.addEventListener('drop',e=>{e.preventDefault();enqueue([...e.dataTransfer.files])});
+document.addEventListener('drop',e=>{e.preventDefault();take([...e.dataTransfer.files])});
 async function takeShared(){if(!/[?&]shared=/.test(location.search))return;history.replaceState(null,'',location.pathname);
  try{const c=await caches.open('ic-share'),fs=[];for(const k of await c.keys()){const r=await c.match(k);if(r)fs.push(await r.blob());await c.delete(k)}
-  if(fs.length){cards.fill(null);src.fill(null);thumbs();render();enqueue(fs)}}catch(e){}}
+  if(fs.length){if(mode=='qr')qload(fs);else{cards.fill(null);src.fill(null);thumbs();render();enqueue(fs)}}}catch(e){}}
 
 /* ---------- crop ---------- */
 function layout(){const W=Math.min(innerWidth,520),H=Math.max(200,Math.round(Math.min(innerHeight-210,680))),d=devicePixelRatio||1;
@@ -180,7 +199,7 @@ function paint(){raf=0;const v=Math.max(70,Math.min(130,+$('#sc').value||100)),k
  L.forEach((i,j)=>{const y=(top+j*(54*k+GAP))*MM,c=cards[i];
   pc.save();if($('#rd').checked){rr(x,y,w,h,r);pc.clip()}pc.drawImage($('#gr').checked?gray(c):c,x,y,w,h);pc.restore();
   if($('#bd').checked){pc.strokeStyle='#777';pc.lineWidth=3;if($('#rd').checked){rr(x,y,w,h,r);pc.stroke()}else pc.strokeRect(x,y,w,h)}});
- ['#bp','#bs','#bj','#bt','#br','#ap','#as','#at'].forEach(b=>$(b).disabled=!n||busy);$('#bw').disabled=!n}
+ ['#bp','#bs','#bj','#bt','#br'].forEach(b=>$(b).disabled=!n||busy);$('#bw').disabled=!n;qbtn()}
 ['#rd','#bd','#gr'].forEach(q=>$(q).onchange=render);
 $('#sc').oninput=render;$('#sc').onchange=()=>{const e=$('#sc');e.value=Math.max(70,Math.min(130,+e.value||100));render()};
 
@@ -198,23 +217,47 @@ function buildPdf(jpg,w,h){const enc=new TextEncoder(),parts=[],off=[];let len=0
  const xr=len;let t='xref\n0 6\n0000000000 65535 f \n';for(let i=1;i<6;i++)t+=String(off[i]).padStart(10,'0')+' 00000 n \n';
  add(t+`trailer\n<</Size 6/Root 1 0 R>>\nstartxref\n${xr}\n%%EOF`);return new Blob(parts,{type:'application/pdf'})}
 
-/* A5 = the A4 page shrunk by 1/√2 and turned sideways onto the top half of an A4 sheet,
-   exactly what the printer's 2-in-1 setting produces, so it prints on A4 at 100%. */
-function a5(){if(raf){cancelAnimationFrame(raf);paint()}const c=document.createElement('canvas');c.width=PW;c.height=PH;const x=c.getContext('2d');
- x.fillStyle='#fff';x.fillRect(0,0,PW,PH);x.imageSmoothingQuality='high';x.translate(0,PH/2);x.rotate(-Math.PI/2);x.drawImage(pg,0,0,PH/2,PW);return c}
-const jpeg=h=>new Promise(r=>{let c=pg;if(h)c=a5();else if(raf){cancelAnimationFrame(raf);paint()}c.toBlob(r,'image/jpeg',.92)});
-const name=(e,h)=>'IC-'+(h?'A5-':'')+new Date().toISOString().slice(0,10)+'.'+e;
+const jpeg=c=>new Promise(r=>{c=c||pg;if(c===pg&&raf){cancelAnimationFrame(raf);paint()}c.toBlob(r,'image/jpeg',.92)});
+const name=(e,q)=>(q?'QR-A5-':'IC-')+new Date().toISOString().slice(0,10)+'.'+e;
 function save(b,n){const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=n;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),4e3)}
-async function pdf(h){return buildPdf(new Uint8Array(await(await jpeg(h)).arrayBuffer()),PW,PH)}
+async function pdf(c){return buildPdf(new Uint8Array(await(await jpeg(c)).arrayBuffer()),PW,PH)}
 let busy=false;const job=fn=>async()=>{if(busy)return;busy=true;paint();try{await fn()}catch(e){toast('Something went wrong. Please try again.')}finally{busy=false;paint()}};
-const savePdf=h=>job(async()=>{save(await pdf(h),name('pdf',h));toast((h?'A5 ':'')+'PDF saved to Downloads')});
-const share=h=>job(async()=>{const f=new File([await pdf(h)],name('pdf',h),{type:'application/pdf'});
- if(navigator.canShare&&navigator.canShare({files:[f]}))try{await navigator.share({files:[f]})}catch(e){}else save(f,f.name)});
-const prn=h=>job(async()=>{const pi=$('#pi'),u=URL.createObjectURL(await jpeg(h));
- await new Promise(r=>{pi.onload=r;pi.src=u});print();setTimeout(()=>{URL.revokeObjectURL(u);pi.removeAttribute('src')},6e4)});
-$('#bp').onclick=savePdf(0);$('#bs').onclick=share(0);$('#bt').onclick=prn(0);
-$('#bj').onclick=job(async()=>{save(await jpeg(),name('jpg'));toast('JPEG saved to Downloads')});
-$('#ap').onclick=savePdf(1);$('#as').onclick=share(1);$('#at').onclick=prn(1);
+const outs=(c,q,[p,sh,j,t])=>{
+ $(p).onclick=job(async()=>{save(await pdf(c),name('pdf',q));toast('PDF saved to Downloads')});
+ $(j).onclick=job(async()=>{save(await jpeg(c),name('jpg',q));toast('JPEG saved to Downloads')});
+ $(sh).onclick=job(async()=>{const f=new File([await pdf(c)],name('pdf',q),{type:'application/pdf'});
+  if(navigator.canShare&&navigator.canShare({files:[f]}))try{await navigator.share({files:[f]})}catch(e){}else save(f,f.name)});
+ $(t).onclick=job(async()=>{const pi=$('#pi'),u=URL.createObjectURL(await jpeg(c));
+  await new Promise(r=>{pi.onload=r;pi.src=u});print();setTimeout(()=>{URL.revokeObjectURL(u);pi.removeAttribute('src')},6e4)})};
+outs(pg,0,['#bp','#bs','#bj','#bt']);
+
+/* ---------- A5 QR: one image fitted to the top half of an A4 sheet (A5), optionally twice ---------- */
+const qg=$('#qg'),qx=qg.getContext('2d'),qslot=$('#q0'),qin=qslot.querySelector('input'),QO=['q2','qc'];let qimg=null,mode='ic';
+try{const o=JSON.parse(localStorage.qopt||'{}');QO.forEach(k=>{if(k in o)$('#'+k).checked=o[k]})}catch(e){}
+function qload(fs){const f=fs.find(f=>f&&/^image\//.test(f.type||'image/'));if(f)readImg(f,c=>{if(c){qimg=c;qpaint()}})}
+function qbtn(){['#qp','#qs','#qj','#qt'].forEach(b=>$(b).disabled=!qimg||busy)}
+// Fit inside the A5 half with a 6 mm margin; portrait images turn sideways (top to the left), as 2-in-1 does.
+function qfit(im,y){const H=PH/2,m=6*MM,bw=PW-2*m,bh=H-2*m,rot=im.height>im.width,iw=rot?im.height:im.width,ih=rot?im.width:im.height,k=Math.min(bw/iw,bh/ih);
+ qx.save();qx.translate(PW/2,y+H/2);if(rot)qx.rotate(-Math.PI/2);qx.imageSmoothingQuality='high';qx.drawImage(im,-im.width*k/2,-im.height*k/2,im.width*k,im.height*k);qx.restore()}
+function qpaint(){try{const o={};QO.forEach(k=>o[k]=$('#'+k).checked);localStorage.qopt=JSON.stringify(o)}catch(e){}
+ qx.fillStyle='#fff';qx.fillRect(0,0,PW,PH);
+ if(qimg){qfit(qimg,0);if($('#q2').checked)qfit(qimg,PH/2)}
+ if($('#qc').checked){qx.save();qx.strokeStyle='#aaa';qx.lineWidth=3;qx.setLineDash([30,22]);qx.beginPath();qx.moveTo(0,PH/2);qx.lineTo(PW,PH/2);qx.stroke();qx.restore()}
+ qslot.classList.toggle('has',!!qimg);const t=qslot.querySelector('img');if(qimg)t.src=qimg.toDataURL('image/jpeg',.8);else t.removeAttribute('src');qbtn()}
+QO.forEach(k=>$('#'+k).onchange=qpaint);
+qin.onchange=()=>{qload([...qin.files]);qin.value=''};
+qslot.onclick=e=>{const a=e.target.closest('[data-a]');if(!a)return qin.click();e.stopPropagation();
+ if(a.dataset.a=='r'){const c=document.createElement('canvas');c.width=qimg.height;c.height=qimg.width;const x=c.getContext('2d');
+  x.translate(c.width/2,c.height/2);x.rotate(Math.PI/2);x.drawImage(qimg,-qimg.width/2,-qimg.height/2);qimg=c}else qimg=null;qpaint()};
+qslot.onkeydown=e=>{if(e.target===qslot&&(e.key=='Enter'||e.key==' ')){e.preventDefault();qin.click()}};
+qslot.ondragover=e=>{e.preventDefault();qslot.classList.add('drag')};qslot.ondragleave=()=>qslot.classList.remove('drag');
+qslot.ondrop=e=>{e.preventDefault();e.stopPropagation();qslot.classList.remove('drag');qload([...e.dataTransfer.files])};
+outs(qg,1,['#qp','#qs','#qj','#qt']);
+function setMode(m){mode=m;$('#mIC').hidden=m!='ic';$('#mQR').hidden=m!='qr';
+ [['#tIC','ic'],['#tQR','qr']].forEach(([b,v])=>{$(b).classList.toggle('on',m==v);$(b).setAttribute('aria-pressed',m==v)});try{localStorage.mode=m}catch(e){}}
+$('#tIC').onclick=()=>setMode('ic');$('#tQR').onclick=()=>setMode('qr');
+try{if(localStorage.mode=='qr')setMode('qr')}catch(e){}
+qpaint();
 
 /* ---------- start ---------- */
 render();takeShared();
