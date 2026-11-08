@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>IC Depan Belakang</title>
-<meta name="description" content="Crop the front and back of an IC and print them on one A4 page. Works offline.">
+<meta name="description" content="Crop the front and back of an IC and print them on one A4 page, or half-size A5 on A4. Works offline.">
 <link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0b7a43">
 <meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="IC PDF">
@@ -37,6 +37,7 @@ button:disabled{opacity:.4;cursor:default}button:active:not(:disabled){transform
 .chip input[type=number]{width:56px;font:inherit;border:0;background:transparent;color:var(--fg);text-align:right;padding:0}
 #pg{width:100%;height:auto;aspect-ratio:210/297;background:#fff;border-radius:4px;display:block;box-shadow:0 4px 18px #0003}
 .paper{background:var(--bg);padding:14px;border-radius:12px}
+.sub{font-size:.78rem;font-weight:600;color:var(--mu);margin:14px 0 8px}
 .hint{font-size:.78rem;color:var(--mu);margin:10px 0 0}
 footer{text-align:center;font-size:.76rem;color:var(--mu);padding:6px 16px 0}
 #cr{position:fixed;inset:0;background:#000;z-index:9;display:flex;flex-direction:column;align-items:center;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
@@ -67,7 +68,10 @@ footer{text-align:center;font-size:.76rem;color:var(--mu);padding:6px 16px 0}
 <section><h2><i>3</i>Preview (A4)</h2><div class="paper"><canvas id="pg" width="2480" height="3508" role="img" aria-label="A4 preview"></canvas></div></section>
 <section><h2><i>4</i>Print or save</h2>
 <div class="row" style="margin-bottom:10px"><button class="p" id="bp" disabled>Save PDF</button><button id="bs" disabled>Share</button></div>
-<div class="row"><button id="bj" disabled>Save JPEG</button><button id="bt" disabled>Print</button></div></section>
+<div class="row"><button id="bj" disabled>Save JPEG</button><button id="bt" disabled>Print</button></div>
+<h3 class="sub">A5 (half page, same as 2-in-1)</h3>
+<div class="row"><button id="ap" disabled>A5 PDF</button><button id="as" disabled>A5 Share</button><button id="at" disabled>A5 Print</button></div>
+<p class="hint">A5 shrinks the page above to half size (cards about 71%) on the top half of an A4 sheet. Print at 100% with 2-in-1 <b>off</b>, then cut in half.</p></section>
 <footer>Created by AhChai for Synly Trading &amp; Bookstore S/B<br>Everything stays on this phone.</footer>
 </main>
 <div id="cr" hidden role="dialog" aria-modal="true" aria-labelledby="ct"><h3 id="ct">Crop</h3><canvas id="cv"></canvas>
@@ -176,7 +180,7 @@ function paint(){raf=0;const v=Math.max(70,Math.min(130,+$('#sc').value||100)),k
  L.forEach((i,j)=>{const y=(top+j*(54*k+GAP))*MM,c=cards[i];
   pc.save();if($('#rd').checked){rr(x,y,w,h,r);pc.clip()}pc.drawImage($('#gr').checked?gray(c):c,x,y,w,h);pc.restore();
   if($('#bd').checked){pc.strokeStyle='#777';pc.lineWidth=3;if($('#rd').checked){rr(x,y,w,h,r);pc.stroke()}else pc.strokeRect(x,y,w,h)}});
- ['#bp','#bs','#bj','#bt','#br'].forEach(b=>$(b).disabled=!n||busy);$('#bw').disabled=!n}
+ ['#bp','#bs','#bj','#bt','#br','#ap','#as','#at'].forEach(b=>$(b).disabled=!n||busy);$('#bw').disabled=!n}
 ['#rd','#bd','#gr'].forEach(q=>$(q).onchange=render);
 $('#sc').oninput=render;$('#sc').onchange=()=>{const e=$('#sc');e.value=Math.max(70,Math.min(130,+e.value||100));render()};
 
@@ -194,17 +198,23 @@ function buildPdf(jpg,w,h){const enc=new TextEncoder(),parts=[],off=[];let len=0
  const xr=len;let t='xref\n0 6\n0000000000 65535 f \n';for(let i=1;i<6;i++)t+=String(off[i]).padStart(10,'0')+' 00000 n \n';
  add(t+`trailer\n<</Size 6/Root 1 0 R>>\nstartxref\n${xr}\n%%EOF`);return new Blob(parts,{type:'application/pdf'})}
 
-const jpeg=()=>new Promise(r=>{if(raf){cancelAnimationFrame(raf);paint()}pg.toBlob(r,'image/jpeg',.92)});
-const name=e=>'IC-'+new Date().toISOString().slice(0,10)+'.'+e;
+/* A5 = the A4 page shrunk by 1/√2 and turned sideways onto the top half of an A4 sheet,
+   exactly what the printer's 2-in-1 setting produces, so it prints on A4 at 100%. */
+function a5(){if(raf){cancelAnimationFrame(raf);paint()}const c=document.createElement('canvas');c.width=PW;c.height=PH;const x=c.getContext('2d');
+ x.fillStyle='#fff';x.fillRect(0,0,PW,PH);x.imageSmoothingQuality='high';x.translate(0,PH/2);x.rotate(-Math.PI/2);x.drawImage(pg,0,0,PH/2,PW);return c}
+const jpeg=h=>new Promise(r=>{let c=pg;if(h)c=a5();else if(raf){cancelAnimationFrame(raf);paint()}c.toBlob(r,'image/jpeg',.92)});
+const name=(e,h)=>'IC-'+(h?'A5-':'')+new Date().toISOString().slice(0,10)+'.'+e;
 function save(b,n){const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=n;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),4e3)}
-async function pdf(){return buildPdf(new Uint8Array(await(await jpeg()).arrayBuffer()),PW,PH)}
+async function pdf(h){return buildPdf(new Uint8Array(await(await jpeg(h)).arrayBuffer()),PW,PH)}
 let busy=false;const job=fn=>async()=>{if(busy)return;busy=true;paint();try{await fn()}catch(e){toast('Something went wrong. Please try again.')}finally{busy=false;paint()}};
-$('#bp').onclick=job(async()=>{save(await pdf(),name('pdf'));toast('PDF saved to Downloads')});
-$('#bj').onclick=job(async()=>{save(await jpeg(),name('jpg'));toast('JPEG saved to Downloads')});
-$('#bs').onclick=job(async()=>{const f=new File([await pdf()],name('pdf'),{type:'application/pdf'});
+const savePdf=h=>job(async()=>{save(await pdf(h),name('pdf',h));toast((h?'A5 ':'')+'PDF saved to Downloads')});
+const share=h=>job(async()=>{const f=new File([await pdf(h)],name('pdf',h),{type:'application/pdf'});
  if(navigator.canShare&&navigator.canShare({files:[f]}))try{await navigator.share({files:[f]})}catch(e){}else save(f,f.name)});
-$('#bt').onclick=job(async()=>{const pi=$('#pi'),u=URL.createObjectURL(await jpeg());
+const prn=h=>job(async()=>{const pi=$('#pi'),u=URL.createObjectURL(await jpeg(h));
  await new Promise(r=>{pi.onload=r;pi.src=u});print();setTimeout(()=>{URL.revokeObjectURL(u);pi.removeAttribute('src')},6e4)});
+$('#bp').onclick=savePdf(0);$('#bs').onclick=share(0);$('#bt').onclick=prn(0);
+$('#bj').onclick=job(async()=>{save(await jpeg(),name('jpg'));toast('JPEG saved to Downloads')});
+$('#ap').onclick=savePdf(1);$('#as').onclick=share(1);$('#at').onclick=prn(1);
 
 /* ---------- start ---------- */
 render();takeShared();

@@ -19,6 +19,7 @@ Customers send IC or driving licence screenshots to the shop phone. Printing the
 - Share photos straight from WhatsApp or Gallery to the installed app (Android); paste or drag-and-drop also works
 - Re-crop or remove a card after choosing it, and swap Depan / Belakang
 - Output: PDF, A4 JPEG, Print, or Share straight to the printing app
+- A5 buttons (PDF, Share, Print): the same page shrunk to half size on the top half of an A4 sheet, like the printer's 2-in-1 setting. Print at 100% with 2-in-1 off, then cut
 - Works offline once installed; nothing is uploaded or stored
 
 ## Files
