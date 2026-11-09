@@ -260,7 +260,7 @@ footer{text-align:center;font-size:.76rem;color:var(--mu);padding:10px 16px 0}
 <section><h2><i>4</i>Sample (optional)</h2>
 <div class="slot qs add" id="sa0" tabindex="0" role="button" aria-label="Attach a sample photo or PDF" style="height:96px"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M21 12.5l-8.5 8.5a5 5 0 0 1-7-7L14 5.5a3.3 3.3 0 0 1 4.7 4.7l-8.5 8.5a1.7 1.7 0 0 1-2.4-2.4L15.5 8.5"/></svg>Attach a photo or PDF of your existing stamp<input type="file" multiple accept="image/*,application/pdf,.pdf,.heic,.heif" hidden></div>
 <div class="att" id="sal"></div>
-<p class="hint">Already have a stamp or design? Attach it and our staff will match it.</p></section>
+<p class="hint">Already have a stamp or design? Attach it and our staff will match it. With a sample attached, the text lines are optional.</p></section>
 <section><h2><i>5</i>Preview</h2><div class="paper"><canvas id="sp" width="1200" height="600" role="img" aria-label="Stamp preview"></canvas></div>
 <p class="hint" id="sph"></p></section>
 <section><h2><i>6</i>Your details</h2><div class="tx">
@@ -660,11 +660,14 @@ function drawStamp(x,cx,cy,k,ink='#000'){const fam=sFam(),cq=sCond(),
   const rc=(inner?ri:zIn)-1.2*k,n=C.length;
   if(n){const lh=Math.min(rc*.62,1.6*rc/n);C.forEach((t,i)=>{const dy=(i-(n-1)/2)*lh,hw=Math.sqrt(Math.max(0,rc*rc-(Math.abs(dy)+lh/2)**2))*1.85;let g=lh*.78;const tw=wid(t,'700',g);if(tw>hw)g*=hw/tw;put(t,cx,cy+dy,'700',g,'center')})}}
  x.restore()}
-function sReady(){return(sShape()=='rect'?['r1','r2','r3','r4','r5','r6','r7','r8']:['c1','c2','c3','c4','c5']).some(id=>$('#'+id).value.trim())}
+function sHasText(){return(sShape()=='rect'?['r1','r2','r3','r4','r5','r6','r7','r8']:['c1','c2','c3','c4','c5']).some(id=>$('#'+id).value.trim())}
+const sReady=()=>sHasText()||(typeof SA!='undefined'&&SA.length>0);   // a sample attachment is enough, text lines are then optional
 let sfTouched=false;$('#sf').addEventListener('change',()=>sfTouched=true);
 function sPreview(){const rect=sShape()=='rect';if(!sfTouched)$('#sf').value=rect?'serif':'cond';$('#stR').hidden=!rect;$('#stC').hidden=rect;
  const W=1200,H=rect?560:1200;if(sp.height!=H)sp.height=H;spx.fillStyle='#fff';spx.fillRect(0,0,W,H);
- const k=rect?(W-80)/SB.rect.w:(H-80)/SB.round.d;drawStamp(spx,W/2,H/2,k,INK[sInk()]);
+ const k=rect?(W-80)/SB.rect.w:(H-80)/SB.round.d;
+ if(!sHasText()&&typeof SA!='undefined'&&SA.length){spx.fillStyle='#5a6e62';spx.textAlign='center';spx.textBaseline='middle';spx.font=`600 ${rect?46:60}px "Plus Jakarta Sans",Arial,sans-serif`;spx.fillText('Sample attached',W/2,H/2-(rect?30:40));spx.font=`500 ${rect?34:44}px "Plus Jakarta Sans",Arial,sans-serif`;spx.fillText('No text needed: our staff will follow your sample',W/2,H/2+(rect?30:40))}
+ else drawStamp(spx,W/2,H/2,k,INK[sInk()]);
  $('#sb').disabled=busy||!sReady();
  $('#sph').textContent=rect?'Preview in your ink colour. Rectangle up to 7 × 2.5 cm; final size is chosen by our staff to suit your text.':'Preview in your ink colour at maximum size (6 cm across). Our staff choose the final size to suit your text.'}
 document.querySelectorAll('#vStamp input,#vStamp select').forEach(e=>{if(!['sn','st','sm','so'].includes(e.id))e.addEventListener('input',sPreview)});
@@ -682,25 +685,28 @@ function sSheet(no,np=0,other=[]){const c=document.createElement('canvas');c.wid
  let y=52*k;rows.forEach(([a,b])=>{x.font=`500 ${4.2*k}px ${F}`;x.fillStyle='#555';x.fillText(a,L,y);x.fillStyle='#000';x.font=`700 ${4.6*k}px ${F}`;x.fillText(b,L+42*k,y);y+=7*k});
  y+=2*k;x.fillStyle='#555';x.font=`500 ${4.2*k}px ${F}`;x.fillText('Text',L,y);x.fillStyle='#000';x.font=`600 ${4.4*k}px ${F}`;
  const T=rect?['r1','r2','r3','r4','r5','r6','r7','r8'].map((id,i)=>sv(id)&&`Line ${i+1}: ${sv(id)}`):[sv('c1')&&'Around: '+sv('c1'),sv('c2')&&'Bottom: '+sv('c2'),...['c3','c4','c5'].map((id,i)=>sv(id)&&`Centre ${i+1}: ${sv(id)}`)];
+ if(!sHasText())T.splice(0,T.length,'As per attached sample');
  T.filter(Boolean).forEach(t=>{x.fillText(t,L+42*k,y);y+=6*k});
  y+=6*k;x.fillRect(L,y,PW-2*L,.3*k);y+=10*k;
+ let big=null;
+ if(sHasText()){
  x.fillStyle='#555';x.font=`600 ${4*k}px ${F}`;x.fillText(rect?'Actual size':'Maximum size (final size per model)',L,y);
  const sh=rect?SB.rect.h:SB.round.d,sw=rect?SB.rect.w:SB.round.d;y+=4*k;
  if(rect){x.strokeStyle='#bbb';x.setLineDash([2*k,1.5*k]);x.lineWidth=.3*k;x.strokeRect(L,y,sw*k,sh*k);x.setLineDash([])}
  drawStamp(x,L+sw*k/2,y+sh*k/2,k);y+=sh*k+12*k;
  const z=Math.min(2,(PH-50*k-y-4*k)/(sh*k));   // enlargement shrinks if the order has many lines
- let big=null;
  if(rect&&z>=1.2){x.fillStyle='#555';x.fillText(`Enlarged ${Math.round(z*10)/10}× for checking`,L,y);y+=4*k;drawStamp(x,PW/2,y+sh*k*z/2,z*k);y+=sh*z*k+12*k}
  else if(rect){x.fillStyle='#555';x.fillText('Enlarged view on the next page',L,y);   // no room: enlargement gets its own page
   big=document.createElement('canvas');big.width=PW;big.height=PH;const g=big.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,PW,PH);g.fillStyle='#000';
   g.font=`800 ${7*k}px ${F}`;g.fillText(no+' · enlarged 2.5× for checking',L,30*k);drawStamp(g,PW/2,30*k+20*k+sh*2.5*k/2,2.5*k)}
+ } else {x.fillStyle='#555';x.font=`600 ${4*k}px ${F}`;x.fillText('Stamp design: as per the attached sample'+(np?' (next pages)':' (sent with this PDF)'),L,y)}
  x.fillStyle='#000';x.fillRect(L,PH-40*k,80*k,.4*k);x.fillRect(PW-L-80*k,PH-40*k,80*k,.4*k);
  x.fillStyle='#555';x.font=`500 ${3.8*k}px ${F}`;x.fillText('Customer confirms the text above',L,PH-34*k);x.textAlign='right';x.fillText('Cashier: '+sv('scs'),PW-L,PH-34*k);
  return big?[c,big]:[c]}
 /* customer sample files: photos go into the order PDF as extra pages; PDFs and other files are shared alongside it */
 const SA=[],sal=$('#sal'),sa0=$('#sa0'),sain=sa0.querySelector('input');
 const isPdf=f=>/pdf/.test(f.type)||/\.pdf$/i.test(f.name||''),kb=b=>b>1048576?(b/1048576).toFixed(1)+' MB':Math.max(1,Math.round(b/1024))+' KB';
-function salist(){sal.innerHTML='';SA.forEach((f,i)=>{const d=document.createElement('div');d.className='af';
+function salist(){if(typeof sPreview=='function')setTimeout(sPreview);sal.innerHTML='';SA.forEach((f,i)=>{const d=document.createElement('div');d.className='af';
  const th=isPdf(f)||!/^image\//.test(f.type)?`<div class="pdf">${isPdf(f)?'PDF':'FILE'}</div>`:`<img alt="" src="${URL.createObjectURL(f)}">`;
  d.innerHTML=`${th}<span></span><button data-i="${i}" aria-label="Remove">&#10005;</button>`;const sp2=d.querySelector('span');sp2.textContent=f.name;const sm=document.createElement('small');sm.textContent=kb(f.size);sp2.append(sm);sal.append(d)})}
 function saAdd(fs){for(const f of fs)if(f&&f.size&&SA.length<10)SA.push(f);if(fs.length&&SA.length>=10)toast('Up to 10 sample files.');salist()}
