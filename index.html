@@ -84,9 +84,6 @@ a.btn.p{background:var(--grad);color:#fff;border:0;box-shadow:0 4px 14px rgba(11
 .open{margin-left:auto;text-transform:none;letter-spacing:0;font-size:.74rem;font-weight:700;padding:3px 10px;border-radius:20px}
 .open.on{background:var(--mint);color:var(--ac)}.open.off{background:#fde8e8;color:#b42318}
 @media(prefers-color-scheme:dark){.open.off{background:#3a1616;color:#ff8a80}}
-.svc{list-style:none;padding:0;margin:0;display:grid;gap:9px}.svc li{display:flex;gap:10px;align-items:center;font-size:.92rem}
-.svc li::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--grad);flex:none}
-.svc small{color:var(--mu)}
 footer{text-align:center;font-size:.76rem;color:var(--mu);padding:10px 16px 0}
 .cof{margin-top:12px;padding:7px 15px;font-size:.78rem;font-weight:600;border-radius:22px;background:var(--card);color:var(--mu)}
 #tst{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 18px);transform:translate(-50%,20px);background:#0d2a1b;color:#fff;padding:11px 15px;border-radius:14px;font-size:.88rem;display:flex;gap:12px;align-items:center;box-shadow:0 8px 24px #0005;opacity:0;pointer-events:none;transition:opacity .25s,transform .35s var(--ease);z-index:20;max-width:calc(100% - 32px)}
@@ -211,14 +208,12 @@ footer{text-align:center;font-size:.76rem;color:var(--mu);padding:10px 16px 0}
 </div>
 <div class="view" id="vStamp" hidden>
 <section class="soonbox"><div class="big"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 12V9.5a2.5 2.5 0 1 1 5 0V12"/><path d="M5 12h14a1 1 0 0 1 1 1v3H4v-3a1 1 0 0 1 1-1zM6 20h12"/></svg></div><span class="pill">Coming soon</span><h3>Stamp Booking</h3>
-<p>Soon you can order company, name and date stamps right here. For now, send us your stamp details on WhatsApp.</p>
+<p>We already make stamps at the shop. Booking them in this app is coming soon; for now, send us your stamp details on WhatsApp.</p>
 <a class="btn p" href="https://wa.me/60127664819?text=Hi%20Synly%2C%20I%27d%20like%20to%20order%20a%20stamp." target="_blank" rel="noopener">Ask about stamps on WhatsApp</a></section>
 </div>
 <div class="view" id="vAbout" hidden>
 <section><div class="about-hd"><div class="lg"><img src="logo.png" alt=""></div><div><h3>Synly Trading &amp; Bookstore Sdn Bhd</h3><p>Stationery, books &amp; printing</p></div></div>
 <p class="lead" style="margin:0">A trading company, stationery shop and bookstore in Parkcity Phase 4, Bintulu. Send your documents from your phone and we'll have them printed and ready.</p></section>
-<section><h2>What we do</h2><ul class="svc">
-<li>IC &amp; driving licence copies</li><li>A5 merchant QR posters</li><li>Photo &amp; Word printing (PDF)</li><li>Stationery &amp; books</li><li>Stamp booking <small>(coming soon)</small></li></ul></section>
 <section><h2>Opening hours <span class="open" id="opn"></span></h2>
 <table class="hrs" id="hrs"><tr data-d="1,2,3,4,5"><th>Monday – Friday</th><td>8:15 am – 7:30 pm</td></tr><tr data-d="6"><th>Saturday</th><td>8:15 am – 6:30 pm</td></tr><tr data-d="0"><th>Sunday</th><td>8:30 am – 5:00 pm</td></tr></table></section>
 <section><h2>Visit us</h2><div class="list" style="margin:0">
