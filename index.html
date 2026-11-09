@@ -258,7 +258,8 @@ footer{text-align:center;font-size:.76rem;color:var(--mu);padding:10px 16px 0}
 <input id="sn" maxlength="60" placeholder="Your name" autocomplete="name"><input id="st" maxlength="20" placeholder="Phone number" inputmode="tel" autocomplete="tel"></div></section>
 <section class="cash"><h2><i>6</i>For cashier</h2><div class="tx">
 <label class="fn" style="margin:0">Model<input id="sm" maxlength="40" placeholder="e.g. Shiny S-844"></label>
-<label class="fn" style="margin:0">Order number<span class="ono">stbchop<input id="so" inputmode="numeric" maxlength="6" aria-label="Order number"></span></label></div>
+<label class="fn" style="margin:0">Cashier name<input id="scs" maxlength="40" placeholder="Cashier name"></label>
+<label class="fn" style="margin:0">Series number<span class="ono" id="ssn">STMP····</span></label></div>
 <button class="p" id="sb" style="width:100%;margin-top:14px">Submit &amp; create PDF</button>
 <div id="sr" hidden><p class="hint" id="srt"></p><div class="row" style="margin-top:10px"><button id="sshare">Share PDF</button><button id="ssave">Save again</button></div>
 <button id="snew" style="width:100%;margin-top:10px">New order</button></div></section>
@@ -275,8 +276,8 @@ footer{text-align:center;font-size:.76rem;color:var(--mu);padding:10px 16px 0}
 <label class="pick sm"><input type="radio" name="tz" value="E3"><b>Option 3</b><small>6.5 × 2 cm</small></label>
 </div></section>
 <section id="tgP" hidden><h2><i>2</i>Emblem</h2><div class="seg" role="radiogroup" aria-label="Emblem">
-<label class="pick sm"><input type="radio" name="te" value="Sarawak" checked><b>Sarawak</b><small>State emblem</small></label>
-<label class="pick sm"><input type="radio" name="te" value="Malaysia"><b>Malaysia</b><small>National emblem</small></label>
+<label class="pick sm"><input type="radio" name="te" value="Sarawak" checked><b>Sarawak</b><small>State emblem · 7.5 × 2.5 cm</small></label>
+<label class="pick sm"><input type="radio" name="te" value="Malaysia"><b>Malaysia</b><small>National emblem · 7.5 × 2.5 cm</small></label>
 </div></section>
 <section><h2><i>3</i>Name</h2><div class="tx"><input id="tn" maxlength="16" placeholder="e.g. NURUL HANIS" autocapitalize="characters" autocomplete="off"></div>
 <p class="hint" id="tnc">One line, up to 10 letters.</p>
@@ -607,7 +608,7 @@ function hours(){const n=new Date(Date.now()+8*36e5),d=n.getUTCDay(),m=n.getUTCH
  const on=m>=o&&m<c;e.className='open '+(on?'on':'off');e.textContent=on?'Open now · until '+t(c):m<o?'Closed · opens '+t(o):'Closed · opens '+t(HRS[(d+1)%7][0])+' tomorrow'}
 hours();setInterval(hours,6e4);
 
-/* ---------- Stamp booking: design + preview, cashier submits a B&W PDF (stbchop0001…) ---------- */
+/* ---------- Stamp booking: design + preview, cashier submits a B&W PDF (STMP + last 4 digits of phone) ---------- */
 // All stamp geometry in mm. Rectangle 70 × 25 with 5 mm kept clear on every side; round drawn at its 60 mm maximum.
 const SB={rect:{w:70,h:25,m:5},round:{d:60}},sp=$('#sp'),spx=sp.getContext('2d'),sv=id=>$('#'+id).value.trim(),sck=id=>$('#'+id).checked;
 const sInk=()=>document.querySelector('input[name=sc2]:checked').value,INK={Blue:'#1f3fa8',Black:'#000'};
@@ -621,7 +622,8 @@ function drawStamp(x,cx,cy,k,ink='#000'){const fam=sFam(),cq=sCond(),
  x.save();x.fillStyle=x.strokeStyle=ink;x.textBaseline='middle';
  if(sShape()=='rect'){const{w,h,m}=SB.rect,L=['r1','r2','r3','r4','r5'].map(sv).filter(Boolean),n=Math.max(1,L.length),aw=(w-2*m)*k,ah=(h-2*m)*k,lh=ah/n,al=$('#ra').value,bm=$('#rb').value;
   if(sck('rx')){x.lineWidth=.5*k;x.strokeRect(cx-w*k/2+.25*k,cy-h*k/2+.25*k,w*k-.5*k,h*k-.5*k)}
-  L.forEach((t,i)=>{const wt=bm=='all'||bm=='first'&&!i?'700':'400';let f=lh*.84;const tw=wid(t,wt,f);if(tw>aw)f*=aw/tw;
+  const WT=i=>bm=='all'||bm=='first'&&!i?'700':'400',F0=lh*.84,fu=Math.min(F0,...L.map((t,i)=>F0*Math.min(1,aw/wid(t,WT(i),F0))));   // one letter size for every line, like a real stamp
+  L.forEach((t,i)=>{const wt=WT(i),f=fu;
    put(t,al=='left'?cx-aw/2:cx,cy-ah/2+lh*(i+.5),wt,f,al=='left'?'left':'center')})}
  else{const R=SB.round.d/2*k,inner=sck('ci'),dbl=sck('cd'),star=sck('cs'),top=sv('c1'),bot=sv('c2'),C=['c3','c4','c5'].map(sv).filter(Boolean);
   x.lineWidth=.8*k;x.beginPath();x.arc(cx,cy,R-.4*k,0,7);x.stroke();
@@ -656,17 +658,16 @@ function sPreview(){const rect=sShape()=='rect';if(!sfTouched)$('#sf').value=rec
  $('#sph').textContent=rect?'Preview in your ink colour. Rectangle up to 7 × 2.5 cm; final size is chosen by our staff to suit your text.':'Preview in your ink colour at maximum size (6 cm across). Our staff choose the final size to suit your text.'}
 document.querySelectorAll('#vStamp input,#vStamp select').forEach(e=>{if(!['sn','st','sm','so'].includes(e.id))e.addEventListener('input',sPreview)});
 document.querySelectorAll('#vStamp input[type=radio],#vStamp input[type=checkbox],#vStamp select').forEach(e=>e.addEventListener('change',sPreview));
-let sNo=1;const sName=n=>'stbchop'+String(n).padStart(4,'0'),sShow=()=>$('#so').value=String(sNo).padStart(4,'0');
-try{sNo=Math.max(1,parseInt(localStorage.stbNo,10)||1)}catch(e){}sShow();
-$('#so').onchange=()=>{sNo=Math.max(1,parseInt($('#so').value.replace(/\D/g,''),10)||1);sShow();try{localStorage.stbNo=sNo}catch(e){}};
+const sDig=()=>$('#st').value.replace(/\D/g,''),sName=()=>'STMP'+sDig().slice(-4),sShow=()=>$('#ssn').textContent=sDig().length>=4?sName():'STMP····';
+$('#st').addEventListener('input',sShow);sShow();
 // A4 order sheet: details + stamp at actual size + 2x enlargement for checking
 function sSheet(no){const c=document.createElement('canvas');c.width=PW;c.height=PH;const x=c.getContext('2d'),F='"Plus Jakarta Sans",Arial,sans-serif',k=MM,L=20*k,rect=sShape()=='rect';
  x.fillStyle='#fff';x.fillRect(0,0,PW,PH);x.fillStyle='#000';x.textBaseline='alphabetic';
- x.font=`800 ${9*k}px ${F}`;x.fillText('Stamp order',L,30*k);x.textAlign='right';x.fillText(sName(no),PW-L,30*k);x.textAlign='left';
+ x.font=`800 ${9*k}px ${F}`;x.fillText('Stamp order',L,30*k);x.textAlign='right';x.fillText(no,PW-L,30*k);x.textAlign='left';
  x.font=`500 ${3.1*k}px ${F}`;x.fillText('Synly Trading & Bookstore Sdn Bhd · Lot 290-292, Parkcity Commerce Square, 97000 Bintulu · 086-337 891',L,38*k);
  x.fillRect(L,42*k,PW-2*L,.5*k);
  const d=new Date(Date.now()+8*36e5),dt=d.toISOString().slice(0,16).replace('T',' ');
- const rows=[['Order no.',sName(no)],['Date / time',dt],['Customer',sv('sn')||'-'],['Phone',sv('st')||'-'],['Shape',rect?'Rectangle (max 7 × 2.5 cm)':'Round (max 6 cm across)'+(sck('cd')?', double ring':'')+(sck('ci')?', inner circle':'')],['Font',$('#sf').selectedOptions[0].text+(rect?', '+($('#ra').value=='left'?'left':'centre')+' aligned':'')],['Stamp type',sKind()],['Ink colour',sInk()],['Model',sv('sm')||'-']];
+ const rows=[['Series no.',no],['Date / time',dt],['Customer',sv('sn')||'-'],['Phone',sv('st')],['Shape',rect?'Rectangle (max 7 × 2.5 cm)':'Round (max 6 cm across)'+(sck('cd')?', double ring':'')+(sck('ci')?', inner circle':'')],['Font',$('#sf').selectedOptions[0].text+(rect?', '+($('#ra').value=='left'?'left':'centre')+' aligned':'')],['Stamp type',sKind()],['Ink colour',sInk()],['Model',sv('sm')||'-'],['Cashier',sv('scs')]];
  let y=52*k;rows.forEach(([a,b])=>{x.font=`500 ${4.2*k}px ${F}`;x.fillStyle='#555';x.fillText(a,L,y);x.fillStyle='#000';x.font=`700 ${4.6*k}px ${F}`;x.fillText(b,L+42*k,y);y+=8*k});
  y+=2*k;x.fillStyle='#555';x.font=`500 ${4.2*k}px ${F}`;x.fillText('Text',L,y);x.fillStyle='#000';x.font=`600 ${4.4*k}px ${F}`;
  const T=rect?['r1','r2','r3','r4','r5'].map((id,i)=>sv(id)&&`Line ${i+1}: ${sv(id)}`):[sv('c1')&&'Around: '+sv('c1'),sv('c2')&&'Bottom: '+sv('c2'),...['c3','c4','c5'].map((id,i)=>sv(id)&&`Centre ${i+1}: ${sv(id)}`)];
@@ -678,22 +679,24 @@ function sSheet(no){const c=document.createElement('canvas');c.width=PW;c.height
  drawStamp(x,L+sw*k/2,y+sh*k/2,k);y+=sh*k+12*k;
  if(rect){x.fillStyle='#555';x.fillText('Enlarged 2× for checking',L,y);y+=4*k;drawStamp(x,PW/2,y+sh*k,2*k);y+=sh*2*k+12*k}
  x.fillStyle='#000';x.fillRect(L,PH-40*k,80*k,.4*k);x.fillRect(PW-L-80*k,PH-40*k,80*k,.4*k);
- x.fillStyle='#555';x.font=`500 ${3.8*k}px ${F}`;x.fillText('Customer confirms the text above',L,PH-34*k);x.textAlign='right';x.fillText('Cashier',PW-L,PH-34*k);
+ x.fillStyle='#555';x.font=`500 ${3.8*k}px ${F}`;x.fillText('Customer confirms the text above',L,PH-34*k);x.textAlign='right';x.fillText('Cashier: '+sv('scs'),PW-L,PH-34*k);
  return c}
 let sFile=null;
-$('#sb').onclick=job(async()=>{if(!sv('sm')){toast('Cashier: please fill in the model.');$('#sm').focus();return}
- if(document.fonts)await document.fonts.ready;const no=sNo,c=sSheet(no),jpg=new Uint8Array(await(await toBlob(c,.92)).arrayBuffer());
- sFile=new File([buildPdf([{jpg,w:PW,h:PH,pw:A4W,ph:A4H,x:0,y:0,dw:A4W,dh:A4H}])],sName(no)+'.pdf',{type:'application/pdf'});
- save(sFile,sFile.name);sNo=no+1;sShow();try{localStorage.stbNo=sNo}catch(e){}
- $('#sr').hidden=false;$('#srt').textContent=sFile.name+' saved to Downloads. Next order: '+sName(sNo)+'.';toast(sFile.name+' created')});
+$('#sb').onclick=job(async()=>{if(sDig().length<4){toast('Please enter the customer phone number.');$('#st').focus();return}
+ if(!sv('scs')){toast('Cashier: please fill in your name.');$('#scs').focus();return}
+ if(!sv('sm')){toast('Cashier: please fill in the model.');$('#sm').focus();return}
+ if(document.fonts)await document.fonts.ready;const no=sName(),c=sSheet(no),jpg=new Uint8Array(await(await toBlob(c,.92)).arrayBuffer());
+ sFile=new File([buildPdf([{jpg,w:PW,h:PH,pw:A4W,ph:A4H,x:0,y:0,dw:A4W,dh:A4H}])],no+'.pdf',{type:'application/pdf'});
+ save(sFile,sFile.name);
+ $('#sr').hidden=false;$('#srt').textContent=sFile.name+' saved to Downloads.';toast(sFile.name+' created')});
 $('#sshare').onclick=job(async()=>{if(!sFile)return;if(navigator.canShare&&navigator.canShare({files:[sFile]}))try{await navigator.share({files:[sFile]})}catch(e){}else save(sFile,sFile.name)});
 $('#ssave').onclick=()=>sFile&&save(sFile,sFile.name);
-$('#snew').onclick=()=>{['r1','r2','r3','r4','r5','c1','c2','c3','c4','c5','sn','st','sm'].forEach(id=>$('#'+id).value='');$('#sr').hidden=true;sFile=null;sPreview();scrollTo({top:0,behavior:'smooth'})};
+$('#snew').onclick=()=>{['r1','r2','r3','r4','r5','c1','c2','c3','c4','c5','sn','st','sm'].forEach(id=>$('#'+id).value='');$('#sr').hidden=true;sFile=null;sPreview();sShow();scrollTo({top:0,behavior:'smooth'})};
 sPreview();
 
 /* ---------- Name tag booking: design + preview, cashier submits a B&W PDF (NTAGS + last 4 digits of phone) ---------- */
-// sizes in mm. The epoxy size was not specified: 70 × 22 is assumed for the preview.
-const TG={E1:{w:70,h:22},E2:{w:70,h:17},E3:{w:65,h:20},EP:{w:70,h:22}},TGL={E1:'Option 1 (7 × 2.2 cm)',E2:'Option 2 (7 × 1.7 cm)',E3:'Option 3 (6.5 × 2 cm)'};
+// sizes in mm
+const TG={E1:{w:70,h:22},E2:{w:70,h:17},E3:{w:65,h:20},EP:{w:75,h:25}},TGL={E1:'Option 1 (7 × 2.2 cm)',E2:'Option 2 (7 × 1.7 cm)',E3:'Option 3 (6.5 × 2 cm)'};
 const tp=$('#tp'),tpx=tp.getContext('2d'),rv=n=>document.querySelector(`input[name=${n}]:checked`).value;
 const tEng=()=>rv('tt')=='Engraved',tDim=()=>TG[tEng()?rv('tz'):'EP'],tLetters=t=>(t.match(/\p{L}/gu)||[]).length;
 const tName=()=>{const v=$('#tn').value.replace(/\s+/g,' ').trim();return $('#tu').checked?v.toUpperCase():v};
@@ -719,9 +722,9 @@ function drawTag(x,cx,cy,k){const d=tDim(),w=d.w*k,h=d.h*k,X=cx-w/2,Y=cy-h/2,nam
  x.restore()}
 let tfTouched=false;$('#tf').addEventListener('change',()=>tfTouched=true);
 function tPreview(){const e=tEng();$('#tgE').hidden=!e;$('#tgP').hidden=e;if(!tfTouched)$('#tf').value=e?'sans':'serif';
- const d=tDim(),W=1200,k=(W-80)/70,H=Math.round(d.h*k+80);if(tp.height!=H)tp.height=H;tpx.fillStyle='#fff';tpx.fillRect(0,0,W,H);drawTag(tpx,W/2,H/2,k);
+ const d=tDim(),W=1200,k=(W-80)/75,H=Math.round(d.h*k+80);if(tp.height!=H)tp.height=H;tpx.fillStyle='#fff';tpx.fillRect(0,0,W,H);drawTag(tpx,W/2,H/2,k);
  const n=tLetters($('#tn').value);$('#tnc').textContent=`One line, up to 10 letters (${n}/10 used).`;
- $('#tph').textContent=e?`Engraved ${TGL[rv('tz')]}. Colours are a guide only.`:`Epoxy with ${rv('te')} emblem. The emblem here is a placeholder; the official emblem is used on your tag.`;
+ $('#tph').textContent=e?`Engraved ${TGL[rv('tz')]}. Colours are a guide only.`:`Epoxy with ${rv('te')} emblem, 7.5 × 2.5 cm. The emblem here is a placeholder; the official emblem is used on your tag.`;
  const dg=$('#tct').value.replace(/\D/g,'');$('#tsn').textContent='NTAGS'+(dg.length>=4?dg.slice(-4):'····');$('#tb').disabled=busy}
 document.querySelectorAll('#vTag input[type=radio],#vTag input[type=checkbox],#vTag select').forEach(e=>e.addEventListener('change',tPreview));$('#tct').addEventListener('input',tPreview);
 function tSheet(no){const c=document.createElement('canvas');c.width=PW;c.height=PH;const x=c.getContext('2d'),F='"Plus Jakarta Sans",Arial,sans-serif',k=MM,L=20*k,e=tEng(),d=tDim();
@@ -729,7 +732,7 @@ function tSheet(no){const c=document.createElement('canvas');c.width=PW;c.height
  x.font=`800 ${9*k}px ${F}`;x.fillText('Name tag order',L,30*k);x.textAlign='right';x.fillText(no,PW-L,30*k);x.textAlign='left';
  x.font=`500 ${3.1*k}px ${F}`;x.fillText('Synly Trading & Bookstore Sdn Bhd · Lot 290-292, Parkcity Commerce Square, 97000 Bintulu · 086-337 891',L,38*k);x.fillRect(L,42*k,PW-2*L,.5*k);
  const dt=new Date(Date.now()+8*36e5).toISOString().slice(0,16).replace('T',' ');
- const rows=[['Series no.',no],['Date / time',dt],['Customer',sv('tcn')||'-'],['Phone',sv('tct')],['Name on tag',tName()],['Type',e?'Engraved':'Epoxy with logo'],[e?'Size':'Emblem',e?TGL[rv('tz')]:rv('te')+' (size 7 × 2.2 cm assumed)'],['Attachment',rv('ta')],['Font',$('#tf').selectedOptions[0].text+($('#tu').checked?', capitals':'')],['Cashier',sv('tcs')]];
+ const rows=[['Series no.',no],['Date / time',dt],['Customer',sv('tcn')||'-'],['Phone',sv('tct')],['Name on tag',tName()],['Type',e?'Engraved':'Epoxy with logo'],[e?'Size':'Emblem',e?TGL[rv('tz')]:rv('te')+' (7.5 × 2.5 cm)'],['Attachment',rv('ta')],['Font',$('#tf').selectedOptions[0].text+($('#tu').checked?', capitals':'')],['Cashier',sv('tcs')]];
  let y=52*k;rows.forEach(([a,b])=>{x.font=`500 ${4.2*k}px ${F}`;x.fillStyle='#555';x.fillText(a,L,y);x.fillStyle='#000';x.font=`700 ${4.6*k}px ${F}`;x.fillText(b,L+42*k,y);y+=8*k});
  y+=4*k;x.fillRect(L,y,PW-2*L,.3*k);y+=10*k;x.fillStyle='#555';x.font=`600 ${4*k}px ${F}`;x.fillText('Actual size',L,y);y+=4*k;
  drawTag(x,L+d.w*k/2,y+d.h*k/2,k);y+=d.h*k+12*k;x.fillStyle='#555';x.fillText('Enlarged 2× for checking',L,y);y+=4*k;drawTag(x,PW/2,y+d.h*k,2*k);
