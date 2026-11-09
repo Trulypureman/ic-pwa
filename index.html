@@ -8,23 +8,99 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Synly PS">
 <link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
 <style>
-:root{--bg:#eef3ef;--fg:#142018;--card:#fff;--ac:#0b7a43;--ac2:#0a6a3a;--ln:#d3ddd6;--mu:#5d6b62;color-scheme:light}
-@media(prefers-color-scheme:dark){:root{--bg:#0e1511;--fg:#e8f0ea;--card:#17211b;--ac:#34c27a;--ac2:#2bb06b;--ln:#2c3b32;--mu:#93a499;color-scheme:dark}}
+:root{--bg:#f2f7f4;--fg:#0f2418;--card:#fff;--ac:#0b7a43;--ac2:#075c32;--ln:#dce8e0;--mu:#5a6e62;--mint:#e6f4ec;
+ --grad:linear-gradient(135deg,#064d2a 0%,#0b7a43 48%,#17a862 100%);--soft:linear-gradient(135deg,#e9f7ef,#d5f0e1);
+ --sh:0 1px 2px rgba(6,77,42,.06),0 6px 20px rgba(6,77,42,.07);--ease:cubic-bezier(.2,.8,.2,1);color-scheme:light}
+@media(prefers-color-scheme:dark){:root{--bg:#0a120d;--fg:#e5f1e9;--card:#121c16;--ac:#3ccf85;--ac2:#2bb06b;--ln:#22322a;--mu:#92a79a;--mint:#173023;
+ --soft:linear-gradient(135deg,#143022,#0f261a);--sh:0 1px 2px #0006,0 6px 20px #0005;color-scheme:dark}}
 *{box-sizing:border-box}html,body{margin:0}
-body{font:16px/1.4 system-ui,sans-serif;background:var(--bg);color:var(--fg);padding-bottom:calc(env(safe-area-inset-bottom) + 16px);-webkit-tap-highlight-color:transparent}
-header{background:linear-gradient(135deg,#0b7a43,#075c32);color:#fff;padding:calc(env(safe-area-inset-top) + 14px) 16px 18px;display:flex;gap:12px;align-items:center}
-header .lg{width:52px;height:52px;border-radius:50%;background:#fff;display:grid;place-items:center;flex:none;box-shadow:0 2px 8px #0004}
-header img{width:42px;height:42px}header h1{font-size:1.15rem;margin:0}header p{margin:2px 0 0;font-size:.78rem;opacity:.85}
-main{max-width:520px;margin:0 auto;padding:14px}
-section{background:var(--card);border:1px solid var(--ln);border-radius:16px;padding:14px;margin-bottom:12px;box-shadow:0 1px 3px #0001}
-h2{font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--mu);margin:0 0 10px;display:flex;align-items:center;gap:8px}
-h2 i{font-style:normal;background:var(--ac);color:#fff;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:.72rem}
-@media(prefers-color-scheme:dark){h2 i{color:#07140d}}
+body{font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--fg);padding-bottom:calc(env(safe-area-inset-bottom) + 16px);-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased}
+/* header: big hero on home, compact app bar inside a service */
+header{position:sticky;top:0;z-index:5;background:var(--grad);color:#fff;overflow:hidden;view-transition-name:hd;border-radius:0 0 26px 26px;box-shadow:0 8px 24px rgba(6,77,42,.25)}
+header::before,header::after{content:"";position:absolute;border-radius:50%;border:2px solid rgba(255,255,255,.12);pointer-events:none}
+header::before{width:340px;height:340px;right:-120px;top:-150px}header::after{width:220px;height:220px;right:-40px;top:-70px;border-color:rgba(255,255,255,.09)}
+.hbar{position:relative;display:flex;gap:12px;align-items:center;max-width:560px;margin:0 auto;padding:calc(env(safe-area-inset-top) + 14px) 16px 14px}
+.lg{width:46px;height:46px;border-radius:50%;background:#fff;display:grid;place-items:center;flex:none;box-shadow:0 3px 10px #0003;transition:transform .35s var(--ease)}
+.lg img{width:38px;height:38px}
+.ht{min-width:0}.ht h1{font-size:1.08rem;margin:0;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ht p{margin:1px 0 0;font-size:.76rem;opacity:.85}
+.ib{width:40px;height:40px;flex:none;border-radius:50%;border:0;padding:0;display:grid;place-items:center;background:rgba(255,255,255,.16);color:#fff;transition:background .2s,transform .2s}
+.ib svg{width:22px;height:22px}.ib[hidden]{display:none}
+.hero{position:relative;max-width:560px;margin:0 auto;padding:4px 18px 26px;max-height:200px;transition:max-height .4s var(--ease),opacity .3s,padding .4s var(--ease)}
+.hero h2{all:unset;display:block;font-size:1.65rem;font-weight:800;letter-spacing:-.02em;line-height:1.15}
+.hero p{margin:6px 0 0;opacity:.88;font-size:.92rem}
+body.sub .hero{max-height:0;opacity:0;padding-top:0;padding-bottom:0}
+body.sub header{border-radius:0 0 20px 20px}
+main{max-width:560px;margin:0 auto;padding:16px}
+.view[hidden]{display:none}
+.lbl{font-size:.74rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mu);margin:6px 4px 10px}
+.lead{color:var(--mu);font-size:.9rem;margin:2px 4px 14px}
+/* service tiles */
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:22px}
+.tile{position:relative;text-align:left;display:flex;flex-direction:column;gap:4px;padding:16px 14px 15px;border-radius:20px;border:1px solid var(--ln);background:var(--card);box-shadow:var(--sh);min-height:142px;transition:transform .25s var(--ease),box-shadow .25s,border-color .25s}
+.tile:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--ac) 35%,var(--ln))}
+.tile b{font-size:.98rem;margin-top:auto}.tile small{color:var(--mu);font-size:.78rem;font-weight:500;line-height:1.3}
+.ico{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:var(--grad);color:#fff;box-shadow:0 4px 12px rgba(11,122,67,.3);margin-bottom:10px}
+.ico svg{width:24px;height:24px}
+.tile em{position:absolute;right:12px;top:14px;font-style:normal;font-size:.66rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:20px;background:#fff4d6;color:#8a5a00}
+@media(prefers-color-scheme:dark){.tile em{background:#3a2e0d;color:#f5c75b}}
+.tile.soon .ico{background:linear-gradient(135deg,#9aa9a0,#c3cec7);box-shadow:none}
+.list{display:grid;gap:10px;margin-bottom:18px}
+.li{display:flex;align-items:center;gap:14px;text-align:left;padding:14px;border-radius:18px;border:1px solid var(--ln);background:var(--card);box-shadow:var(--sh);color:var(--fg);text-decoration:none;font-weight:600;transition:transform .25s var(--ease)}
+.li .ico{width:40px;height:40px;margin:0;border-radius:12px}.li .ico svg{width:21px;height:21px}
+.li>span:not(.ico){flex:1;display:grid}.li .ico{flex:none}.li small{color:var(--mu);font-weight:500;font-size:.8rem}
+.li>svg{width:20px;height:20px;color:var(--mu);flex:none}
+.ico.wa{background:linear-gradient(135deg,#128c4a,#25d366)}
+/* service steps */
+section{background:var(--card);border:1px solid var(--ln);border-radius:20px;padding:16px;margin-bottom:14px;box-shadow:var(--sh)}
+section h2{font-size:.8rem;text-transform:uppercase;letter-spacing:.07em;color:var(--mu);margin:0 0 12px;display:flex;align-items:center;gap:9px}
+section h2 i{font-style:normal;background:var(--grad);color:#fff;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:.74rem;box-shadow:0 2px 6px rgba(11,122,67,.3)}
 .row{display:flex;gap:10px}.row>*{flex:1;min-width:0}
-button{font:inherit;border-radius:12px;border:1px solid var(--ln);background:var(--card);color:var(--fg);padding:13px;cursor:pointer;font-weight:600}
-button.p{background:var(--ac);color:#fff;border-color:var(--ac)}@media(prefers-color-scheme:dark){button.p{color:#07140d}}
-button:disabled{opacity:.4;cursor:default}button:active:not(:disabled){transform:scale(.98)}
+button{font:inherit;border-radius:14px;border:1px solid var(--ln);background:var(--card);color:var(--fg);padding:13px;cursor:pointer;font-weight:600;transition:transform .15s var(--ease),background .2s,box-shadow .2s,opacity .2s}
+button.p{background:var(--grad);color:#fff;border:0;box-shadow:0 4px 14px rgba(11,122,67,.32)}
+button:disabled{opacity:.4;cursor:default;box-shadow:none}button:active:not(:disabled),.tile:active,.li:active,a.btn:active{transform:scale(.97)}
 :focus-visible{outline:3px solid var(--ac);outline-offset:2px}
+.chip{display:flex;align-items:center;gap:7px;border:1px solid var(--ln);border-radius:22px;padding:8px 13px;font-size:.88rem;background:var(--bg);transition:background .2s,border-color .2s;cursor:pointer}
+.chip:has(input:checked){background:var(--mint);border-color:color-mix(in srgb,var(--ac) 40%,var(--ln))}
+.chip input[type=checkbox]{accent-color:var(--ac);width:17px;height:17px}
+.paper{background:var(--soft);padding:16px;border-radius:14px}
+.fn{display:grid;gap:6px;font-size:.85rem;color:var(--mu);margin-top:14px}
+.fn input{font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--ln);border-radius:12px;padding:11px 12px;transition:border-color .2s}
+.fn input:focus{border-color:var(--ac);outline:0}
+button.wa{width:100%;background:linear-gradient(135deg,#128c4a,#1fb85c);color:#fff;border:0;box-shadow:0 4px 14px rgba(18,140,74,.32)}
+a{color:var(--ac)}
+a.btn{display:block;font:inherit;font-weight:600;border-radius:14px;border:1px solid var(--ln);background:var(--card);color:var(--fg);padding:13px;text-align:center;text-decoration:none;transition:transform .15s var(--ease)}
+a.btn.p{background:var(--grad);color:#fff;border:0;box-shadow:0 4px 14px rgba(11,122,67,.32)}
+.hint{font-size:.8rem;color:var(--mu);margin:12px 2px 0}
+/* stamp + about */
+.soonbox{text-align:center;padding:28px 18px}
+.soonbox .big{width:84px;height:84px;margin:0 auto 14px;border-radius:26px;display:grid;place-items:center;background:var(--grad);color:#fff;box-shadow:0 10px 26px rgba(11,122,67,.35)}
+.soonbox .big svg{width:44px;height:44px}.soonbox h3{margin:0 0 6px;font-size:1.3rem}.soonbox p{color:var(--mu);margin:0 auto 18px;max-width:34ch;font-size:.92rem}
+.pill{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:20px;background:#fff4d6;color:#8a5a00;margin-bottom:10px}
+@media(prefers-color-scheme:dark){.pill{background:#3a2e0d;color:#f5c75b}}
+.about-hd{display:flex;gap:14px;align-items:center;margin-bottom:12px}.about-hd .lg{width:58px;height:58px}.about-hd .lg img{width:48px;height:48px}
+.about-hd h3{margin:0;font-size:1.1rem}.about-hd p{margin:2px 0 0;color:var(--mu);font-size:.85rem}
+.svc{list-style:none;padding:0;margin:0;display:grid;gap:9px}.svc li{display:flex;gap:10px;align-items:center;font-size:.92rem}
+.svc li::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--grad);flex:none}
+.svc small{color:var(--mu)}
+footer{text-align:center;font-size:.76rem;color:var(--mu);padding:10px 16px 0}
+.cof{margin-top:12px;padding:7px 15px;font-size:.78rem;font-weight:600;border-radius:22px;background:var(--card);color:var(--mu)}
+#tst{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 18px);transform:translate(-50%,20px);background:#0d2a1b;color:#fff;padding:11px 15px;border-radius:14px;font-size:.88rem;display:flex;gap:12px;align-items:center;box-shadow:0 8px 24px #0005;opacity:0;pointer-events:none;transition:opacity .25s,transform .35s var(--ease);z-index:20;max-width:calc(100% - 32px)}
+#tst.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}#tst button{padding:6px 10px;background:#3ccf85;color:#06210f;border:0;font-size:.82rem}
+/* motion */
+@media(prefers-reduced-motion:no-preference){
+ .view.in>*{animation:rise .45s var(--ease) both}
+ .view.in>*:nth-child(2){animation-delay:.04s}.view.in>*:nth-child(3){animation-delay:.08s}.view.in>*:nth-child(4){animation-delay:.12s}.view.in>*:nth-child(5){animation-delay:.16s}.view.in>*:nth-child(n+6){animation-delay:.2s}
+ .view.in .tile{animation:rise .5s var(--ease) both}.view.in .tile:nth-child(2){animation-delay:.05s}.view.in .tile:nth-child(3){animation-delay:.1s}.view.in .tile:nth-child(4){animation-delay:.15s}
+ ::view-transition-old(root),::view-transition-new(root){animation-duration:.34s;animation-timing-function:cubic-bezier(.2,.8,.2,1)}
+ html[data-dir=fwd]::view-transition-old(root){animation-name:outL}html[data-dir=fwd]::view-transition-new(root){animation-name:inR}
+ html[data-dir=back]::view-transition-old(root){animation-name:outR}html[data-dir=back]::view-transition-new(root){animation-name:inL}
+ ::view-transition-group(hd){animation-duration:.4s;animation-timing-function:cubic-bezier(.2,.8,.2,1)}
+ #cd[open]{animation:pop .3s var(--ease)}
+}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}}
+@keyframes inR{from{opacity:0;transform:translateX(28px)}}@keyframes outL{to{opacity:0;transform:translateX(-28px)}}
+@keyframes inL{from{opacity:0;transform:translateX(-28px)}}@keyframes outR{to{opacity:0;transform:translateX(28px)}}
+@keyframes pop{from{opacity:0;transform:scale(.94)}}
 .slot{aspect-ratio:1.586;border:2px dashed var(--ln);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;overflow:hidden;position:relative;color:var(--mu);font-size:.85rem;cursor:pointer;background:var(--bg)}
 .slot.has{border-style:solid}.slot.drag{border-color:var(--ac)}
 .slot svg{width:28px;height:28px;stroke:var(--ac)}.slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.slot img:not([src]){display:none}
@@ -32,54 +108,54 @@ button:disabled{opacity:.4;cursor:default}button:active:not(:disabled){transform
 .slot .act{position:absolute;right:6px;bottom:6px;display:none;gap:6px;z-index:1}.slot.has .act{display:flex}
 .slot .act button{padding:5px 10px;font-size:.75rem;border-radius:9px;background:#000a;color:#fff;border:0;backdrop-filter:blur(4px)}
 .opt{display:flex;gap:8px;flex-wrap:wrap}
-.chip{display:flex;align-items:center;gap:6px;border:1px solid var(--ln);border-radius:20px;padding:7px 12px;font-size:.88rem;background:var(--bg)}
 .chip input[type=checkbox]{accent-color:var(--ac);width:16px;height:16px}
 .chip input[type=number]{width:56px;font:inherit;border:0;background:transparent;color:var(--fg);text-align:right;padding:0}
 #pg,#qg{width:100%;height:auto;aspect-ratio:210/297;background:#fff;border-radius:4px;display:block;box-shadow:0 4px 18px #0003}
-.paper{background:var(--bg);padding:14px;border-radius:12px}
-.tabs{display:flex;gap:4px;background:var(--card);border:1px solid var(--ln);border-radius:14px;padding:4px;margin-bottom:12px}
-.tabs button{flex:1;border:0;padding:10px;background:transparent;color:var(--mu)}.tabs button.on{background:var(--ac);color:#fff}
-@media(prefers-color-scheme:dark){.tabs button.on{color:#07140d}}
 .slot.qs{aspect-ratio:auto;height:200px}.slot.qs img{object-fit:contain;background:#fff}
-.add{height:110px}
+.slot.add{height:120px}
 .pl{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}.pl:empty{display:none}
 .pv{position:relative;border:1px solid var(--ln);border-radius:10px;overflow:hidden;background:#fff;aspect-ratio:210/297}
 .pv img{width:100%;height:100%;object-fit:contain;display:block}
 .pv b{position:absolute;left:5px;top:5px;background:var(--ac);color:#fff;font-size:.68rem;padding:1px 7px;border-radius:8px}
 .pv .ctl{position:absolute;left:0;right:0;bottom:0;display:flex;background:#000b}
 .pv .ctl button{flex:1;padding:6px 0;border:0;border-radius:0;background:transparent;color:#fff;font-size:.8rem}
-.fn{display:grid;gap:6px;font-size:.85rem;color:var(--mu);margin-top:12px}
-.fn input{font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--ln);border-radius:10px;padding:10px 12px}
-button.wa{width:100%;background:#1fa855;border-color:#1fa855;color:#fff}
-a{color:var(--ac)}
 #bz{position:fixed;inset:0;background:#000a;z-index:30;display:grid;place-items:center}#bz[hidden]{display:none}
 #bz div{background:var(--card);color:var(--fg);padding:18px 22px;border-radius:14px;display:flex;gap:12px;align-items:center}
 #bz i{width:20px;height:20px;border:3px solid var(--ln);border-top-color:var(--ac);border-radius:50%;animation:sp 1s linear infinite}
 @keyframes sp{to{transform:rotate(1turn)}}
-.cof{margin-top:10px;padding:6px 14px;font-size:.78rem;font-weight:600;border-radius:20px;background:transparent;color:var(--mu)}
 #cd{border:0;border-radius:18px;padding:16px;max-width:min(360px,calc(100vw - 32px));background:var(--card);color:var(--fg);box-shadow:0 10px 40px #0006}
 #cd::backdrop{background:#000a}#cd h3{margin:0 0 10px;font-size:1rem;text-align:center}
 #cd img{display:block;width:100%;height:auto;max-height:60vh;object-fit:contain;border-radius:10px;background:#fff}
 #cd p{font-size:.82rem;color:var(--mu);text-align:center;margin:10px 0}
-a.btn{font:inherit;font-weight:600;border-radius:12px;border:1px solid var(--ln);background:var(--card);color:var(--fg);padding:13px;text-align:center;text-decoration:none}
-.hint{font-size:.78rem;color:var(--mu);margin:10px 0 0}
-footer{text-align:center;font-size:.76rem;color:var(--mu);padding:6px 16px 0}
 #cr{position:fixed;inset:0;background:#000;z-index:9;display:flex;flex-direction:column;align-items:center;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
 #cr[hidden]{display:none}#cv{touch-action:none;margin-top:8px;border-radius:8px}
 #cr .bar{width:100%;max-width:520px;padding:12px 14px;color:#fff;display:grid;gap:10px}#cr input{width:100%;accent-color:#34c27a}#cr p{margin:0;font-size:.8rem;opacity:.75;text-align:center}
 #cr .lk{display:flex;gap:8px;align-items:center;justify-content:center;font-size:.85rem}#cr .lk[hidden]{display:none}#cr .lk input{width:18px;height:18px}
 #cr h3{margin:8px 0 0;color:#fff;font-size:.95rem;font-weight:600}
 #cr button{background:#222;color:#fff;border-color:#444}#cr button.p{background:#34c27a;color:#07140d;border-color:#34c27a}
-#tst{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 18px);transform:translate(-50%,20px);background:#1d2a22;color:#fff;padding:10px 14px;border-radius:12px;font-size:.88rem;display:flex;gap:12px;align-items:center;box-shadow:0 6px 20px #0005;opacity:0;pointer-events:none;transition:.2s;z-index:20;max-width:calc(100% - 32px)}
-#tst.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}#tst button{padding:6px 10px;background:#34c27a;color:#07140d;border:0;font-size:.82rem}
 #pi{display:none}
 @page{size:A4;margin:0}
 @media print{body{background:#fff;padding:0}body>*{display:none!important}#pi{display:block!important;width:210mm;height:297mm}}
 </style></head><body>
-<header><div class="lg"><img src="logo.png" alt="Synly"></div><div><h1>Synly Printing Services</h1><p>Synly Trading &amp; Bookstore</p></div></header>
+<header><div class="hbar"><button class="ib" id="back" aria-label="Back to home" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><div class="lg"><img src="logo.png" alt="Synly"></div><div class="ht"><h1 id="ttl">Synly Printing Services</h1><p id="stl">Synly Trading &amp; Bookstore S/B</p></div></div>
+<div class="hero"><h2>Print, copy &amp; convert.</h2><p>Quick, tidy prints, ready from your phone.</p></div></header>
 <main>
-<nav class="tabs" aria-label="Mode"><button id="tIC" class="on" aria-pressed="true">IC Card</button><button id="tQR" aria-pressed="false">A5 QR</button><button id="tPDF" aria-pressed="false">To PDF</button></nav>
-<div id="mIC">
+<div class="view" id="vHome">
+<p class="lbl">Services</p>
+<div class="tiles">
+<button class="tile" data-go="ic"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><circle cx="8.5" cy="11" r="2.2"/><path d="M5.5 16c.6-1.6 1.7-2.4 3-2.4s2.4.8 3 2.4M14 10h4.5M14 13.5h3"/></svg></span><b>IC Copy</b><small>Front &amp; back on one A4</small></button>
+<button class="tile" data-go="qr"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M14 14h3v3h-3zM20 14v.01M20 20h-3M14 20v.01M20 17v.01"/></svg></span><b>A5 QR Poster</b><small>Merchant DuitNow QR</small></button>
+<button class="tile" data-go="pdf"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg></span><b>To PDF</b><small>Photos &amp; Word, send on WhatsApp</small></button>
+<button class="tile soon" data-go="stamp"><em>Soon</em><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 12V9.5a2.5 2.5 0 1 1 5 0V12"/><path d="M5 12h14a1 1 0 0 1 1 1v3H4v-3a1 1 0 0 1 1-1zM6 20h12"/></svg></span><b>Stamp Booking</b><small>Order rubber stamps</small></button>
+</div>
+<p class="lbl">Synly</p>
+<div class="list">
+<button class="li" data-go="about"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg></span><span>About us<small>Synly Trading &amp; Bookstore S/B</small></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+<a class="li" href="https://wa.me/60127664819" target="_blank" rel="noopener"><span class="ico wa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 18.7z"/><path d="M9 9.5c.3 2.3 2.2 4.2 4.5 4.5l1-1.2 2 .9-.4 1.6c-3.6.3-7.2-3.3-6.9-6.9l1.6-.4.9 2z"/></svg></span><span>Chat on WhatsApp<small>+60 12-766 4819</small></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></a>
+</div>
+</div>
+<div class="view" id="mIC" hidden>
+<p class="lead">Front and back of an IC or driving licence, real size on one A4 page.</p>
 <section><h2><i>1</i>Choose screenshots</h2><div class="row">
 <div class="slot" id="s0" tabindex="0" role="button" aria-label="Choose front (Depan) image"><b>Depan</b><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Tap to choose<img alt="Front of IC"><div class="act"><button data-a="e">Crop</button><button data-a="x" aria-label="Remove">&#10005;</button></div><input type="file" accept="image/*" hidden></div>
 <div class="slot" id="s1" tabindex="0" role="button" aria-label="Choose back (Belakang) image"><b>Belakang</b><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Tap to choose<img alt="Back of IC"><div class="act"><button data-a="e">Crop</button><button data-a="x" aria-label="Remove">&#10005;</button></div><input type="file" accept="image/*" hidden></div>
@@ -97,7 +173,8 @@ footer{text-align:center;font-size:.76rem;color:var(--mu);padding:6px 16px 0}
 <div class="row" style="margin-bottom:10px"><button class="p" id="bp" disabled>Save PDF</button><button id="bs" disabled>Share</button></div>
 <div class="row"><button id="bj" disabled>Save JPEG</button><button id="bt" disabled>Print</button></div></section>
 </div>
-<div id="mQR" hidden>
+<div class="view" id="mQR" hidden>
+<p class="lead">Merchant DuitNow QR or any poster, enlarged to A5 on A4 paper.</p>
 <section><h2><i>1</i>Choose QR image</h2>
 <div class="slot qs" id="q0" tabindex="0" role="button" aria-label="Choose QR image"><b>A5</b><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Tap to choose<img alt="QR image"><div class="act"><button data-a="e">Crop</button><button data-a="x" aria-label="Remove">&#10005;</button></div><input type="file" accept="image/*" hidden></div>
 <p class="hint">Merchant DuitNow QR or any poster. Paste, drop or share from WhatsApp also works while this tab is open.</p></section>
@@ -111,7 +188,8 @@ footer{text-align:center;font-size:.76rem;color:var(--mu);padding:6px 16px 0}
 <div class="row"><button id="qj" disabled>Save JPEG</button><button id="qt" disabled>Print</button></div>
 <p class="hint">Prints on A4 paper. Use 100% / actual size with 2-in-1 <b>off</b>, then cut along the line.</p></section>
 </div>
-<div id="mPDF" hidden>
+<div class="view" id="mPDF" hidden>
+<p class="lead">Turn photos and Word files into one PDF, then send it to Synly on WhatsApp.</p>
 <section><h2><i>1</i>Add photos or Word files</h2>
 <div class="slot qs add" id="p0" tabindex="0" role="button" aria-label="Add photos or Word files"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Tap to add photos or .docx<input type="file" multiple accept="image/*,.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" hidden></div>
 <div class="pl" id="pl"></div>
@@ -126,7 +204,21 @@ footer{text-align:center;font-size:.76rem;color:var(--mu);padding:6px 16px 0}
 <div class="row" style="margin-top:10px"><button id="ps" disabled>Share</button><button id="pp" disabled>Save PDF</button></div>
 <p class="hint">Choose <b>WhatsApp</b>, then <b>Synly</b> (+60 12-766 4819). Number not saved yet? <a id="wa" href="https://wa.me/60127664819" target="_blank" rel="noopener">Chat with Synly</a> first.</p></section>
 </div>
-<footer>Created by AhChai for Synly Trading &amp; Bookstore S/B<br>Everything stays on this phone.<br><button class="cof" id="cof">&#9749; Buy me a coffee</button></footer>
+<div class="view" id="vStamp" hidden>
+<section class="soonbox"><div class="big"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 12V9.5a2.5 2.5 0 1 1 5 0V12"/><path d="M5 12h14a1 1 0 0 1 1 1v3H4v-3a1 1 0 0 1 1-1zM6 20h12"/></svg></div><span class="pill">Coming soon</span><h3>Stamp Booking</h3>
+<p>Soon you can order company, name and date stamps right here. For now, send us your stamp details on WhatsApp.</p>
+<a class="btn p" href="https://wa.me/60127664819?text=Hi%20Synly%2C%20I%27d%20like%20to%20order%20a%20stamp." target="_blank" rel="noopener">Ask about stamps on WhatsApp</a></section>
+</div>
+<div class="view" id="vAbout" hidden>
+<section><div class="about-hd"><div class="lg"><img src="logo.png" alt=""></div><div><h3>Synly Trading &amp; Bookstore S/B</h3><p>Bookstore &amp; printing services</p></div></div>
+<p class="lead" style="margin:0">Your local bookstore and print shop. Send your documents from your phone and we'll have them ready.</p></section>
+<section><h2>What we do</h2><ul class="svc">
+<li>IC &amp; driving licence copies</li><li>A5 merchant QR posters</li><li>Photo &amp; Word printing (PDF)</li><li>Stamp booking <small>(coming soon)</small></li></ul></section>
+<section><h2>Contact</h2><div class="list" style="margin:0">
+<a class="li" href="https://wa.me/60127664819" target="_blank" rel="noopener"><span class="ico wa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 18.7z"/><path d="M9 9.5c.3 2.3 2.2 4.2 4.5 4.5l1-1.2 2 .9-.4 1.6c-3.6.3-7.2-3.3-6.9-6.9l1.6-.4.9 2z"/></svg></span><span>WhatsApp<small>+60 12-766 4819</small></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></a></div></section>
+<section><h2>This app</h2><p class="lead" style="margin:0">Synly Printing Services (Synly PS) works offline and keeps your files on your phone until you choose to send them.</p></section>
+</div>
+<footer>Created by AhChai for Synly Trading &amp; Bookstore S/B<br>Your files stay on this phone.<br><button class="cof" id="cof">&#9749; Buy me a coffee</button></footer>
 </main>
 <div id="cr" hidden role="dialog" aria-modal="true" aria-labelledby="ct"><h3 id="ct">Crop</h3><canvas id="cv"></canvas>
 <div class="bar"><input type="range" id="zm" min=".5" max="12" step=".01" value="1" aria-label="Zoom"><p>Drag the corners or edges to crop, drag inside the box to move it. Pinch or slide to zoom, double-tap outside to fit.</p>
@@ -177,13 +269,13 @@ function readImg(f,cb){const u=URL.createObjectURL(f),im=new Image();
   c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);cb(c)};
  im.onerror=()=>{URL.revokeObjectURL(u);alert('This image format is not supported. Ask the customer to resend as PNG or JPG.');cb(null)};im.src=u}
 function load(f,i){readImg(f,c=>c?openCrop(i,c):next())}
-const take=fs=>mode=='qr'?qload(fs):mode=='pdf'?padd(fs):enqueue(fs);
+const take=fs=>{if(mode=='home')go(fs.some(f=>/\.docx$/i.test(f.name||''))?'pdf':lastSvc());mode=='qr'?qload(fs):mode=='pdf'?padd(fs):enqueue(fs)};
 document.addEventListener('paste',e=>{if(e.clipboardData)take([...e.clipboardData.files])});
 document.addEventListener('dragover',e=>e.preventDefault());
 document.addEventListener('drop',e=>{e.preventDefault();take([...e.dataTransfer.files])});
 async function takeShared(){if(!/[?&]shared=/.test(location.search))return;history.replaceState(null,'',location.pathname);
  try{const c=await caches.open('ic-share'),fs=[];for(const k of await c.keys()){const r=await c.match(k);if(r)fs.push(await r.blob());await c.delete(k)}
-  if(fs.length){if(mode=='qr')qload(fs);else if(mode=='pdf')padd(fs);else{cards.fill(null);src.fill(null);thumbs();render();enqueue(fs)}}}catch(e){}}
+  if(fs.length){if(mode=='home')go(fs.some(f=>/wordprocessingml/.test(f.type||''))?'pdf':lastSvc());if(mode=='qr')qload(fs);else if(mode=='pdf')padd(fs);else{cards.fill(null);src.fill(null);thumbs();render();enqueue(fs)}}}catch(e){}}
 
 /* ---------- crop: free, resizable box (image coordinates) ---------- */
 // cur = 0/1 for the IC cards, 'q' for the A5 QR image. box = {x,y,w,h} in image pixels.
@@ -324,11 +416,25 @@ qslot.onkeydown=e=>{if(e.target===qslot&&(e.key=='Enter'||e.key==' ')){e.prevent
 qslot.ondragover=e=>{e.preventDefault();qslot.classList.add('drag')};qslot.ondragleave=()=>qslot.classList.remove('drag');
 qslot.ondrop=e=>{e.preventDefault();e.stopPropagation();qslot.classList.remove('drag');qload([...e.dataTransfer.files])};
 outs(qg,1,['#qp','#qs','#qj','#qt']);
-function setMode(m){mode=m;$('#mIC').hidden=m!='ic';$('#mQR').hidden=m!='qr';$('#mPDF').hidden=m!='pdf';
- [['#tIC','ic'],['#tQR','qr'],['#tPDF','pdf']].forEach(([b,v])=>{$(b).classList.toggle('on',m==v);$(b).setAttribute('aria-pressed',m==v)});try{localStorage.mode=m}catch(e){}}
-$('#tIC').onclick=()=>setMode('ic');$('#tQR').onclick=()=>setMode('qr');$('#tPDF').onclick=()=>setMode('pdf');
-// a link ending in #pdf, #qr or #ic opens that tab (send customers .../#pdf)
-try{const h=location.hash.slice(1);if(/^(ic|qr|pdf)$/.test(h))setMode(h);else if(/^(qr|pdf)$/.test(localStorage.mode))setMode(localStorage.mode)}catch(e){}
+/* ---------- navigation: home + one view per service, with smooth transitions ---------- */
+const VIEWS={home:'vHome',ic:'mIC',qr:'mQR',pdf:'mPDF',stamp:'vStamp',about:'vAbout'},
+ TTL={ic:'IC Copy',qr:'A5 QR Poster',pdf:'To PDF',stamp:'Stamp Booking',about:'About us'};
+let view='',depth=0;const still=matchMedia('(prefers-reduced-motion: reduce)');
+const lastSvc=()=>{try{const m=localStorage.mode;return /^(ic|qr|pdf)$/.test(m)?m:'ic'}catch(e){return 'ic'}};
+function show(v){view=v;mode=/^(ic|qr|pdf)$/.test(v)?v:'home';if(mode!='home')try{localStorage.mode=v}catch(e){}
+ for(const k in VIEWS){const el=$('#'+VIEWS[k]);el.hidden=k!=v;el.classList.remove('in')}
+ const el=$('#'+VIEWS[v]);void el.offsetWidth;el.classList.add('in');
+ document.body.classList.toggle('sub',v!='home');$('#back').hidden=v=='home';
+ $('#ttl').textContent=TTL[v]||'Synly Printing Services';$('#stl').textContent=v=='home'?'Synly Trading & Bookstore S/B':'Synly Printing Services';
+ document.title=TTL[v]?TTL[v]+' · Synly PS':'Synly Printing Services';scrollTo(0,0)}
+function nav(v,anim=true){if(v==view)return;const dir=v=='home'?'back':'fwd';
+ if(anim&&document.startViewTransition&&!still.matches){document.documentElement.dataset.dir=dir;document.startViewTransition(()=>show(v))}else show(v)}
+function go(v){if(v==view)return;history.pushState(null,'',v=='home'?location.pathname+location.search:'#'+v);depth++;nav(v)}
+const fromHash=()=>{const h=location.hash.slice(1);return VIEWS[h]?h:'home'};
+addEventListener('popstate',()=>{const v=fromHash();if(v!=view){depth=Math.max(0,depth-1);nav(v)}});
+$('#back').onclick=()=>{if(depth>0)history.back();else{history.replaceState(null,'',location.pathname+location.search);nav('home')}};
+document.addEventListener('click',e=>{const t=e.target.closest('[data-go]');if(t)go(t.dataset.go)});
+show(fromHash());
 
 /* ---------- To PDF: photos and .docx into one PDF, sent to the shop on WhatsApp ---------- */
 const WA='60127664819',P=[],pl=$('#pl'),pslot=$('#p0'),pin=pslot.querySelector('input'),bz=$('#bz');
