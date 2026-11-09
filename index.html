@@ -4,11 +4,13 @@
 <title>Synly Printing Services</title>
 <meta name="description" content="Crop the front and back of an IC and print them on one A4 page, print merchant QR posters at A5, and turn photos or Word files into a PDF to send on WhatsApp.">
 <link rel="preload" href="fonts/plus-jakarta-sans.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/fredoka.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0b7a43">
 <meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Synly PS">
 <link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
 <style>
+@font-face{font-family:"Fredoka";src:url(fonts/fredoka.woff2) format("woff2");font-weight:300 700;font-style:normal;font-display:swap}
 @font-face{font-family:"Plus Jakarta Sans";src:url(fonts/plus-jakarta-sans.woff2) format("woff2");font-weight:200 800;font-style:normal;font-display:swap}
 :root{--bg:#f2f7f4;--fg:#0f2418;--card:#fff;--ac:#0b7a43;--ac2:#075c32;--ln:#dce8e0;--mu:#5a6e62;--mint:#e6f4ec;
  --grad:linear-gradient(135deg,#064d2a 0%,#0b7a43 48%,#17a862 100%);--soft:linear-gradient(135deg,#e9f7ef,#d5f0e1);
@@ -127,7 +129,7 @@ footer{text-align:center;font-size:.76rem;color:var(--mu);padding:10px 16px 0}
  html[data-dir=fwd]::view-transition-old(root){animation-name:outL}html[data-dir=fwd]::view-transition-new(root){animation-name:inR}
  html[data-dir=back]::view-transition-old(root){animation-name:outR}html[data-dir=back]::view-transition-new(root){animation-name:inL}
  ::view-transition-group(hd){animation-duration:.4s;animation-timing-function:cubic-bezier(.2,.8,.2,1)}
- #cd[open]{animation:pop .3s var(--ease)}
+ #cofd[open]{animation:pop .3s var(--ease)}
 }
 @keyframes rise{from{opacity:0;transform:translateY(14px)}}
 @keyframes inR{from{opacity:0;transform:translateX(28px)}}@keyframes outL{to{opacity:0;transform:translateX(-28px)}}
@@ -155,22 +157,92 @@ footer{text-align:center;font-size:.76rem;color:var(--mu);padding:10px 16px 0}
 #bz div{background:var(--card);color:var(--fg);padding:18px 22px;border-radius:14px;display:flex;gap:12px;align-items:center}
 #bz i{width:20px;height:20px;border:3px solid var(--ln);border-top-color:var(--ac);border-radius:50%;animation:sp 1s linear infinite}
 @keyframes sp{to{transform:rotate(1turn)}}
-#cd{border:0;border-radius:18px;padding:16px;max-width:min(360px,calc(100vw - 32px));background:var(--card);color:var(--fg);box-shadow:0 10px 40px #0006}
-#cd::backdrop{background:#000a}#cd h3{margin:0 0 10px;font-size:1rem;text-align:center}
-#cd img{display:block;width:100%;height:auto;max-height:60vh;object-fit:contain;border-radius:10px;background:#fff}
-#cd p{font-size:.82rem;color:var(--mu);text-align:center;margin:10px 0}
+#cofd{border:0;border-radius:18px;padding:16px;max-width:min(360px,calc(100vw - 32px));background:var(--card);color:var(--fg);box-shadow:0 10px 40px #0006}
+#cofd::backdrop{background:#000a}#cofd h3{margin:0 0 10px;font-size:1rem;text-align:center}
+#cofd img{display:block;width:100%;height:auto;max-height:60vh;object-fit:contain;border-radius:10px;background:#fff}
+#cofd p{font-size:.82rem;color:var(--mu);text-align:center;margin:10px 0}
 #cr{position:fixed;inset:0;background:#000;z-index:9;display:flex;flex-direction:column;align-items:center;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
 #cr[hidden]{display:none}#cv{touch-action:none;margin-top:8px;border-radius:8px}
 #cr .bar{width:100%;max-width:520px;padding:12px 14px;color:#fff;display:grid;gap:10px}#cr input{width:100%;accent-color:#34c27a}#cr p{margin:0;font-size:.8rem;opacity:.75;text-align:center}
 #cr .lk{display:flex;gap:8px;align-items:center;justify-content:center;font-size:.85rem}#cr .lk[hidden]{display:none}#cr .lk input{width:18px;height:18px}
 #cr h3{margin:8px 0 0;color:#fff;font-size:.95rem;font-weight:600}
 #cr button{background:#222;color:#fff;border-color:#444}#cr button.p{background:#34c27a;color:#07140d;border-color:#34c27a}
+/* ===== v3 look: thick ink outlines, solid offset shadows, chunky buttons, greens only ===== */
+:root{--ink:#17301f;--bg:#f3faf1;--card:#fff;--fg:#17301f;--mu:#4f6b58;--ln:#17301f;--ac:#22c55e;--ac2:#0b7a43;
+ --mint:#c9f2d7;--lime:#dcf7b0;--sage:#d7ebdc;--teal:#bfeee4;--grad:linear-gradient(#22c55e,#22c55e);
+ --bw:2.5px;--sh:4px 4px 0 var(--ink);--shs:3px 3px 0 var(--ink);--disp:"Fredoka","Plus Jakarta Sans",system-ui,sans-serif}
+@media(prefers-color-scheme:dark){:root{--ink:#0a0f0c;--bg:#102018;--card:#173024;--fg:#eaf7ee;--mu:#a9c7b3;--ln:#0a0f0c;--ac:#2fd56c;--ac2:#3ccf85;
+ --mint:#1f5136;--lime:#3c5a1d;--sage:#24402f;--teal:#1d4a42;--grad:linear-gradient(#2fd56c,#2fd56c)}}
+body{background:var(--bg)}
+h1,h2,h3,.tile b,.pick b,button,a.btn,.lbl{font-family:var(--disp)}
+header{background:var(--bg);color:var(--fg);border-radius:0;box-shadow:none;border-bottom:var(--bw) solid transparent;transition:border-color .3s}
+header::before,header::after{display:none}
+body.sub header{background:var(--card);border-bottom-color:var(--ink);border-radius:0}
+.lg{background:#fff;border:var(--bw) solid var(--ink);box-shadow:var(--shs)}
+.ht h1{font-size:1.2rem;font-weight:700}.ht p{opacity:1;color:var(--mu)}
+.ib{background:var(--mint);color:var(--ink);border:var(--bw) solid var(--ink);box-shadow:var(--shs);border-radius:12px}
+.hb{background:var(--mint);color:var(--ink);border:var(--bw) solid var(--ink);box-shadow:2px 2px 0 var(--ink);font-size:.74rem;font-weight:600;backdrop-filter:none;border-radius:999px;padding:5px 12px}
+.hb:hover{background:var(--lime)}.hb:active,.ib:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
+.hero{padding:8px 18px 22px}
+.hero h2{font-family:var(--disp);font-size:2.35rem;font-weight:700;line-height:1.05;letter-spacing:-.01em;color:var(--fg)}
+.hero h2 em{font-style:normal;color:var(--ac)}
+.hero p{color:var(--mu);opacity:1;font-size:.95rem;margin-top:10px}
+.lbl{display:inline-block;margin:4px 0 14px;padding:5px 14px;border:var(--bw) solid var(--ink);border-radius:999px;background:var(--teal);color:var(--ink);font-size:.78rem;letter-spacing:.02em;text-transform:none;font-weight:600;box-shadow:2px 2px 0 var(--ink)}
+.tile,.li,section,.pick,.chip,.slot,.af,.pv,#cofd{border:var(--bw) solid var(--ink)}
+.tile,.li,section{box-shadow:var(--sh);border-radius:18px}
+.tile:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--ink);border-color:var(--ink)}
+.tile:active,.li:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--ink)}
+.tile b{font-size:1.08rem;font-weight:600}
+.ico{background:var(--mint);color:var(--ink);border:var(--bw) solid var(--ink);box-shadow:var(--shs);border-radius:14px}
+.tiles .tile:nth-child(2) .ico{background:var(--lime)}.tiles .tile:nth-child(3) .ico{background:var(--teal)}.tiles .tile:nth-child(4) .ico{background:var(--sage)}.tiles .tile:nth-child(5) .ico{background:var(--lime)}
+.ico.wa{background:var(--ac);color:#fff}
+section h2{font-family:var(--disp);font-size:.95rem;letter-spacing:.01em;text-transform:none;color:var(--fg);font-weight:600}
+section h2 i{background:var(--ac);color:#fff;border:2px solid var(--ink);box-shadow:none;width:26px;height:26px;font-family:var(--disp);font-weight:700}
+.lead{color:var(--mu)}
+button,a.btn{border:var(--bw) solid var(--ink);border-radius:14px;box-shadow:var(--shs);background:var(--card);color:var(--fg);font-weight:600;transition:transform .12s var(--ease),box-shadow .12s var(--ease),background .2s}
+button.p,a.btn.p{background:var(--ac);color:#fff;border:var(--bw) solid var(--ink);box-shadow:var(--sh)}
+button.wa{background:var(--ac);border:var(--bw) solid var(--ink);box-shadow:var(--sh)}
+button:active:not(:disabled),a.btn:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
+button:disabled{opacity:.45;box-shadow:none}
+.slot .act button,.pv .ctl button,.tabs button{box-shadow:none;border:0}
+#cr button{border:2px solid #4b5f52;box-shadow:none}#cr button.p{border-color:#22c55e}
+.chip{background:var(--card);box-shadow:2px 2px 0 var(--ink);border-radius:999px}
+.chip:has(input:checked){background:var(--mint);border-color:var(--ink)}
+.chip input[type=checkbox]{accent-color:var(--ac2)}
+.pick{border-radius:16px;background:var(--card);box-shadow:var(--shs)}
+.pick:has(input:checked){background:var(--mint);border-color:var(--ink)}
+.pick:active{transform:translate(3px,3px);box-shadow:none}
+.slot{border-style:dashed;background:var(--bg);border-radius:16px}.slot.has{border-style:solid}
+.slot b,.pv b{background:var(--ac);color:#fff;border:2px solid var(--ink)}
+.paper{background:var(--sage);border:var(--bw) solid var(--ink);border-radius:16px}
+#pg,#qg,#sp,#tp{box-shadow:none;border:2px solid var(--ink)}
+.tx input,.fn input,.chip select,.ono{border:var(--bw) solid var(--ink);background:var(--card);border-radius:12px}
+.tx input:focus,.fn input:focus{border-color:var(--ac2);box-shadow:3px 3px 0 var(--ac)}
+.cash{border-style:dashed;background:var(--bg)}
+.open.on{background:var(--mint);color:var(--ink);border:2px solid var(--ink)}.open.off{border:2px solid var(--ink)}
+.pill,.tile em{border:2px solid var(--ink);background:var(--lime);color:var(--ink)}
+.soonbox .big{background:var(--mint);color:var(--ink);border:var(--bw) solid var(--ink);box-shadow:var(--sh)}
+.hrs tr.today th,.hrs tr.today td{color:var(--ac2)}
+#tst{background:var(--ink);border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ac)}
+#tst button{border:2px solid #fff;box-shadow:none;background:var(--ac);color:#fff}
+#cofd{border-radius:20px;box-shadow:6px 6px 0 var(--ink)}
+#bz div{border:var(--bw) solid var(--ink);box-shadow:var(--sh)}
+footer{color:var(--mu)}
+/* Buy me a coffee: small floating button, bottom-left, home screen only */
+.cof{position:fixed;left:calc(env(safe-area-inset-left) + 14px);bottom:calc(env(safe-area-inset-bottom) + 14px);z-index:6;margin:0;
+ display:flex;align-items:center;gap:6px;padding:7px 13px 7px 10px;font-size:.8rem;font-weight:600;border-radius:999px;background:var(--lime);color:var(--ink);box-shadow:var(--shs)}
+.cof span{font-size:1rem;line-height:1}
+body:not(.sub) main{padding-bottom:70px}
+body:not(.sub) #tst{bottom:calc(env(safe-area-inset-bottom) + 64px)}
+@media(prefers-reduced-motion:no-preference){.cof{animation:rise .5s .3s var(--ease) both}}
+@media(prefers-color-scheme:dark){.hb,.lbl,.ico,.ib,.cof,.pill,.tile em,.open.on,.soonbox .big,.chip:has(input:checked),.pick:has(input:checked){color:var(--fg)}
+ .tile,.li,section,.pick,.chip,button,a.btn,.lg,.ib,.hb,.lbl,.ico,.cof{border-color:#05140c}body.sub header{border-bottom-color:#05140c}}
 #pi{display:none}
 @page{size:A4;margin:0}
 @media print{body{background:#fff;padding:0}body>*{display:none!important}#pi{display:block!important;width:210mm;height:297mm}}
 </style></head><body>
 <header><div class="hbar"><button class="ib" id="back" aria-label="Back to home" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><div class="lg"><img src="logo.png" alt="Synly"></div><div class="ht"><h1 id="ttl">Synly Printing Services</h1><p id="stl">Synly Trading &amp; Bookstore S/B</p></div><nav class="hnav" aria-label="Shop"><button class="hb" data-go="about">About us</button><button class="hb" data-go="contact">Contact us</button></nav></div>
-<div class="hero"><h2>Print, copy &amp; convert.</h2><p>Quick, tidy prints, ready from your phone.</p></div></header>
+<div class="hero"><h2>Print, copy &amp; <em>convert</em>.</h2><p>Quick, tidy prints, ready from your phone.</p></div></header>
 <main>
 <div class="view" id="vHome">
 <p class="lbl">Services</p>
@@ -181,7 +253,7 @@ footer{text-align:center;font-size:.76rem;color:var(--mu);padding:10px 16px 0}
 <button class="tile" data-go="stamp"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 12V9.5a2.5 2.5 0 1 1 5 0V12"/><path d="M5 12h14a1 1 0 0 1 1 1v3H4v-3a1 1 0 0 1 1-1zM6 20h12"/></svg></span><b>Stamp Booking</b><small>Rectangle or round, preview first</small></button>
 <button class="tile" data-go="tag"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="7" width="19" height="10" rx="2"/><path d="M6.5 12h7M16.5 10.5v3"/></svg></span><b>Name Tag</b><small>Engraved or epoxy with emblem</small></button>
 </div>
-<footer>Created by AhChai for Synly Trading &amp; Bookstore S/B<br>Your files stay on this phone.<br><button class="cof" id="cof">&#9749; Buy me a coffee</button></footer>
+<footer>Created by AhChai for Synly Trading &amp; Bookstore S/B<br>Your files stay on this phone.</footer>
 </div>
 <div class="view" id="mIC" hidden>
 <p class="lead">Front and back of an IC or driving licence, real size on one A4 page.</p>
@@ -325,12 +397,13 @@ footer{text-align:center;font-size:.76rem;color:var(--mu);padding:10px 16px 0}
 <section><h2>This app</h2><p class="lead" style="margin:0">Synly Printing Services (Synly PS) works offline and keeps your files on your phone until you choose to send them.</p></section>
 </div>
 </main>
+<button class="cof" id="cof" aria-label="Buy me a coffee"><span aria-hidden="true">&#9749;</span> Buy me a coffee</button>
 <div id="cr" hidden role="dialog" aria-modal="true" aria-labelledby="ct"><h3 id="ct">Crop</h3><canvas id="cv"></canvas>
 <div class="bar"><input type="range" id="zm" min=".5" max="12" step=".01" value="1" aria-label="Zoom"><p>Drag the corners or edges to crop, drag inside the box to move it. Pinch or slide to zoom, double-tap outside to fit.</p>
 <label class="lk" id="lkw"><input type="checkbox" id="lk">Lock card shape</label>
 <div class="row"><button id="rotL">&#8634; Left</button><button id="fitB">Fit</button><button id="rotR">&#8635; Right</button></div><div class="row"><button id="cx">Cancel</button><button class="p" id="ok">Use crop</button></div></div></div>
 <div id="bz" hidden role="alert" aria-live="assertive"><div><i></i><span>Converting…</span></div></div>
-<dialog id="cd" aria-labelledby="cdt"><h3 id="cdt">Buy me a coffee &#9749;</h3>
+<dialog id="cofd" aria-labelledby="cdt"><h3 id="cdt">Buy me a coffee &#9749;</h3>
 <img src="donate-qr.png" alt="DuitNow QR" width="625" height="679">
 <p>Scan with any banking or e-wallet app (DuitNow). Thank you for your support!</p>
 <div class="row"><a class="btn" href="donate-qr.png" download="Buy-me-a-coffee-QR.png">Save QR</a><button class="p" id="cdx">Close</button></div></dialog>
@@ -529,7 +602,7 @@ const lastSvc=()=>{try{const m=localStorage.mode;return /^(ic|qr|pdf)$/.test(m)?
 function show(v){view=v;mode=/^(ic|qr|pdf)$/.test(v)?v:'home';if(mode!='home')try{localStorage.mode=v}catch(e){}
  for(const k in VIEWS){const el=$('#'+VIEWS[k]);el.hidden=k!=v;el.classList.remove('in')}
  const el=$('#'+VIEWS[v]);void el.offsetWidth;el.classList.add('in');
- document.body.classList.toggle('sub',v!='home');$('#back').hidden=v=='home';
+ document.body.classList.toggle('sub',v!='home');$('#cof').hidden=v!='home';$('#back').hidden=v=='home';
  $('#ttl').textContent=TTL[v]||'Synly Printing Services';$('#stl').textContent=v=='home'?'Synly Trading & Bookstore S/B':'Synly Printing Services';
  document.title=TTL[v]?TTL[v]+' · Synly PS':'Synly Printing Services';scrollTo(0,0)}
 function nav(v,anim=true){if(v==view)return;const dir=v=='home'?'back':'fwd';
@@ -802,7 +875,7 @@ $('#tnew').onclick=()=>{['tn','tn2','tcn','tct'].forEach(id=>$('#'+id).value='')
 tPreview();
 
 /* ---------- Buy me a coffee ---------- */
-const cd=$('#cd');$('#cof').onclick=()=>cd.showModal?cd.showModal():cd.setAttribute('open','');$('#cdx').onclick=()=>cd.close?cd.close():cd.removeAttribute('open');
+const cd=$('#cofd');$('#cof').onclick=()=>cd.showModal?cd.showModal():cd.setAttribute('open','');$('#cdx').onclick=()=>cd.close?cd.close():cd.removeAttribute('open');
 cd.onclick=e=>{if(e.target===cd)cd.close()};
 
 /* ---------- start ---------- */
