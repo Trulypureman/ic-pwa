@@ -238,12 +238,12 @@ footer{text-align:center;font-size:.76rem;color:var(--mu);padding:10px 16px 0}
 <section><h2><i>3</i>Your text</h2>
 <div id="stR"><div class="tx">
 <input id="r1" maxlength="60" placeholder="Line 1 (e.g. company name)"><input id="r2" maxlength="60" placeholder="Line 2 (optional)"><input id="r3" maxlength="60" placeholder="Line 3 (optional)"><input id="r4" maxlength="60" placeholder="Line 4 (optional)"><input id="r5" maxlength="60" placeholder="Line 5 (optional)"></div>
-<div class="opt" style="margin-top:12px"><label class="chip"><input type="checkbox" id="rb" checked>First line bold</label><label class="chip"><input type="checkbox" id="rx">Border</label></div></div>
+<div class="opt" style="margin-top:12px"><label class="chip">Align <select id="ra"><option value="left">Left</option><option value="center">Centre</option></select></label><label class="chip">Bold <select id="rb"><option value="all">All lines</option><option value="first">First line</option><option value="none">None</option></select></label><label class="chip"><input type="checkbox" id="rx">Border</label></div></div>
 <div id="stC" hidden><div class="tx">
-<input id="c1" maxlength="60" placeholder="Around the top (e.g. company name)"><input id="c2" maxlength="60" placeholder="Around the bottom (optional, e.g. Bintulu, Sarawak)">
-<input id="c3" maxlength="30" placeholder="Centre line 1 (optional)"><input id="c4" maxlength="30" placeholder="Centre line 2 (optional)"><input id="c5" maxlength="30" placeholder="Centre line 3 (optional)"></div>
-<div class="opt" style="margin-top:12px"><label class="chip"><input type="checkbox" id="ci" checked>Inner circle</label><label class="chip"><input type="checkbox" id="cs" checked>Stars between texts</label></div></div>
-<div class="opt" style="margin-top:8px"><label class="chip">Font <select id="sf"><option value="sans">Sans</option><option value="serif">Serif</option></select></label></div>
+<input id="c1" maxlength="60" placeholder="Around the edge (e.g. SYNLY TRADING &amp; BOOKSTORE SDN BHD)"><input id="c2" maxlength="60" placeholder="Around the bottom (optional)">
+<input id="c3" maxlength="30" placeholder="Centre line 1 (e.g. 821682-H)"><input id="c4" maxlength="30" placeholder="Centre line 2 (optional)"><input id="c5" maxlength="30" placeholder="Centre line 3 (optional)"></div>
+<div class="opt" style="margin-top:12px"><label class="chip"><input type="checkbox" id="ci" checked>Inner circle</label><label class="chip"><input type="checkbox" id="cd" checked>Double outer ring</label><label class="chip"><input type="checkbox" id="cs" checked>Star</label></div></div>
+<div class="opt" style="margin-top:8px"><label class="chip">Font <select id="sf"><option value="serif">Serif (Times)</option><option value="sans">Sans (Arial)</option><option value="cond">Narrow bold</option></select></label></div>
 </section>
 <section><h2><i>4</i>Preview</h2><div class="paper"><canvas id="sp" width="1200" height="600" role="img" aria-label="Stamp preview"></canvas></div>
 <p class="hint" id="sph"></p></section>
@@ -571,36 +571,50 @@ hours();setInterval(hours,6e4);
 const SB={rect:{w:70,h:25,m:5},round:{d:60}},sp=$('#sp'),spx=sp.getContext('2d'),sv=id=>$('#'+id).value.trim(),sck=id=>$('#'+id).checked;
 const sInk=()=>document.querySelector('input[name=sc2]:checked').value,INK={Blue:'#1f3fa8',Black:'#000'};
 const sShape=()=>document.querySelector('input[name=ss]:checked').value,sKind=()=>document.querySelector('input[name=sk]:checked').value;
-const sFam=()=>$('#sf').value=='serif'?'"Times New Roman",Times,"Noto Serif",serif':'Arial,Helvetica,"Liberation Sans",Roboto,sans-serif';
-function sFit(x,t,size,maxW,wt){x.font=`${wt} ${size}px ${sFam()}`;const w=x.measureText(t).width;return w>maxW?size*maxW/w:size}
+const sFam=()=>({serif:'"Times New Roman",Times,"Liberation Serif","Noto Serif",serif',sans:'Arial,Helvetica,"Liberation Sans",Roboto,sans-serif',cond:'Arial,Helvetica,"Liberation Sans",Roboto,sans-serif'})[$('#sf').value],
+ sCond=()=>$('#sf').value=='cond'?.74:1;     // "narrow bold": Arial squeezed horizontally, same on every phone
 // draw the stamp with its centre at (cx,cy); k = pixels per mm
-function drawStamp(x,cx,cy,k,ink='#000'){x.save();x.fillStyle=x.strokeStyle=ink;x.textAlign='center';x.textBaseline='middle';
- if(sShape()=='rect'){const{w,h,m}=SB.rect,L=['r1','r2','r3','r4','r5'].map(sv).filter(Boolean),n=Math.max(1,L.length),aw=(w-2*m)*k,ah=(h-2*m)*k,lh=ah/n;
+function drawStamp(x,cx,cy,k,ink='#000'){const fam=sFam(),cq=sCond(),
+  wid=(t,wt,f)=>{x.font=`${wt} ${f}px ${fam}`;return x.measureText(t).width*cq},
+  put=(t,px,py,wt,f,al,rot=0)=>{x.save();x.translate(px,py);if(rot)x.rotate(rot);x.scale(cq,1);x.font=`${wt} ${f}px ${fam}`;x.textAlign=al;x.fillText(t,0,0);x.restore()};
+ x.save();x.fillStyle=x.strokeStyle=ink;x.textBaseline='middle';
+ if(sShape()=='rect'){const{w,h,m}=SB.rect,L=['r1','r2','r3','r4','r5'].map(sv).filter(Boolean),n=Math.max(1,L.length),aw=(w-2*m)*k,ah=(h-2*m)*k,lh=ah/n,al=$('#ra').value,bm=$('#rb').value;
   if(sck('rx')){x.lineWidth=.5*k;x.strokeRect(cx-w*k/2+.25*k,cy-h*k/2+.25*k,w*k-.5*k,h*k-.5*k)}
-  L.forEach((t,i)=>{const wt=i==0&&sck('rb')?'700':'400',f=sFit(x,t,lh*.78,aw,wt);x.font=`${wt} ${f}px ${sFam()}`;x.fillText(t,cx,cy-ah/2+lh*(i+.5))})}
- else{const R=SB.round.d/2*k,inner=sck('ci'),top=sv('c1'),bot=sv('c2'),C=['c3','c4','c5'].map(sv).filter(Boolean),gap=1.2*k;
-  x.lineWidth=.6*k;x.beginPath();x.arc(cx,cy,R-.3*k,0,7);x.stroke();
-  const ri=inner?R*.6:0,band=inner?R-ri:R*.24,fs0=band*.5;let rc=inner?ri-gap:R-band-gap;
-  if(inner){x.lineWidth=.45*k;x.beginPath();x.arc(cx,cy,ri,0,7);x.stroke()}
-  const both=top&&bot,max=(both?150:300)*Math.PI/180,tr=fs=>fs*.12,
-   rad=fs=>inner?(R-.3*k+ri)/2:R-gap-fs*.5,
-   span=(t,fs)=>{x.font=`700 ${fs}px ${sFam()}`;return(x.measureText(t).width+tr(fs)*([...t].length-1))/rad(fs)},
-   fit=t=>{let fs=fs0;for(let i=0;i<10&&span(t,fs)>max;i++)fs*=max/span(t,fs)*.98;return fs},
-   fsA=Math.min(top?fit(top):fs0,bot?fit(bot):fs0),
-   arc=(t,isTop)=>{if(!t)return;const fs=fsA,rr=rad(fs),sp=span(t,fs),ws=[...t].map(c=>x.measureText(c).width+tr(fs));let a=isTop?-Math.PI/2-sp/2:Math.PI/2+sp/2;
-   for(let i=0;i<ws.length;i++){const c=[...t][i],da=ws[i]/rr,m=isTop?a+da/2:a-da/2;x.save();x.translate(cx+rr*Math.cos(m),cy+rr*Math.sin(m));x.rotate(isTop?m+Math.PI/2:m-Math.PI/2);x.fillText(c,0,0);x.restore();a=isTop?a+da:a-da}};
-  arc(top,1);arc(bot,0);
-  if(both&&sck('cs')){x.font=`400 ${Math.max(fsA,fs0*.6)*.8}px ${sFam()}`;const rr=rad(fsA);x.fillText('★',cx-rr,cy);x.fillText('★',cx+rr,cy)}
-  const n=C.length;if(n){const lh=Math.min(rc*.6,1.55*rc/n);C.forEach((t,i)=>{const dy=(i-(n-1)/2)*lh,hw=Math.sqrt(Math.max(0,rc*rc-(Math.abs(dy)+lh/2)**2))*1.85,f=sFit(x,t,lh*.75,hw,'700');x.font=`700 ${f}px ${sFam()}`;x.fillText(t,cx,cy+dy)})}}
+  L.forEach((t,i)=>{const wt=bm=='all'||bm=='first'&&!i?'700':'400';let f=lh*.84;const tw=wid(t,wt,f);if(tw>aw)f*=aw/tw;
+   put(t,al=='left'?cx-aw/2:cx,cy-ah/2+lh*(i+.5),wt,f,al=='left'?'left':'center')})}
+ else{const R=SB.round.d/2*k,inner=sck('ci'),dbl=sck('cd'),star=sck('cs'),top=sv('c1'),bot=sv('c2'),C=['c3','c4','c5'].map(sv).filter(Boolean);
+  x.lineWidth=.8*k;x.beginPath();x.arc(cx,cy,R-.4*k,0,7);x.stroke();
+  if(dbl){x.lineWidth=.4*k;x.beginPath();x.arc(cx,cy,R-1.6*k,0,7);x.stroke()}
+  const edge=dbl?R-1.8*k:R-.8*k,ri=inner?R*.58:0;
+  if(inner){x.lineWidth=.6*k;x.beginPath();x.arc(cx,cy,ri,0,7);x.stroke()}
+  const zOut=edge-.7*k,zIn=inner?ri+1*k:edge-R*.27,zone=zOut-zIn,rm=(zIn+zOut)/2,both=top&&bot,D=Math.PI/180;
+  // one letter size for the ring, as tall as the band allows; shrink only if the text is too long
+  let f=zone/.72*.92;const nat=t=>{if(!t)return 0;const W=[...t].map(c=>wid(c,'700',f));return(W.reduce((a,b)=>a+b,0)+.06*f*(W.length-1))/rm};
+  const total=(both?360-(star?2*26:2*12):star?305:330)*D;let nT=nat(top),nB=nat(bot);
+  if(nT+nB>total){const q=total/(nT+nB);f*=q;nT*=q;nB*=q}
+  const share=nT+nB?total/(nT+nB):1,maxT=both?nT*Math.max(1,share):total,maxB=both?nB*Math.max(1,share):total;
+  const cap=.72*f,arc=(t,isTop,max)=>{if(!t)return 0;const ch=[...t],W=ch.map(c=>wid(c,'700',f)),sum=W.reduce((a,b)=>a+b,0);
+   let tr=.06*f;if(ch.length>1)tr=Math.min(.25*f,Math.max(tr,(max*rm-sum)/(ch.length-1)));     // spread short text round the ring like a real seal
+   const span=(sum+tr*(ch.length-1))/rm,rb=isTop?rm-cap/2:rm+cap/2;let a=isTop?-Math.PI/2-span/2:Math.PI/2+span/2;
+   x.textBaseline='alphabetic';
+   ch.forEach((c,i)=>{const da=W[i]/rm,m=isTop?a+da/2:a-da/2;put(c,cx+rb*Math.cos(m),cy+rb*Math.sin(m),'700',f,'center',isTop?m+Math.PI/2:m-Math.PI/2);a=isTop?a+(W[i]+tr)/rm:a-(W[i]+tr)/rm});
+   x.textBaseline='middle';return span};
+  const sT=arc(top,1,maxT),sB=arc(bot,0,maxB);
+  if(star&&(top||bot)){x.font=`400 ${Math.min(f*1.1,zone*.95)}px ${sFam()}`;x.textAlign='center';
+   const st=g=>x.fillText('★',cx+rm*Math.cos(g),cy+rm*Math.sin(g));
+   if(both){const g=(sT-sB)/4;st(g);st(Math.PI-g)}else st(top?Math.PI/2:-Math.PI/2)}
+  const rc=(inner?ri:zIn)-1.2*k,n=C.length;
+  if(n){const lh=Math.min(rc*.62,1.6*rc/n);C.forEach((t,i)=>{const dy=(i-(n-1)/2)*lh,hw=Math.sqrt(Math.max(0,rc*rc-(Math.abs(dy)+lh/2)**2))*1.85;let g=lh*.78;const tw=wid(t,'700',g);if(tw>hw)g*=hw/tw;put(t,cx,cy+dy,'700',g,'center')})}}
  x.restore()}
 function sReady(){return(sShape()=='rect'?['r1','r2','r3','r4','r5']:['c1','c2','c3','c4','c5']).some(id=>$('#'+id).value.trim())}
-function sPreview(){const rect=sShape()=='rect';$('#stR').hidden=!rect;$('#stC').hidden=rect;
+let sfTouched=false;$('#sf').addEventListener('change',()=>sfTouched=true);
+function sPreview(){const rect=sShape()=='rect';if(!sfTouched)$('#sf').value=rect?'serif':'cond';$('#stR').hidden=!rect;$('#stC').hidden=rect;
  const W=1200,H=rect?560:1200;if(sp.height!=H)sp.height=H;spx.fillStyle='#fff';spx.fillRect(0,0,W,H);
  const k=rect?(W-80)/SB.rect.w:(H-80)/SB.round.d;drawStamp(spx,W/2,H/2,k,INK[sInk()]);
  $('#sb').disabled=busy||!sReady();
  $('#sph').textContent=rect?'Preview in your ink colour. Rectangle up to 7 × 2.5 cm; final size is chosen by our staff to suit your text.':'Preview in your ink colour at maximum size (6 cm across). Our staff choose the final size to suit your text.'}
 document.querySelectorAll('#vStamp input,#vStamp select').forEach(e=>{if(!['sn','st','sm','so'].includes(e.id))e.addEventListener('input',sPreview)});
-document.querySelectorAll('#vStamp input[type=radio],#vStamp input[type=checkbox],#sf').forEach(e=>e.addEventListener('change',sPreview));
+document.querySelectorAll('#vStamp input[type=radio],#vStamp input[type=checkbox],#vStamp select').forEach(e=>e.addEventListener('change',sPreview));
 let sNo=1;const sName=n=>'stbchop'+String(n).padStart(4,'0'),sShow=()=>$('#so').value=String(sNo).padStart(4,'0');
 try{sNo=Math.max(1,parseInt(localStorage.stbNo,10)||1)}catch(e){}sShow();
 $('#so').onchange=()=>{sNo=Math.max(1,parseInt($('#so').value.replace(/\D/g,''),10)||1);sShow();try{localStorage.stbNo=sNo}catch(e){}};
@@ -611,10 +625,10 @@ function sSheet(no){const c=document.createElement('canvas');c.width=PW;c.height
  x.font=`500 ${3.1*k}px ${F}`;x.fillText('Synly Trading & Bookstore Sdn Bhd · Lot 290-292, Parkcity Commerce Square, 97000 Bintulu · 086-337 891',L,38*k);
  x.fillRect(L,42*k,PW-2*L,.5*k);
  const d=new Date(Date.now()+8*36e5),dt=d.toISOString().slice(0,16).replace('T',' ');
- const rows=[['Order no.',sName(no)],['Date / time',dt],['Customer',sv('sn')||'-'],['Phone',sv('st')||'-'],['Shape',rect?'Rectangle (max 7 × 2.5 cm)':'Round (max 6 cm across)'+(sck('ci')?', inner circle':'')],['Stamp type',sKind()],['Ink colour',sInk()],['Model',sv('sm')||'-']];
+ const rows=[['Order no.',sName(no)],['Date / time',dt],['Customer',sv('sn')||'-'],['Phone',sv('st')||'-'],['Shape',rect?'Rectangle (max 7 × 2.5 cm)':'Round (max 6 cm across)'+(sck('cd')?', double ring':'')+(sck('ci')?', inner circle':'')],['Font',$('#sf').selectedOptions[0].text+(rect?', '+($('#ra').value=='left'?'left':'centre')+' aligned':'')],['Stamp type',sKind()],['Ink colour',sInk()],['Model',sv('sm')||'-']];
  let y=52*k;rows.forEach(([a,b])=>{x.font=`500 ${4.2*k}px ${F}`;x.fillStyle='#555';x.fillText(a,L,y);x.fillStyle='#000';x.font=`700 ${4.6*k}px ${F}`;x.fillText(b,L+42*k,y);y+=8*k});
  y+=2*k;x.fillStyle='#555';x.font=`500 ${4.2*k}px ${F}`;x.fillText('Text',L,y);x.fillStyle='#000';x.font=`600 ${4.4*k}px ${F}`;
- const T=rect?['r1','r2','r3','r4','r5'].map((id,i)=>sv(id)&&`Line ${i+1}: ${sv(id)}`):[sv('c1')&&'Top: '+sv('c1'),sv('c2')&&'Bottom: '+sv('c2'),...['c3','c4','c5'].map((id,i)=>sv(id)&&`Centre ${i+1}: ${sv(id)}`)];
+ const T=rect?['r1','r2','r3','r4','r5'].map((id,i)=>sv(id)&&`Line ${i+1}: ${sv(id)}`):[sv('c1')&&'Around: '+sv('c1'),sv('c2')&&'Bottom: '+sv('c2'),...['c3','c4','c5'].map((id,i)=>sv(id)&&`Centre ${i+1}: ${sv(id)}`)];
  T.filter(Boolean).forEach(t=>{x.fillText(t,L+42*k,y);y+=7*k});
  y+=6*k;x.fillRect(L,y,PW-2*L,.3*k);y+=10*k;
  x.fillStyle='#555';x.font=`600 ${4*k}px ${F}`;x.fillText(rect?'Actual size':'Maximum size (final size per model)',L,y);
