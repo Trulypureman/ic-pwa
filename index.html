@@ -24,7 +24,10 @@ header::before{width:340px;height:340px;right:-120px;top:-150px}header::after{wi
 .hbar{position:relative;display:flex;gap:12px;align-items:center;max-width:560px;margin:0 auto;padding:calc(env(safe-area-inset-top) + 14px) 16px 14px}
 .lg{width:46px;height:46px;border-radius:50%;background:#fff;display:grid;place-items:center;flex:none;box-shadow:0 3px 10px #0003;transition:transform .35s var(--ease)}
 .lg img{width:38px;height:38px}
-.ht{min-width:0}.ht h1{font-size:1.08rem;margin:0;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ht p{margin:1px 0 0;font-size:.76rem;opacity:.85}
+.ht{min-width:0;flex:1}
+.hnav{display:flex;flex-direction:column;gap:6px;flex:none}body.sub .hnav{display:none}
+.hb{padding:5px 11px;font-size:.72rem;font-weight:600;border-radius:20px;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(6px);white-space:nowrap}
+.hb:hover{background:rgba(255,255,255,.24)}.ht h1{font-size:1.08rem;margin:0;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ht p{margin:1px 0 0;font-size:.76rem;opacity:.85}
 .ib{width:40px;height:40px;flex:none;border-radius:50%;border:0;padding:0;display:grid;place-items:center;background:rgba(255,255,255,.16);color:#fff;transition:background .2s,transform .2s}
 .ib svg{width:22px;height:22px}.ib[hidden]{display:none}
 .hero{position:relative;max-width:560px;margin:0 auto;padding:4px 18px 26px;max-height:200px;transition:max-height .4s var(--ease),opacity .3s,padding .4s var(--ease)}
@@ -141,7 +144,7 @@ footer{text-align:center;font-size:.76rem;color:var(--mu);padding:10px 16px 0}
 @page{size:A4;margin:0}
 @media print{body{background:#fff;padding:0}body>*{display:none!important}#pi{display:block!important;width:210mm;height:297mm}}
 </style></head><body>
-<header><div class="hbar"><button class="ib" id="back" aria-label="Back to home" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><div class="lg"><img src="logo.png" alt="Synly"></div><div class="ht"><h1 id="ttl">Synly Printing Services</h1><p id="stl">Synly Trading &amp; Bookstore S/B</p></div></div>
+<header><div class="hbar"><button class="ib" id="back" aria-label="Back to home" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><div class="lg"><img src="logo.png" alt="Synly"></div><div class="ht"><h1 id="ttl">Synly Printing Services</h1><p id="stl">Synly Trading &amp; Bookstore S/B</p></div><nav class="hnav" aria-label="Shop"><button class="hb" data-go="about">About us</button><button class="hb" data-go="contact">Contact us</button></nav></div>
 <div class="hero"><h2>Print, copy &amp; convert.</h2><p>Quick, tidy prints, ready from your phone.</p></div></header>
 <main>
 <div class="view" id="vHome">
@@ -152,11 +155,7 @@ footer{text-align:center;font-size:.76rem;color:var(--mu);padding:10px 16px 0}
 <button class="tile" data-go="pdf"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg></span><b>To PDF</b><small>Photos &amp; Word, send on WhatsApp</small></button>
 <button class="tile soon" data-go="stamp"><em>Soon</em><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 12V9.5a2.5 2.5 0 1 1 5 0V12"/><path d="M5 12h14a1 1 0 0 1 1 1v3H4v-3a1 1 0 0 1 1-1zM6 20h12"/></svg></span><b>Stamp Booking</b><small>Order rubber stamps</small></button>
 </div>
-<p class="lbl">Synly</p>
-<div class="list">
-<button class="li" data-go="about"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg></span><span>About us<small>Synly Trading &amp; Bookstore S/B</small></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
-<a class="li" href="https://wa.me/60127664819" target="_blank" rel="noopener"><span class="ico wa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 18.7z"/><path d="M9 9.5c.3 2.3 2.2 4.2 4.5 4.5l1-1.2 2 .9-.4 1.6c-3.6.3-7.2-3.3-6.9-6.9l1.6-.4.9 2z"/></svg></span><span>Chat on WhatsApp<small>+60 12-766 4819</small></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></a>
-</div>
+<footer>Created by AhChai for Synly Trading &amp; Bookstore S/B<br>Your files stay on this phone.<br><button class="cof" id="cof">&#9749; Buy me a coffee</button></footer>
 </div>
 <div class="view" id="mIC" hidden>
 <p class="lead">Front and back of an IC or driving licence, real size on one A4 page.</p>
@@ -213,20 +212,21 @@ footer{text-align:center;font-size:.76rem;color:var(--mu);padding:10px 16px 0}
 <p>We already make stamps at the shop. Booking them in this app is coming soon; for now, send us your stamp details on WhatsApp.</p>
 <a class="btn p" href="https://wa.me/60127664819?text=Hi%20Synly%2C%20I%27d%20like%20to%20order%20a%20stamp." target="_blank" rel="noopener">Ask about stamps on WhatsApp</a></section>
 </div>
-<div class="view" id="vAbout" hidden>
-<section><div class="about-hd"><div class="lg"><img src="logo.png" alt=""></div><div><h3>Synly Trading &amp; Bookstore Sdn Bhd</h3><p>Stationery, books &amp; printing</p></div></div>
-<p class="lead" style="margin:0">A trading company, stationery shop and bookstore in Parkcity Phase 4, Bintulu. Send your documents from your phone and we'll have them printed and ready.</p></section>
+<div class="view" id="vContact" hidden>
 <section><h2>Opening hours <span class="open" id="opn"></span></h2>
 <table class="hrs" id="hrs"><tr data-d="1,2,3,4,5"><th>Monday – Friday</th><td>8:15 am – 7:30 pm</td></tr><tr data-d="6"><th>Saturday</th><td>8:15 am – 6:30 pm</td></tr><tr data-d="0"><th>Sunday</th><td>8:30 am – 5:00 pm</td></tr></table></section>
 <section><h2>Visit us</h2><div class="list" style="margin:0">
 <a class="li" href="https://www.google.com/maps/search/?api=1&amp;query=Synly+Trading+%26+Bookstore+Sdn+Bhd+Parkcity+Commerce+Square+Bintulu" target="_blank" rel="noopener"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span><span>Lot 290-292, Parkcity Commerce Square<small>97000 Bintulu, Sarawak · Open in Google Maps</small></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></a>
 </div></section>
-<section><h2>Contact</h2><div class="list" style="margin:0">
+<section><h2>Call or message</h2><div class="list" style="margin:0">
 <a class="li" href="tel:+6086337891"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h3l2 5-2.5 1.5a11 11 0 0 0 5 5L14 13l5 2v3a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg></span><span>Call the shop<small>086-337 891</small></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></a>
 <a class="li" href="https://wa.me/60127664819" target="_blank" rel="noopener"><span class="ico wa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 18.7z"/><path d="M9 9.5c.3 2.3 2.2 4.2 4.5 4.5l1-1.2 2 .9-.4 1.6c-3.6.3-7.2-3.3-6.9-6.9l1.6-.4.9 2z"/></svg></span><span>WhatsApp<small>+60 12-766 4819</small></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></a></div></section>
+</div>
+<div class="view" id="vAbout" hidden>
+<section><div class="about-hd"><div class="lg"><img src="logo.png" alt=""></div><div><h3>Synly Trading &amp; Bookstore Sdn Bhd</h3><p>Stationery, books &amp; printing</p></div></div>
+<p class="lead" style="margin:0">A trading company, stationery shop and bookstore in Parkcity Phase 4, Bintulu. Send your documents from your phone and we'll have them printed and ready.</p></section>
 <section><h2>This app</h2><p class="lead" style="margin:0">Synly Printing Services (Synly PS) works offline and keeps your files on your phone until you choose to send them.</p></section>
 </div>
-<footer>Created by AhChai for Synly Trading &amp; Bookstore S/B<br>Your files stay on this phone.<br><button class="cof" id="cof">&#9749; Buy me a coffee</button></footer>
 </main>
 <div id="cr" hidden role="dialog" aria-modal="true" aria-labelledby="ct"><h3 id="ct">Crop</h3><canvas id="cv"></canvas>
 <div class="bar"><input type="range" id="zm" min=".5" max="12" step=".01" value="1" aria-label="Zoom"><p>Drag the corners or edges to crop, drag inside the box to move it. Pinch or slide to zoom, double-tap outside to fit.</p>
@@ -234,7 +234,7 @@ footer{text-align:center;font-size:.76rem;color:var(--mu);padding:10px 16px 0}
 <div class="row"><button id="rotL">&#8634; Left</button><button id="fitB">Fit</button><button id="rotR">&#8635; Right</button></div><div class="row"><button id="cx">Cancel</button><button class="p" id="ok">Use crop</button></div></div></div>
 <div id="bz" hidden role="alert" aria-live="assertive"><div><i></i><span>Converting…</span></div></div>
 <dialog id="cd" aria-labelledby="cdt"><h3 id="cdt">Buy me a coffee &#9749;</h3>
-<img src="donate-qr.png" alt="DuitNow QR" width="680" height="1030">
+<img src="donate-qr.png" alt="DuitNow QR" width="625" height="679">
 <p>Scan with any banking or e-wallet app (DuitNow). Thank you for your support!</p>
 <div class="row"><a class="btn" href="donate-qr.png" download="Buy-me-a-coffee-QR.png">Save QR</a><button class="p" id="cdx">Close</button></div></dialog>
 <div id="tst" role="status" aria-live="polite"><span></span><button hidden></button></div>
@@ -425,8 +425,8 @@ qslot.ondragover=e=>{e.preventDefault();qslot.classList.add('drag')};qslot.ondra
 qslot.ondrop=e=>{e.preventDefault();e.stopPropagation();qslot.classList.remove('drag');qload([...e.dataTransfer.files])};
 outs(qg,1,['#qp','#qs','#qj','#qt']);
 /* ---------- navigation: home + one view per service, with smooth transitions ---------- */
-const VIEWS={home:'vHome',ic:'mIC',qr:'mQR',pdf:'mPDF',stamp:'vStamp',about:'vAbout'},
- TTL={ic:'IC Copy',qr:'A5 QR Poster',pdf:'To PDF',stamp:'Stamp Booking',about:'About us'};
+const VIEWS={home:'vHome',ic:'mIC',qr:'mQR',pdf:'mPDF',stamp:'vStamp',about:'vAbout',contact:'vContact'},
+ TTL={ic:'IC Copy',qr:'A5 QR Poster',pdf:'To PDF',stamp:'Stamp Booking',about:'About us',contact:'Contact us'};
 let view='',depth=0;const still=matchMedia('(prefers-reduced-motion: reduce)');
 const lastSvc=()=>{try{const m=localStorage.mode;return /^(ic|qr|pdf)$/.test(m)?m:'ic'}catch(e){return 'ic'}};
 function show(v){view=v;mode=/^(ic|qr|pdf)$/.test(v)?v:'home';if(mode!='home')try{localStorage.mode=v}catch(e){}
