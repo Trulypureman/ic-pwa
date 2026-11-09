@@ -87,6 +87,8 @@ a.btn.p{background:var(--grad);color:#fff;border:0;box-shadow:0 4px 14px rgba(11
 .tx{display:grid;gap:8px}.tx input,.chip select{font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--ln);border-radius:12px;padding:11px 12px;width:100%;transition:border-color .2s}
 .tx input:focus{border-color:var(--ac);outline:0}.chip select{width:auto;padding:2px 6px;border-radius:8px;background:var(--card)}
 #sp{width:100%;height:auto;display:block;background:#fff;border-radius:8px}
+.sub2{font-size:.8rem;font-weight:600;color:var(--mu);margin:14px 2px 8px}
+.pick.ink{flex-direction:row;align-items:center;gap:10px}.dot{width:20px;height:20px;border-radius:50%;flex:none;box-shadow:0 0 0 2px var(--card),0 0 0 3px var(--ln)}
 .cash{border-style:dashed}.ono{display:flex;align-items:center;gap:2px;font:inherit;font-weight:700;color:var(--fg);background:var(--bg);border:1px solid var(--ln);border-radius:12px;padding:0 12px}
 .ono input{font:inherit;font-weight:700;border:0;background:transparent;color:var(--fg);padding:11px 0;width:100%;outline:0}
 .soonbox{text-align:center;padding:28px 18px}
@@ -225,9 +227,13 @@ footer{text-align:center;font-size:.76rem;color:var(--mu);padding:10px 16px 0}
 <label class="pick"><input type="radio" name="ss" value="rect" checked><span class="shp rect"></span><b>Rectangle</b><small>Up to 5 lines · max 7 × 2.5 cm</small></label>
 <label class="pick"><input type="radio" name="ss" value="round"><span class="shp round"></span><b>Round</b><small>Max 6 cm across · inner circle optional</small></label>
 </div></section>
-<section><h2><i>2</i>Stamp type</h2><div class="seg" role="radiogroup" aria-label="Stamp type">
+<section><h2><i>2</i>Stamp type &amp; ink</h2><div class="seg" role="radiogroup" aria-label="Stamp type">
 <label class="pick sm"><input type="radio" name="sk" value="Regular" checked><b>Regular</b><small>Use with an ink pad</small></label>
 <label class="pick sm"><input type="radio" name="sk" value="Self-ink"><b>Self-ink</b><small>Ink built in, no pad needed</small></label>
+</div>
+<p class="sub2">Ink colour</p><div class="seg" role="radiogroup" aria-label="Ink colour">
+<label class="pick sm ink"><input type="radio" name="sc2" value="Blue" checked><span class="dot" style="background:#1f3fa8"></span><b>Blue</b></label>
+<label class="pick sm ink"><input type="radio" name="sc2" value="Black"><span class="dot" style="background:#111"></span><b>Black</b></label>
 </div></section>
 <section><h2><i>3</i>Your text</h2>
 <div id="stR"><div class="tx">
@@ -240,7 +246,7 @@ footer{text-align:center;font-size:.76rem;color:var(--mu);padding:10px 16px 0}
 <div class="opt" style="margin-top:8px"><label class="chip">Font <select id="sf"><option value="sans">Sans</option><option value="serif">Serif</option></select></label></div>
 </section>
 <section><h2><i>4</i>Preview</h2><div class="paper"><canvas id="sp" width="1200" height="600" role="img" aria-label="Stamp preview"></canvas></div>
-<p class="hint" id="sph">Black &amp; white preview. Final size is chosen by our staff to suit your text.</p></section>
+<p class="hint" id="sph"></p></section>
 <section><h2><i>5</i>Your details</h2><div class="tx">
 <input id="sn" maxlength="60" placeholder="Your name" autocomplete="name"><input id="st" maxlength="20" placeholder="Phone number" inputmode="tel" autocomplete="tel"></div></section>
 <section class="cash"><h2><i>6</i>For cashier</h2><div class="tx">
@@ -563,11 +569,12 @@ hours();setInterval(hours,6e4);
 /* ---------- Stamp booking: design + preview, cashier submits a B&W PDF (stbchop0001…) ---------- */
 // All stamp geometry in mm. Rectangle 70 × 25 with 5 mm kept clear on every side; round drawn at its 60 mm maximum.
 const SB={rect:{w:70,h:25,m:5},round:{d:60}},sp=$('#sp'),spx=sp.getContext('2d'),sv=id=>$('#'+id).value.trim(),sck=id=>$('#'+id).checked;
+const sInk=()=>document.querySelector('input[name=sc2]:checked').value,INK={Blue:'#1f3fa8',Black:'#000'};
 const sShape=()=>document.querySelector('input[name=ss]:checked').value,sKind=()=>document.querySelector('input[name=sk]:checked').value;
 const sFam=()=>$('#sf').value=='serif'?'"Times New Roman",Times,"Noto Serif",serif':'Arial,Helvetica,"Liberation Sans",Roboto,sans-serif';
 function sFit(x,t,size,maxW,wt){x.font=`${wt} ${size}px ${sFam()}`;const w=x.measureText(t).width;return w>maxW?size*maxW/w:size}
 // draw the stamp with its centre at (cx,cy); k = pixels per mm
-function drawStamp(x,cx,cy,k){x.save();x.fillStyle=x.strokeStyle='#000';x.textAlign='center';x.textBaseline='middle';
+function drawStamp(x,cx,cy,k,ink='#000'){x.save();x.fillStyle=x.strokeStyle=ink;x.textAlign='center';x.textBaseline='middle';
  if(sShape()=='rect'){const{w,h,m}=SB.rect,L=['r1','r2','r3','r4','r5'].map(sv).filter(Boolean),n=Math.max(1,L.length),aw=(w-2*m)*k,ah=(h-2*m)*k,lh=ah/n;
   if(sck('rx')){x.lineWidth=.5*k;x.strokeRect(cx-w*k/2+.25*k,cy-h*k/2+.25*k,w*k-.5*k,h*k-.5*k)}
   L.forEach((t,i)=>{const wt=i==0&&sck('rb')?'700':'400',f=sFit(x,t,lh*.78,aw,wt);x.font=`${wt} ${f}px ${sFam()}`;x.fillText(t,cx,cy-ah/2+lh*(i+.5))})}
@@ -589,9 +596,9 @@ function drawStamp(x,cx,cy,k){x.save();x.fillStyle=x.strokeStyle='#000';x.textAl
 function sReady(){return(sShape()=='rect'?['r1','r2','r3','r4','r5']:['c1','c2','c3','c4','c5']).some(id=>$('#'+id).value.trim())}
 function sPreview(){const rect=sShape()=='rect';$('#stR').hidden=!rect;$('#stC').hidden=rect;
  const W=1200,H=rect?560:1200;if(sp.height!=H)sp.height=H;spx.fillStyle='#fff';spx.fillRect(0,0,W,H);
- const k=rect?(W-80)/SB.rect.w:(H-80)/SB.round.d;drawStamp(spx,W/2,H/2,k);
+ const k=rect?(W-80)/SB.rect.w:(H-80)/SB.round.d;drawStamp(spx,W/2,H/2,k,INK[sInk()]);
  $('#sb').disabled=busy||!sReady();
- $('#sph').textContent=rect?'Black & white preview. Rectangle up to 7 × 2.5 cm; final size is chosen by our staff to suit your text.':'Black & white preview at maximum size (6 cm across). Our staff choose the final size to suit your text.'}
+ $('#sph').textContent=rect?'Preview in your ink colour. Rectangle up to 7 × 2.5 cm; final size is chosen by our staff to suit your text.':'Preview in your ink colour at maximum size (6 cm across). Our staff choose the final size to suit your text.'}
 document.querySelectorAll('#vStamp input,#vStamp select').forEach(e=>{if(!['sn','st','sm','so'].includes(e.id))e.addEventListener('input',sPreview)});
 document.querySelectorAll('#vStamp input[type=radio],#vStamp input[type=checkbox],#sf').forEach(e=>e.addEventListener('change',sPreview));
 let sNo=1;const sName=n=>'stbchop'+String(n).padStart(4,'0'),sShow=()=>$('#so').value=String(sNo).padStart(4,'0');
@@ -604,7 +611,7 @@ function sSheet(no){const c=document.createElement('canvas');c.width=PW;c.height
  x.font=`500 ${3.1*k}px ${F}`;x.fillText('Synly Trading & Bookstore Sdn Bhd · Lot 290-292, Parkcity Commerce Square, 97000 Bintulu · 086-337 891',L,38*k);
  x.fillRect(L,42*k,PW-2*L,.5*k);
  const d=new Date(Date.now()+8*36e5),dt=d.toISOString().slice(0,16).replace('T',' ');
- const rows=[['Order no.',sName(no)],['Date / time',dt],['Customer',sv('sn')||'-'],['Phone',sv('st')||'-'],['Shape',rect?'Rectangle (max 7 × 2.5 cm)':'Round (max 6 cm across)'+(sck('ci')?', inner circle':'')],['Stamp type',sKind()],['Model',sv('sm')||'-']];
+ const rows=[['Order no.',sName(no)],['Date / time',dt],['Customer',sv('sn')||'-'],['Phone',sv('st')||'-'],['Shape',rect?'Rectangle (max 7 × 2.5 cm)':'Round (max 6 cm across)'+(sck('ci')?', inner circle':'')],['Stamp type',sKind()],['Ink colour',sInk()],['Model',sv('sm')||'-']];
  let y=52*k;rows.forEach(([a,b])=>{x.font=`500 ${4.2*k}px ${F}`;x.fillStyle='#555';x.fillText(a,L,y);x.fillStyle='#000';x.font=`700 ${4.6*k}px ${F}`;x.fillText(b,L+42*k,y);y+=8*k});
  y+=2*k;x.fillStyle='#555';x.font=`500 ${4.2*k}px ${F}`;x.fillText('Text',L,y);x.fillStyle='#000';x.font=`600 ${4.4*k}px ${F}`;
  const T=rect?['r1','r2','r3','r4','r5'].map((id,i)=>sv(id)&&`Line ${i+1}: ${sv(id)}`):[sv('c1')&&'Top: '+sv('c1'),sv('c2')&&'Bottom: '+sv('c2'),...['c3','c4','c5'].map((id,i)=>sv(id)&&`Centre ${i+1}: ${sv(id)}`)];
