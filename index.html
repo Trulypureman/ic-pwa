@@ -675,35 +675,41 @@ document.querySelectorAll('#vStamp input[type=radio],#vStamp input[type=checkbox
 const sDig=()=>$('#st').value.replace(/\D/g,''),sName=()=>'STMP'+sDig().slice(-4),sShow=()=>$('#ssn').textContent=sDig().length>=4?sName():'STMP····';
 $('#st').addEventListener('input',sShow);sShow();
 // A4 order sheet: details + stamp at actual size + 2x enlargement for checking
-function sSheet(no,np=0,other=[]){const c=document.createElement('canvas');c.width=PW;c.height=PH;const x=c.getContext('2d'),F='"Plus Jakarta Sans",Arial,sans-serif',k=MM,L=20*k,rect=sShape()=='rect';
+function sSheet(no,imgs=[],other=[]){const np=imgs.length;const c=document.createElement('canvas');c.width=PW;c.height=PH;const x=c.getContext('2d'),F='"Plus Jakarta Sans",Arial,sans-serif',k=MM,L=20*k,rect=sShape()=='rect';
  x.fillStyle='#fff';x.fillRect(0,0,PW,PH);x.fillStyle='#000';x.textBaseline='alphabetic';
  x.font=`800 ${9*k}px ${F}`;x.fillText('Stamp order',L,30*k);x.textAlign='right';x.fillText(no,PW-L,30*k);x.textAlign='left';
  x.font=`500 ${3.1*k}px ${F}`;x.fillText('Synly Trading & Bookstore Sdn Bhd · Lot 290-292, Parkcity Commerce Square, 97000 Bintulu · 086-337 891',L,38*k);
  x.fillRect(L,42*k,PW-2*L,.5*k);
  const d=new Date(Date.now()+8*36e5),dt=d.toISOString().slice(0,16).replace('T',' ');
- const rows=[['Series no.',no],['Date / time',dt],['Customer',sv('sn')||'-'],['Phone',sv('st')],['Shape',rect?'Rectangle (max 7 × 2.5 cm)':'Round (max 6 cm across)'+(sck('cd')?', double ring':'')+(sck('ci')?', inner circle':'')],['Font',$('#sf').selectedOptions[0].text+(rect?', '+($('#ra').value=='left'?'left':'centre')+' aligned':'')],['Stamp type',sKind()],['Ink colour',sInk()],['Model',sv('sm')||'-'],['Cashier',sv('scs')],['Sample',SA.length?((np?np+' photo'+(np>1?'s':'')+' (next pages)':'')+(np&&other.length?' + ':'')+(other.length?other.map(f=>f.name).join(', ').slice(0,60):'')):'-']];
+ const rows=[['Series no.',no],['Date / time',dt],['Customer',sv('sn')||'-'],['Phone',sv('st')],['Shape',rect?'Rectangle (max 7 × 2.5 cm)':'Round (max 6 cm across)'+(sck('cd')?', double ring':'')+(sck('ci')?', inner circle':'')],['Font',$('#sf').selectedOptions[0].text+(rect?', '+($('#ra').value=='left'?'left':'centre')+' aligned':'')],['Stamp type',sKind()],['Ink colour',sInk()],['Model',sv('sm')||'-'],['Cashier',sv('scs')],['Sample',SA.length?((np?np+' photo'+(np>1?'s':'')+' (below)':'')+(np&&other.length?' + ':'')+(other.length?other.map(f=>f.name).join(', ').slice(0,60):'')):'-']];
  let y=52*k;rows.forEach(([a,b])=>{x.font=`500 ${4.2*k}px ${F}`;x.fillStyle='#555';x.fillText(a,L,y);x.fillStyle='#000';x.font=`700 ${4.6*k}px ${F}`;x.fillText(b,L+42*k,y);y+=7*k});
  y+=2*k;x.fillStyle='#555';x.font=`500 ${4.2*k}px ${F}`;x.fillText('Text',L,y);x.fillStyle='#000';x.font=`600 ${4.4*k}px ${F}`;
  const T=rect?['r1','r2','r3','r4','r5','r6','r7','r8'].map((id,i)=>sv(id)&&`Line ${i+1}: ${sv(id)}`):[sv('c1')&&'Around: '+sv('c1'),sv('c2')&&'Bottom: '+sv('c2'),...['c3','c4','c5'].map((id,i)=>sv(id)&&`Centre ${i+1}: ${sv(id)}`)];
  if(!sHasText())T.splice(0,T.length,'As per attached sample');
  T.filter(Boolean).forEach(t=>{x.fillText(t,L+42*k,y);y+=6*k});
  y+=6*k;x.fillRect(L,y,PW-2*L,.3*k);y+=10*k;
- let big=null;
- if(sHasText()){
- x.fillStyle='#555';x.font=`600 ${4*k}px ${F}`;x.fillText(rect?'Actual size':'Maximum size (final size per model)',L,y);
- const sh=rect?SB.rect.h:SB.round.d,sw=rect?SB.rect.w:SB.round.d;y+=4*k;
- if(rect){x.strokeStyle='#bbb';x.setLineDash([2*k,1.5*k]);x.lineWidth=.3*k;x.strokeRect(L,y,sw*k,sh*k);x.setLineDash([])}
- drawStamp(x,L+sw*k/2,y+sh*k/2,k);y+=sh*k+12*k;
- const z=Math.min(2,(PH-50*k-y-4*k)/(sh*k));   // enlargement shrinks if the order has many lines
- if(rect&&z>=1.2){x.fillStyle='#555';x.fillText(`Enlarged ${Math.round(z*10)/10}× for checking`,L,y);y+=4*k;drawStamp(x,PW/2,y+sh*k*z/2,z*k);y+=sh*z*k+12*k}
- else if(rect){x.fillStyle='#555';x.fillText('Enlarged view on the next page',L,y);   // no room: enlargement gets its own page
-  big=document.createElement('canvas');big.width=PW;big.height=PH;const g=big.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,PW,PH);g.fillStyle='#000';
-  g.font=`800 ${7*k}px ${F}`;g.fillText(no+' · enlarged 2.5× for checking',L,30*k);drawStamp(g,PW/2,30*k+20*k+sh*2.5*k/2,2.5*k)}
- } else {x.fillStyle='#555';x.font=`600 ${4*k}px ${F}`;x.fillText('Stamp design: as per the attached sample'+(np?' (next pages)':' (sent with this PDF)'),L,y)}
+ const yEnd=PH-48*k,UW=PW-2*L,lab=(t,X,Y)=>{x.fillStyle='#555';x.font=`600 ${4*k}px ${F}`;x.textAlign='left';x.fillText(t,X,Y)};
+ // everything stays on this one page. With a sample: stamp on the left, sample on the right using all the height left.
+ const hasS=np||other.length,ht=sHasText(),sh=rect?SB.rect.h:SB.round.d,sw=rect?SB.rect.w:SB.round.d,avail=(yEnd-y)/k-4;  // mm
+ let colW=UW/k;                                                       // mm width for the stamp drawings
+ if(ht){if(hasS)colW=sw+4;
+  const z1=Math.min(1,avail/sh),dx=L;                                   // actual size, scaled down only if the page is full
+  lab(rect?(z1<1?`Actual size (shown at ${Math.round(z1*100)}%)`:'Actual size'):(z1<1?`Maximum size (shown at ${Math.round(z1*100)}%)`:'Maximum size (final size per model)'),dx,y);
+  let yy=y+4*k;if(rect){x.strokeStyle='#bbb';x.setLineDash([2*k,1.5*k]);x.lineWidth=.3*k;x.strokeRect(dx,yy,sw*z1*k,sh*z1*k);x.setLineDash([])}
+  drawStamp(x,dx+sw*z1*k/2,yy+sh*z1*k/2,z1*k);yy+=sh*z1*k+10*k;
+  if(rect){const zb=Math.min(2,(colW-2)/sw,((yEnd-yy)/k-6)/sh),zs=Math.min(2,(UW/k-sw-8)/sw,avail/sh);
+   if(zb>=1.25){lab(`Enlarged ${Math.round(zb*10)/10}×`,dx,yy);yy+=4*k;drawStamp(x,dx+sw*zb*k/2,yy+sh*zb*k/2,zb*k)}         // below
+   else if(!hasS&&zs>=1.2){lab(`Enlarged ${Math.round(zs*10)/10}×`,L+(sw+8)*k,y);drawStamp(x,L+(sw+8)*k+sw*zs*k/2,y+4*k+sh*zs*k/2,zs*k)}}}  // beside
+ if(hasS){const X0=ht?L+(colW+6)*k:L,W0=PW-L-X0;
+  x.save();x.beginPath();x.rect(X0,y-6*k,W0,10*k);x.clip();lab('Customer sample'+(other.length?` (+ ${other.length} file${other.length>1?'s':''} sent with this PDF)`:''),X0,y);x.restore();
+  let y0=y+4*k;if(other.length){x.fillStyle='#000';x.font=`500 ${3.4*k}px ${F}`;other.slice(0,3).forEach(f=>{x.fillText('• '+f.name.slice(0,40),X0,y0+3*k);y0+=5*k});y0+=2*k}
+  const n=np;if(n){const cols=n==1?1:n<=4?2:3,rows=Math.ceil(n/cols),G=3*k,cw=(W0-(cols-1)*G)/cols,ch=(yEnd-y0-(rows-1)*G)/rows;
+   imgs.forEach((im,i)=>{const cx0=X0+(i%cols)*(cw+G),cy0=y0+Math.floor(i/cols)*(ch+G),z2=Math.min(cw/im.width,ch/im.height),dw=im.width*z2,dh=im.height*z2;
+    x.drawImage(im,cx0+(cw-dw)/2,cy0,dw,dh);x.strokeStyle='#ccc';x.lineWidth=.3*k;x.strokeRect(cx0+(cw-dw)/2,cy0,dw,dh)})}}
  x.fillStyle='#000';x.fillRect(L,PH-40*k,80*k,.4*k);x.fillRect(PW-L-80*k,PH-40*k,80*k,.4*k);
- x.fillStyle='#555';x.font=`500 ${3.8*k}px ${F}`;x.fillText('Customer confirms the text above',L,PH-34*k);x.textAlign='right';x.fillText('Cashier: '+sv('scs'),PW-L,PH-34*k);
- return big?[c,big]:[c]}
-/* customer sample files: photos go into the order PDF as extra pages; PDFs and other files are shared alongside it */
+ x.fillStyle='#555';x.font=`500 ${3.8*k}px ${F}`;x.textAlign='left';x.fillText('Customer confirms the order above',L,PH-34*k);x.textAlign='right';x.fillText('Cashier: '+sv('scs'),PW-L,PH-34*k);
+ return c}
+/* customer sample files: photos are printed on the one-page order sheet; PDFs and other files are shared alongside it */
 const SA=[],sal=$('#sal'),sa0=$('#sa0'),sain=sa0.querySelector('input');
 const isPdf=f=>/pdf/.test(f.type)||/\.pdf$/i.test(f.name||''),kb=b=>b>1048576?(b/1048576).toFixed(1)+' MB':Math.max(1,Math.round(b/1024))+' KB';
 function salist(){if(typeof sPreview=='function')setTimeout(sPreview);sal.innerHTML='';SA.forEach((f,i)=>{const d=document.createElement('div');d.className='af';
@@ -719,20 +725,17 @@ let ai=0;async function acrop(c,st){const f=SA[ai];if(!f)return;const b=await to
 sain.onchange=()=>{saAdd([...sain.files]);sain.value=''};sa0.onclick=()=>sain.click();sa0.onkeydown=e=>{if(e.key=='Enter'||e.key==' '){e.preventDefault();sain.click()}};
 sa0.ondragover=e=>{e.preventDefault();sa0.classList.add('drag')};sa0.ondragleave=()=>sa0.classList.remove('drag');
 sa0.ondrop=e=>{e.preventDefault();e.stopPropagation();sa0.classList.remove('drag');saAdd([...e.dataTransfer.files])};
-async function samplePages(){const pages=[],other=[],mg=28.35;
- for(const f of SA){let c=null;if(!isPdf(f)&&/^image\//.test(f.type||'image/'))c=await new Promise(ok=>readImg(f,ok,1));
-  if(!c){other.push(f);continue}
-  const b=await toBlob(c,.9),jpg=new Uint8Array(await b.arrayBuffer()),Lw=c.width>c.height,pw=Lw?A4H:A4W,ph=Lw?A4W:A4H,k2=Math.min((pw-2*mg)/c.width,(ph-2*mg)/c.height),dw=c.width*k2,dh=c.height*k2;
-  pages.push({jpg,w:c.width,h:c.height,pw,ph,x:(pw-dw)/2,y:(ph-dh)/2,dw,dh})}
- return{pages,other}}
+async function sampleImgs(){const imgs=[],other=[];
+ for(const f of SA){const c=!isPdf(f)&&/^image\//.test(f.type||'image/')?await new Promise(ok=>readImg(f,ok,1)):null;if(c)imgs.push(c);else other.push(f)}
+ return{imgs,other}}
 let sFile=null,sOther=[];
 $('#sb').onclick=job(async()=>{if(sDig().length<4){toast('Please enter the customer phone number.');$('#st').focus();return}
  if(!sv('scs')){toast('Cashier: please fill in your name.');$('#scs').focus();return}
  if(!sv('sm')){toast('Cashier: please fill in the model.');$('#sm').focus();return}
- if(document.fonts)await document.fonts.ready;const no=sName(),{pages,other}=await samplePages(),cs=sSheet(no,pages.length,other),own=[];for(const c of cs)own.push({jpg:new Uint8Array(await(await toBlob(c,.92)).arrayBuffer()),w:PW,h:PH,pw:A4W,ph:A4H,x:0,y:0,dw:A4W,dh:A4H});
- sFile=new File([buildPdf([...own,...pages])],no+'.pdf',{type:'application/pdf'});sOther=other;
+ if(document.fonts)await document.fonts.ready;const no=sName(),{imgs,other}=await sampleImgs(),c=sSheet(no,imgs,other),jpg=new Uint8Array(await(await toBlob(c,.92)).arrayBuffer());
+ sFile=new File([buildPdf([{jpg,w:PW,h:PH,pw:A4W,ph:A4H,x:0,y:0,dw:A4W,dh:A4H}])],no+'.pdf',{type:'application/pdf'});sOther=other;
  save(sFile,sFile.name);
- $('#sr').hidden=false;$('#srt').textContent=sFile.name+' saved to Downloads'+(pages.length?` (with ${pages.length} sample photo page${pages.length>1?'s':''})`:'')+'.'+(other.length?` ${other.length} sample file${other.length>1?'s are':' is'} sent with it when you tap Share PDF.`:'');toast(sFile.name+' created')});
+ $('#sr').hidden=false;$('#srt').textContent=sFile.name+' saved to Downloads (1 page'+(imgs.length?', sample included':'')+').'+(other.length?` ${other.length} PDF sample${other.length>1?'s are':' is'} sent with it when you tap Share PDF.`:'');toast(sFile.name+' created')});
 $('#sshare').onclick=job(async()=>{if(!sFile)return;const fs=[sFile,...sOther];if(navigator.canShare&&navigator.canShare({files:fs}))try{await navigator.share({files:fs})}catch(e){}else fs.forEach(f=>save(f,f.name))});
 $('#ssave').onclick=()=>sFile&&[sFile,...sOther].forEach(f=>save(f,f.name));
 $('#snew').onclick=()=>{['r1','r2','r3','r4','r5','r6','r7','r8','c1','c2','c3','c4','c5','sn','st','sm'].forEach(id=>$('#'+id).value='');SA.length=0;salist();sOther=[];$('#sr').hidden=true;sFile=null;sPreview();sShow();scrollTo({top:0,behavior:'smooth'})};
