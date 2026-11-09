@@ -77,6 +77,18 @@ a.btn{display:block;font:inherit;font-weight:600;border-radius:14px;border:1px s
 a.btn.p{background:var(--grad);color:#fff;border:0;box-shadow:0 4px 14px rgba(11,122,67,.32)}
 .hint{font-size:.8rem;color:var(--mu);margin:12px 2px 0}
 /* stamp + about */
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pick{position:relative;display:flex;flex-direction:column;gap:3px;padding:14px;border-radius:16px;border:1.5px solid var(--ln);background:var(--bg);cursor:pointer;transition:border-color .2s,background .2s,transform .15s var(--ease)}
+.pick input{position:absolute;opacity:0;pointer-events:none}.pick b{font-size:.95rem}.pick small{color:var(--mu);font-size:.76rem;line-height:1.3}
+.pick:has(input:checked){border-color:var(--ac);background:var(--mint)}.pick:has(input:focus-visible){outline:3px solid var(--ac);outline-offset:2px}.pick:active{transform:scale(.97)}
+.pick:has(input:checked)::after{content:"";position:absolute;right:12px;top:12px;width:18px;height:18px;border-radius:50%;background:var(--grad) center/12px no-repeat;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5 9-10'/%3E%3C/svg%3E"),var(--grad)}
+.shp{display:block;border:2.5px solid currentColor;color:var(--fg);opacity:.75;margin-bottom:8px}.shp.rect{width:56px;height:20px;border-radius:3px}.shp.round{width:34px;height:34px;border-radius:50%;margin-top:-7px;margin-bottom:-6px;box-shadow:inset 0 0 0 5px var(--bg),inset 0 0 0 7px currentColor}
+.pick:has(input:checked) .shp.round{box-shadow:inset 0 0 0 5px var(--mint),inset 0 0 0 7px currentColor}
+.tx{display:grid;gap:8px}.tx input,.chip select{font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--ln);border-radius:12px;padding:11px 12px;width:100%;transition:border-color .2s}
+.tx input:focus{border-color:var(--ac);outline:0}.chip select{width:auto;padding:2px 6px;border-radius:8px;background:var(--card)}
+#sp{width:100%;height:auto;display:block;background:#fff;border-radius:8px}
+.cash{border-style:dashed}.ono{display:flex;align-items:center;gap:2px;font:inherit;font-weight:700;color:var(--fg);background:var(--bg);border:1px solid var(--ln);border-radius:12px;padding:0 12px}
+.ono input{font:inherit;font-weight:700;border:0;background:transparent;color:var(--fg);padding:11px 0;width:100%;outline:0}
 .soonbox{text-align:center;padding:28px 18px}
 .soonbox .big{width:84px;height:84px;margin:0 auto 14px;border-radius:26px;display:grid;place-items:center;background:var(--grad);color:#fff;box-shadow:0 10px 26px rgba(11,122,67,.35)}
 .soonbox .big svg{width:44px;height:44px}.soonbox h3{margin:0 0 6px;font-size:1.3rem}.soonbox p{color:var(--mu);margin:0 auto 18px;max-width:34ch;font-size:.92rem}
@@ -153,7 +165,7 @@ footer{text-align:center;font-size:.76rem;color:var(--mu);padding:10px 16px 0}
 <button class="tile" data-go="ic"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><circle cx="8.5" cy="11" r="2.2"/><path d="M5.5 16c.6-1.6 1.7-2.4 3-2.4s2.4.8 3 2.4M14 10h4.5M14 13.5h3"/></svg></span><b>IC Copy</b><small>Front &amp; back on one A4</small></button>
 <button class="tile" data-go="qr"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M14 14h3v3h-3zM20 14v.01M20 20h-3M14 20v.01M20 17v.01"/></svg></span><b>A5 QR Poster</b><small>Merchant DuitNow QR</small></button>
 <button class="tile" data-go="pdf"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg></span><b>To PDF</b><small>Photos &amp; Word, send on WhatsApp</small></button>
-<button class="tile soon" data-go="stamp"><em>Soon</em><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 12V9.5a2.5 2.5 0 1 1 5 0V12"/><path d="M5 12h14a1 1 0 0 1 1 1v3H4v-3a1 1 0 0 1 1-1zM6 20h12"/></svg></span><b>Stamp Booking</b><small>Order rubber stamps</small></button>
+<button class="tile" data-go="stamp"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 12V9.5a2.5 2.5 0 1 1 5 0V12"/><path d="M5 12h14a1 1 0 0 1 1 1v3H4v-3a1 1 0 0 1 1-1zM6 20h12"/></svg></span><b>Stamp Booking</b><small>Rectangle or round, preview first</small></button>
 </div>
 <footer>Created by AhChai for Synly Trading &amp; Bookstore S/B<br>Your files stay on this phone.<br><button class="cof" id="cof">&#9749; Buy me a coffee</button></footer>
 </div>
@@ -208,9 +220,35 @@ footer{text-align:center;font-size:.76rem;color:var(--mu);padding:10px 16px 0}
 <p class="hint">Choose <b>WhatsApp</b>, then <b>Synly</b> (+60 12-766 4819). Number not saved yet? <a id="wa" href="https://wa.me/60127664819" target="_blank" rel="noopener">Chat with Synly</a> first.</p></section>
 </div>
 <div class="view" id="vStamp" hidden>
-<section class="soonbox"><div class="big"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 12V9.5a2.5 2.5 0 1 1 5 0V12"/><path d="M5 12h14a1 1 0 0 1 1 1v3H4v-3a1 1 0 0 1 1-1zM6 20h12"/></svg></div><span class="pill">Coming soon</span><h3>Stamp Booking</h3>
-<p>We already make stamps at the shop. Booking them in this app is coming soon; for now, send us your stamp details on WhatsApp.</p>
-<a class="btn p" href="https://wa.me/60127664819?text=Hi%20Synly%2C%20I%27d%20like%20to%20order%20a%20stamp." target="_blank" rel="noopener">Ask about stamps on WhatsApp</a></section>
+<p class="lead">Design your stamp and see a preview. Our cashier will confirm the model and print your order.</p>
+<section><h2><i>1</i>Shape</h2><div class="seg" role="radiogroup" aria-label="Stamp shape">
+<label class="pick"><input type="radio" name="ss" value="rect" checked><span class="shp rect"></span><b>Rectangle</b><small>Up to 5 lines · max 7 × 2.5 cm</small></label>
+<label class="pick"><input type="radio" name="ss" value="round"><span class="shp round"></span><b>Round</b><small>Max 6 cm across · inner circle optional</small></label>
+</div></section>
+<section><h2><i>2</i>Stamp type</h2><div class="seg" role="radiogroup" aria-label="Stamp type">
+<label class="pick sm"><input type="radio" name="sk" value="Regular" checked><b>Regular</b><small>Use with an ink pad</small></label>
+<label class="pick sm"><input type="radio" name="sk" value="Self-ink"><b>Self-ink</b><small>Ink built in, no pad needed</small></label>
+</div></section>
+<section><h2><i>3</i>Your text</h2>
+<div id="stR"><div class="tx">
+<input id="r1" maxlength="60" placeholder="Line 1 (e.g. company name)"><input id="r2" maxlength="60" placeholder="Line 2 (optional)"><input id="r3" maxlength="60" placeholder="Line 3 (optional)"><input id="r4" maxlength="60" placeholder="Line 4 (optional)"><input id="r5" maxlength="60" placeholder="Line 5 (optional)"></div>
+<div class="opt" style="margin-top:12px"><label class="chip"><input type="checkbox" id="rb" checked>First line bold</label><label class="chip"><input type="checkbox" id="rx">Border</label></div></div>
+<div id="stC" hidden><div class="tx">
+<input id="c1" maxlength="60" placeholder="Around the top (e.g. company name)"><input id="c2" maxlength="60" placeholder="Around the bottom (optional, e.g. Bintulu, Sarawak)">
+<input id="c3" maxlength="30" placeholder="Centre line 1 (optional)"><input id="c4" maxlength="30" placeholder="Centre line 2 (optional)"><input id="c5" maxlength="30" placeholder="Centre line 3 (optional)"></div>
+<div class="opt" style="margin-top:12px"><label class="chip"><input type="checkbox" id="ci" checked>Inner circle</label><label class="chip"><input type="checkbox" id="cs" checked>Stars between texts</label></div></div>
+<div class="opt" style="margin-top:8px"><label class="chip">Font <select id="sf"><option value="sans">Sans</option><option value="serif">Serif</option></select></label></div>
+</section>
+<section><h2><i>4</i>Preview</h2><div class="paper"><canvas id="sp" width="1200" height="600" role="img" aria-label="Stamp preview"></canvas></div>
+<p class="hint" id="sph">Black &amp; white preview. Final size is chosen by our staff to suit your text.</p></section>
+<section><h2><i>5</i>Your details</h2><div class="tx">
+<input id="sn" maxlength="60" placeholder="Your name" autocomplete="name"><input id="st" maxlength="20" placeholder="Phone number" inputmode="tel" autocomplete="tel"></div></section>
+<section class="cash"><h2><i>6</i>For cashier</h2><div class="tx">
+<label class="fn" style="margin:0">Model<input id="sm" maxlength="40" placeholder="e.g. Shiny S-844"></label>
+<label class="fn" style="margin:0">Order number<span class="ono">stbchop<input id="so" inputmode="numeric" maxlength="6" aria-label="Order number"></span></label></div>
+<button class="p" id="sb" style="width:100%;margin-top:14px">Submit &amp; create PDF</button>
+<div id="sr" hidden><p class="hint" id="srt"></p><div class="row" style="margin-top:10px"><button id="sshare">Share PDF</button><button id="ssave">Save again</button></div>
+<button id="snew" style="width:100%;margin-top:10px">New order</button></div></section>
 </div>
 <div class="view" id="vContact" hidden>
 <section><h2>Opening hours <span class="open" id="opn"></span></h2>
@@ -368,7 +406,7 @@ function paint(){raf=0;const v=Math.max(70,Math.min(130,+$('#sc').value||100)),k
  L.forEach((i,j)=>{const y=(top+j*(54*k+GAP))*MM,c=cards[i];
   pc.save();if($('#rd').checked){rr(x,y,w,h,r);pc.clip()}pc.drawImage($('#gr').checked?gray(c):c,x,y,w,h);pc.restore();
   if($('#bd').checked){pc.strokeStyle='#777';pc.lineWidth=3;if($('#rd').checked){rr(x,y,w,h,r);pc.stroke()}else pc.strokeRect(x,y,w,h)}});
- ['#bp','#bs','#bj','#bt','#br'].forEach(b=>$(b).disabled=!n||busy);$('#bw').disabled=!n;qbtn();pbtn()}
+ ['#bp','#bs','#bj','#bt','#br'].forEach(b=>$(b).disabled=!n||busy);$('#bw').disabled=!n;qbtn();pbtn();if(typeof sReady=='function')$('#sb').disabled=busy||!sReady()}
 ['#rd','#bd','#gr'].forEach(q=>$(q).onchange=render);
 $('#sc').oninput=render;$('#sc').onchange=()=>{const e=$('#sc');e.value=Math.max(70,Math.min(130,+e.value||100));render()};
 
@@ -521,6 +559,75 @@ function hours(){const n=new Date(Date.now()+8*36e5),d=n.getUTCDay(),m=n.getUTCH
  $('#hrs').querySelectorAll('tr').forEach(r=>r.classList.toggle('today',r.dataset.d.split(',').includes(''+d)));
  const on=m>=o&&m<c;e.className='open '+(on?'on':'off');e.textContent=on?'Open now · until '+t(c):m<o?'Closed · opens '+t(o):'Closed · opens '+t(HRS[(d+1)%7][0])+' tomorrow'}
 hours();setInterval(hours,6e4);
+
+/* ---------- Stamp booking: design + preview, cashier submits a B&W PDF (stbchop0001…) ---------- */
+// All stamp geometry in mm. Rectangle 70 × 25 with 5 mm kept clear on every side; round drawn at its 60 mm maximum.
+const SB={rect:{w:70,h:25,m:5},round:{d:60}},sp=$('#sp'),spx=sp.getContext('2d'),sv=id=>$('#'+id).value.trim(),sck=id=>$('#'+id).checked;
+const sShape=()=>document.querySelector('input[name=ss]:checked').value,sKind=()=>document.querySelector('input[name=sk]:checked').value;
+const sFam=()=>$('#sf').value=='serif'?'"Times New Roman",Times,"Noto Serif",serif':'Arial,Helvetica,"Liberation Sans",Roboto,sans-serif';
+function sFit(x,t,size,maxW,wt){x.font=`${wt} ${size}px ${sFam()}`;const w=x.measureText(t).width;return w>maxW?size*maxW/w:size}
+// draw the stamp with its centre at (cx,cy); k = pixels per mm
+function drawStamp(x,cx,cy,k){x.save();x.fillStyle=x.strokeStyle='#000';x.textAlign='center';x.textBaseline='middle';
+ if(sShape()=='rect'){const{w,h,m}=SB.rect,L=['r1','r2','r3','r4','r5'].map(sv).filter(Boolean),n=Math.max(1,L.length),aw=(w-2*m)*k,ah=(h-2*m)*k,lh=ah/n;
+  if(sck('rx')){x.lineWidth=.5*k;x.strokeRect(cx-w*k/2+.25*k,cy-h*k/2+.25*k,w*k-.5*k,h*k-.5*k)}
+  L.forEach((t,i)=>{const wt=i==0&&sck('rb')?'700':'400',f=sFit(x,t,lh*.78,aw,wt);x.font=`${wt} ${f}px ${sFam()}`;x.fillText(t,cx,cy-ah/2+lh*(i+.5))})}
+ else{const R=SB.round.d/2*k,inner=sck('ci'),top=sv('c1'),bot=sv('c2'),C=['c3','c4','c5'].map(sv).filter(Boolean),gap=1.2*k;
+  x.lineWidth=.6*k;x.beginPath();x.arc(cx,cy,R-.3*k,0,7);x.stroke();
+  const ri=inner?R*.6:0,band=inner?R-ri:R*.24,fs0=band*.5;let rc=inner?ri-gap:R-band-gap;
+  if(inner){x.lineWidth=.45*k;x.beginPath();x.arc(cx,cy,ri,0,7);x.stroke()}
+  const both=top&&bot,max=(both?150:300)*Math.PI/180,tr=fs=>fs*.12,
+   rad=fs=>inner?(R-.3*k+ri)/2:R-gap-fs*.5,
+   span=(t,fs)=>{x.font=`700 ${fs}px ${sFam()}`;return(x.measureText(t).width+tr(fs)*([...t].length-1))/rad(fs)},
+   fit=t=>{let fs=fs0;for(let i=0;i<10&&span(t,fs)>max;i++)fs*=max/span(t,fs)*.98;return fs},
+   fsA=Math.min(top?fit(top):fs0,bot?fit(bot):fs0),
+   arc=(t,isTop)=>{if(!t)return;const fs=fsA,rr=rad(fs),sp=span(t,fs),ws=[...t].map(c=>x.measureText(c).width+tr(fs));let a=isTop?-Math.PI/2-sp/2:Math.PI/2+sp/2;
+   for(let i=0;i<ws.length;i++){const c=[...t][i],da=ws[i]/rr,m=isTop?a+da/2:a-da/2;x.save();x.translate(cx+rr*Math.cos(m),cy+rr*Math.sin(m));x.rotate(isTop?m+Math.PI/2:m-Math.PI/2);x.fillText(c,0,0);x.restore();a=isTop?a+da:a-da}};
+  arc(top,1);arc(bot,0);
+  if(both&&sck('cs')){x.font=`400 ${Math.max(fsA,fs0*.6)*.8}px ${sFam()}`;const rr=rad(fsA);x.fillText('★',cx-rr,cy);x.fillText('★',cx+rr,cy)}
+  const n=C.length;if(n){const lh=Math.min(rc*.6,1.55*rc/n);C.forEach((t,i)=>{const dy=(i-(n-1)/2)*lh,hw=Math.sqrt(Math.max(0,rc*rc-(Math.abs(dy)+lh/2)**2))*1.85,f=sFit(x,t,lh*.75,hw,'700');x.font=`700 ${f}px ${sFam()}`;x.fillText(t,cx,cy+dy)})}}
+ x.restore()}
+function sReady(){return(sShape()=='rect'?['r1','r2','r3','r4','r5']:['c1','c2','c3','c4','c5']).some(id=>$('#'+id).value.trim())}
+function sPreview(){const rect=sShape()=='rect';$('#stR').hidden=!rect;$('#stC').hidden=rect;
+ const W=1200,H=rect?560:1200;if(sp.height!=H)sp.height=H;spx.fillStyle='#fff';spx.fillRect(0,0,W,H);
+ const k=rect?(W-80)/SB.rect.w:(H-80)/SB.round.d;drawStamp(spx,W/2,H/2,k);
+ $('#sb').disabled=busy||!sReady();
+ $('#sph').textContent=rect?'Black & white preview. Rectangle up to 7 × 2.5 cm; final size is chosen by our staff to suit your text.':'Black & white preview at maximum size (6 cm across). Our staff choose the final size to suit your text.'}
+document.querySelectorAll('#vStamp input,#vStamp select').forEach(e=>{if(!['sn','st','sm','so'].includes(e.id))e.addEventListener('input',sPreview)});
+document.querySelectorAll('#vStamp input[type=radio],#vStamp input[type=checkbox],#sf').forEach(e=>e.addEventListener('change',sPreview));
+let sNo=1;const sName=n=>'stbchop'+String(n).padStart(4,'0'),sShow=()=>$('#so').value=String(sNo).padStart(4,'0');
+try{sNo=Math.max(1,parseInt(localStorage.stbNo,10)||1)}catch(e){}sShow();
+$('#so').onchange=()=>{sNo=Math.max(1,parseInt($('#so').value.replace(/\D/g,''),10)||1);sShow();try{localStorage.stbNo=sNo}catch(e){}};
+// A4 order sheet: details + stamp at actual size + 2x enlargement for checking
+function sSheet(no){const c=document.createElement('canvas');c.width=PW;c.height=PH;const x=c.getContext('2d'),F='"Plus Jakarta Sans",Arial,sans-serif',k=MM,L=20*k,rect=sShape()=='rect';
+ x.fillStyle='#fff';x.fillRect(0,0,PW,PH);x.fillStyle='#000';x.textBaseline='alphabetic';
+ x.font=`800 ${9*k}px ${F}`;x.fillText('Stamp order',L,30*k);x.textAlign='right';x.fillText(sName(no),PW-L,30*k);x.textAlign='left';
+ x.font=`500 ${3.1*k}px ${F}`;x.fillText('Synly Trading & Bookstore Sdn Bhd · Lot 290-292, Parkcity Commerce Square, 97000 Bintulu · 086-337 891',L,38*k);
+ x.fillRect(L,42*k,PW-2*L,.5*k);
+ const d=new Date(Date.now()+8*36e5),dt=d.toISOString().slice(0,16).replace('T',' ');
+ const rows=[['Order no.',sName(no)],['Date / time',dt],['Customer',sv('sn')||'-'],['Phone',sv('st')||'-'],['Shape',rect?'Rectangle (max 7 × 2.5 cm)':'Round (max 6 cm across)'+(sck('ci')?', inner circle':'')],['Stamp type',sKind()],['Model',sv('sm')||'-']];
+ let y=52*k;rows.forEach(([a,b])=>{x.font=`500 ${4.2*k}px ${F}`;x.fillStyle='#555';x.fillText(a,L,y);x.fillStyle='#000';x.font=`700 ${4.6*k}px ${F}`;x.fillText(b,L+42*k,y);y+=8*k});
+ y+=2*k;x.fillStyle='#555';x.font=`500 ${4.2*k}px ${F}`;x.fillText('Text',L,y);x.fillStyle='#000';x.font=`600 ${4.4*k}px ${F}`;
+ const T=rect?['r1','r2','r3','r4','r5'].map((id,i)=>sv(id)&&`Line ${i+1}: ${sv(id)}`):[sv('c1')&&'Top: '+sv('c1'),sv('c2')&&'Bottom: '+sv('c2'),...['c3','c4','c5'].map((id,i)=>sv(id)&&`Centre ${i+1}: ${sv(id)}`)];
+ T.filter(Boolean).forEach(t=>{x.fillText(t,L+42*k,y);y+=7*k});
+ y+=6*k;x.fillRect(L,y,PW-2*L,.3*k);y+=10*k;
+ x.fillStyle='#555';x.font=`600 ${4*k}px ${F}`;x.fillText(rect?'Actual size':'Maximum size (final size per model)',L,y);
+ const sh=rect?SB.rect.h:SB.round.d,sw=rect?SB.rect.w:SB.round.d;y+=4*k;
+ if(rect){x.strokeStyle='#bbb';x.setLineDash([2*k,1.5*k]);x.lineWidth=.3*k;x.strokeRect(L,y,sw*k,sh*k);x.setLineDash([])}
+ drawStamp(x,L+sw*k/2,y+sh*k/2,k);y+=sh*k+12*k;
+ if(rect){x.fillStyle='#555';x.fillText('Enlarged 2× for checking',L,y);y+=4*k;drawStamp(x,PW/2,y+sh*k,2*k);y+=sh*2*k+12*k}
+ x.fillStyle='#000';x.fillRect(L,PH-40*k,80*k,.4*k);x.fillRect(PW-L-80*k,PH-40*k,80*k,.4*k);
+ x.fillStyle='#555';x.font=`500 ${3.8*k}px ${F}`;x.fillText('Customer confirms the text above',L,PH-34*k);x.textAlign='right';x.fillText('Cashier',PW-L,PH-34*k);
+ return c}
+let sFile=null;
+$('#sb').onclick=job(async()=>{if(!sv('sm')){toast('Cashier: please fill in the model.');$('#sm').focus();return}
+ if(document.fonts)await document.fonts.ready;const no=sNo,c=sSheet(no),jpg=new Uint8Array(await(await toBlob(c,.92)).arrayBuffer());
+ sFile=new File([buildPdf([{jpg,w:PW,h:PH,pw:A4W,ph:A4H,x:0,y:0,dw:A4W,dh:A4H}])],sName(no)+'.pdf',{type:'application/pdf'});
+ save(sFile,sFile.name);sNo=no+1;sShow();try{localStorage.stbNo=sNo}catch(e){}
+ $('#sr').hidden=false;$('#srt').textContent=sFile.name+' saved to Downloads. Next order: '+sName(sNo)+'.';toast(sFile.name+' created')});
+$('#sshare').onclick=job(async()=>{if(!sFile)return;if(navigator.canShare&&navigator.canShare({files:[sFile]}))try{await navigator.share({files:[sFile]})}catch(e){}else save(sFile,sFile.name)});
+$('#ssave').onclick=()=>sFile&&save(sFile,sFile.name);
+$('#snew').onclick=()=>{['r1','r2','r3','r4','r5','c1','c2','c3','c4','c5','sn','st','sm'].forEach(id=>$('#'+id).value='');$('#sr').hidden=true;sFile=null;sPreview();scrollTo({top:0,behavior:'smooth'})};
+sPreview();
 
 /* ---------- Buy me a coffee ---------- */
 const cd=$('#cd');$('#cof').onclick=()=>cd.showModal?cd.showModal():cd.setAttribute('open','');$('#cdx').onclick=()=>cd.close?cd.close():cd.removeAttribute('open');

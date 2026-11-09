@@ -10,7 +10,7 @@ Customers send IC or driving licence screenshots to the shop phone. Printing the
 
 ## Features
 
-- Home screen with one button per service: **IC Copy**, **A5 QR Poster**, **To PDF**, **Stamp Booking** (coming soon), plus small **About us** and **Contact us** buttons at the top right (Contact us has opening hours with live open status, address with Google Maps, phone and WhatsApp). Synly green gradient theme, light and dark mode, smooth slide transitions (respects reduced-motion). Phone back button returns home; links ending in `#ic`, `#qr`, `#pdf`, `#stamp` or `#about` open that screen directly
+- Home screen with one button per service: **IC Copy**, **A5 QR Poster**, **To PDF**, **Stamp Booking**, plus small **About us** and **Contact us** buttons at the top right (Contact us has opening hours with live open status, address with Google Maps, phone and WhatsApp). Synly green gradient theme, light and dark mode, smooth slide transitions (respects reduced-motion). Phone back button returns home; links ending in `#ic`, `#qr`, `#pdf`, `#stamp` or `#about` open that screen directly
 
 - Pick Depan and Belakang screenshots (PNG, JPG, WebP; HEIC only where the browser supports it)
 - Free crop box for both IC and A5 QR: drag corners or edges to resize, drag inside to move, pinch or slide to zoom. Optional "Lock card shape" for IC (the cropped IC area is fitted to the 85.6 × 54 mm card)
@@ -23,6 +23,7 @@ Customers send IC or driving licence screenshots to the shop phone. Printing the
 - Output: PDF, A4 JPEG, Print, or Share straight to the printing app
 - **A5 QR** tab for merchant DuitNow QR posters: one image enlarged to fit the A5 half of an A4 sheet (portrait images turned sideways, like 2-in-1), optional 2 per sheet and cut line. Print at 100% with 2-in-1 off, then cut
 - **To PDF** tab for customers and staff: add photos and Word (.docx) files, reorder, crop photos, optional margins and black & white, name the file, then **Send PDF to Synly on WhatsApp** (+60 12-766 4819), Share, or Save. Send customers the link ending in `#pdf` to open this tab directly. DOCX is converted on the phone (docx-preview + html2canvas, in `lib/`); complex Word layouts or fonts may differ slightly, so check the preview. Old .doc files are not supported
+- **Stamp Booking** (on the shop device): customer chooses Rectangle (up to 5 lines, max 7 × 2.5 cm, 0.5 cm kept clear each side) or Round (max 6 cm across, optional inner circle, text around top/bottom and up to 3 centre lines), Regular or Self-ink, types the text and sees a live black & white preview. Cashier fills in the model and taps Submit to create an A4 B&W PDF (details, text, stamp at actual/maximum size, 2× enlargement, signature lines) named `stbchop0001.pdf`, `stbchop0002.pdf`… The order number is counted on the device and can be edited in the cashier section
 - Works offline once installed; nothing is uploaded or stored
 
 ## Files
