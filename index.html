@@ -3,18 +3,20 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Synly Printing Services</title>
 <meta name="description" content="Crop the front and back of an IC and print them on one A4 page, print merchant QR posters at A5, and turn photos or Word files into a PDF to send on WhatsApp.">
+<link rel="preload" href="fonts/plus-jakarta-sans.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0b7a43">
 <meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Synly PS">
 <link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
 <style>
+@font-face{font-family:"Plus Jakarta Sans";src:url(fonts/plus-jakarta-sans.woff2) format("woff2");font-weight:200 800;font-style:normal;font-display:swap}
 :root{--bg:#f2f7f4;--fg:#0f2418;--card:#fff;--ac:#0b7a43;--ac2:#075c32;--ln:#dce8e0;--mu:#5a6e62;--mint:#e6f4ec;
  --grad:linear-gradient(135deg,#064d2a 0%,#0b7a43 48%,#17a862 100%);--soft:linear-gradient(135deg,#e9f7ef,#d5f0e1);
  --sh:0 1px 2px rgba(6,77,42,.06),0 6px 20px rgba(6,77,42,.07);--ease:cubic-bezier(.2,.8,.2,1);color-scheme:light}
 @media(prefers-color-scheme:dark){:root{--bg:#0a120d;--fg:#e5f1e9;--card:#121c16;--ac:#3ccf85;--ac2:#2bb06b;--ln:#22322a;--mu:#92a79a;--mint:#173023;
  --soft:linear-gradient(135deg,#143022,#0f261a);--sh:0 1px 2px #0006,0 6px 20px #0005;color-scheme:dark}}
-*{box-sizing:border-box}html,body{margin:0}
-body{font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--fg);padding-bottom:calc(env(safe-area-inset-bottom) + 16px);-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}html,body{margin:0}[hidden]{display:none!important}
+body{font:15.5px/1.5 "Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--fg);padding-bottom:calc(env(safe-area-inset-bottom) + 16px);-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased}
 /* header: big hero on home, compact app bar inside a service */
 header{position:sticky;top:0;z-index:5;background:var(--grad);color:#fff;overflow:hidden;view-transition-name:hd;border-radius:0 0 26px 26px;box-shadow:0 8px 24px rgba(6,77,42,.25)}
 header::before,header::after{content:"";position:absolute;border-radius:50%;border:2px solid rgba(255,255,255,.12);pointer-events:none}
