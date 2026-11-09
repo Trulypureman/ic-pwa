@@ -43,6 +43,7 @@ main{max-width:560px;margin:0 auto;padding:16px}
 .tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:22px}
 .tile{position:relative;text-align:left;display:flex;flex-direction:column;gap:4px;padding:16px 14px 15px;border-radius:20px;border:1px solid var(--ln);background:var(--card);box-shadow:var(--sh);min-height:142px;transition:transform .25s var(--ease),box-shadow .25s,border-color .25s}
 .tile:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--ac) 35%,var(--ln))}
+.tiles .tile:last-child:nth-child(odd){grid-column:span 2;min-height:0}
 .tile b{font-size:.98rem;margin-top:auto}.tile small{color:var(--mu);font-size:.78rem;font-weight:500;line-height:1.3}
 .ico{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:var(--grad);color:#fff;box-shadow:0 4px 12px rgba(11,122,67,.3);margin-bottom:10px}
 .ico svg{width:24px;height:24px}
@@ -89,6 +90,11 @@ a.btn.p{background:var(--grad);color:#fff;border:0;box-shadow:0 4px 14px rgba(11
 #sp{width:100%;height:auto;display:block;background:#fff;border-radius:8px}
 .sub2{font-size:.8rem;font-weight:600;color:var(--mu);margin:14px 2px 8px}
 .pick.ink{flex-direction:row;align-items:center;gap:10px}.dot{width:20px;height:20px;border-radius:50%;flex:none;box-shadow:0 0 0 2px var(--card),0 0 0 3px var(--ln)}
+.seg3{grid-template-columns:repeat(3,1fr)}.seg3 .pick{padding:12px 10px}
+.plate{display:block;width:60px;height:20px;border-radius:3px;margin-bottom:8px}.plate.eng{background:#111;box-shadow:0 0 0 2px #e9e9e9,0 0 0 3px #bbb}
+.plate.epx{background:linear-gradient(90deg,#e8c766 0 30%,#111 30%);box-shadow:0 0 0 2px #c9952b}
+#tp{width:100%;height:auto;display:block;border-radius:8px;background:#fff}
+#tsn{padding:11px 12px;letter-spacing:.04em}
 .cash{border-style:dashed}.ono{display:flex;align-items:center;gap:2px;font:inherit;font-weight:700;color:var(--fg);background:var(--bg);border:1px solid var(--ln);border-radius:12px;padding:0 12px}
 .ono input{font:inherit;font-weight:700;border:0;background:transparent;color:var(--fg);padding:11px 0;width:100%;outline:0}
 .soonbox{text-align:center;padding:28px 18px}
@@ -168,6 +174,7 @@ footer{text-align:center;font-size:.76rem;color:var(--mu);padding:10px 16px 0}
 <button class="tile" data-go="qr"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M14 14h3v3h-3zM20 14v.01M20 20h-3M14 20v.01M20 17v.01"/></svg></span><b>A5 QR Poster</b><small>Merchant DuitNow QR</small></button>
 <button class="tile" data-go="pdf"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg></span><b>To PDF</b><small>Photos &amp; Word, send on WhatsApp</small></button>
 <button class="tile" data-go="stamp"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 12V9.5a2.5 2.5 0 1 1 5 0V12"/><path d="M5 12h14a1 1 0 0 1 1 1v3H4v-3a1 1 0 0 1 1-1zM6 20h12"/></svg></span><b>Stamp Booking</b><small>Rectangle or round, preview first</small></button>
+<button class="tile" data-go="tag"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="7" width="19" height="10" rx="2"/><path d="M6.5 12h7M16.5 10.5v3"/></svg></span><b>Name Tag</b><small>Engraved or epoxy with emblem</small></button>
 </div>
 <footer>Created by AhChai for Synly Trading &amp; Bookstore S/B<br>Your files stay on this phone.<br><button class="cof" id="cof">&#9749; Buy me a coffee</button></footer>
 </div>
@@ -255,6 +262,40 @@ footer{text-align:center;font-size:.76rem;color:var(--mu);padding:10px 16px 0}
 <button class="p" id="sb" style="width:100%;margin-top:14px">Submit &amp; create PDF</button>
 <div id="sr" hidden><p class="hint" id="srt"></p><div class="row" style="margin-top:10px"><button id="sshare">Share PDF</button><button id="ssave">Save again</button></div>
 <button id="snew" style="width:100%;margin-top:10px">New order</button></div></section>
+</div>
+<div class="view" id="vTag" hidden>
+<p class="lead">Design your name tag and see a preview. Our cashier will confirm and record your order.</p>
+<section><h2><i>1</i>Type</h2><div class="seg" role="radiogroup" aria-label="Name tag type">
+<label class="pick"><input type="radio" name="tt" value="Engraved" checked><span class="plate eng"></span><b>Engraved</b><small>Black plate, white engraved letters</small></label>
+<label class="pick"><input type="radio" name="tt" value="Epoxy"><span class="plate epx"></span><b>Epoxy with logo</b><small>Gold frame with emblem</small></label>
+</div></section>
+<section id="tgE"><h2><i>2</i>Size</h2><div class="seg seg3" role="radiogroup" aria-label="Size">
+<label class="pick sm"><input type="radio" name="tz" value="E1" checked><b>Option 1</b><small>7 × 2.2 cm</small></label>
+<label class="pick sm"><input type="radio" name="tz" value="E2"><b>Option 2</b><small>7 × 1.7 cm</small></label>
+<label class="pick sm"><input type="radio" name="tz" value="E3"><b>Option 3</b><small>6.5 × 2 cm</small></label>
+</div></section>
+<section id="tgP" hidden><h2><i>2</i>Emblem</h2><div class="seg" role="radiogroup" aria-label="Emblem">
+<label class="pick sm"><input type="radio" name="te" value="Sarawak" checked><b>Sarawak</b><small>State emblem</small></label>
+<label class="pick sm"><input type="radio" name="te" value="Malaysia"><b>Malaysia</b><small>National emblem</small></label>
+</div></section>
+<section><h2><i>3</i>Name</h2><div class="tx"><input id="tn" maxlength="16" placeholder="e.g. NURUL HANIS" autocapitalize="characters" autocomplete="off"></div>
+<p class="hint" id="tnc">One line, up to 10 letters.</p>
+<div class="opt" style="margin-top:12px"><label class="chip">Font <select id="tf"><option value="sans">Sans</option><option value="serif">Serif</option></select></label><label class="chip"><input type="checkbox" id="tu" checked>CAPITAL LETTERS</label></div></section>
+<section><h2><i>4</i>Attachment</h2><div class="seg seg3" role="radiogroup" aria-label="Attachment">
+<label class="pick sm"><input type="radio" name="ta" value="Pin" checked><b>Pin</b></label>
+<label class="pick sm"><input type="radio" name="ta" value="Magnet"><b>Magnet</b></label>
+<label class="pick sm"><input type="radio" name="ta" value="Special pin"><b>Special pin</b></label>
+</div></section>
+<section><h2><i>5</i>Preview</h2><div class="paper"><canvas id="tp" width="1200" height="460" role="img" aria-label="Name tag preview"></canvas></div>
+<p class="hint" id="tph"></p></section>
+<section><h2><i>6</i>Your details</h2><div class="tx">
+<input id="tcn" maxlength="60" placeholder="Your name" autocomplete="name"><input id="tct" maxlength="20" placeholder="Phone number" inputmode="tel" autocomplete="tel"></div></section>
+<section class="cash"><h2><i>7</i>For cashier</h2><div class="tx">
+<label class="fn" style="margin:0">Cashier name<input id="tcs" maxlength="40" placeholder="Cashier name"></label>
+<label class="fn" style="margin:0">Series number<span class="ono" id="tsn">NTAGS····</span></label></div>
+<button class="p" id="tb" style="width:100%;margin-top:14px">Submit &amp; create PDF</button>
+<div id="tr" hidden><p class="hint" id="trt"></p><div class="row" style="margin-top:10px"><button id="tshare">Share PDF</button><button id="tsave">Save again</button></div>
+<button id="tnew" style="width:100%;margin-top:10px">New order</button></div></section>
 </div>
 <div class="view" id="vContact" hidden>
 <section><h2>Opening hours <span class="open" id="opn"></span></h2>
@@ -412,7 +453,7 @@ function paint(){raf=0;const v=Math.max(70,Math.min(130,+$('#sc').value||100)),k
  L.forEach((i,j)=>{const y=(top+j*(54*k+GAP))*MM,c=cards[i];
   pc.save();if($('#rd').checked){rr(x,y,w,h,r);pc.clip()}pc.drawImage($('#gr').checked?gray(c):c,x,y,w,h);pc.restore();
   if($('#bd').checked){pc.strokeStyle='#777';pc.lineWidth=3;if($('#rd').checked){rr(x,y,w,h,r);pc.stroke()}else pc.strokeRect(x,y,w,h)}});
- ['#bp','#bs','#bj','#bt','#br'].forEach(b=>$(b).disabled=!n||busy);$('#bw').disabled=!n;qbtn();pbtn();if(typeof sReady=='function')$('#sb').disabled=busy||!sReady()}
+ ['#bp','#bs','#bj','#bt','#br'].forEach(b=>$(b).disabled=!n||busy);$('#bw').disabled=!n;qbtn();pbtn();if(typeof sReady=='function')$('#sb').disabled=busy||!sReady();if($('#tb'))$('#tb').disabled=busy}
 ['#rd','#bd','#gr'].forEach(q=>$(q).onchange=render);
 $('#sc').oninput=render;$('#sc').onchange=()=>{const e=$('#sc');e.value=Math.max(70,Math.min(130,+e.value||100));render()};
 
@@ -469,8 +510,8 @@ qslot.ondragover=e=>{e.preventDefault();qslot.classList.add('drag')};qslot.ondra
 qslot.ondrop=e=>{e.preventDefault();e.stopPropagation();qslot.classList.remove('drag');qload([...e.dataTransfer.files])};
 outs(qg,1,['#qp','#qs','#qj','#qt']);
 /* ---------- navigation: home + one view per service, with smooth transitions ---------- */
-const VIEWS={home:'vHome',ic:'mIC',qr:'mQR',pdf:'mPDF',stamp:'vStamp',about:'vAbout',contact:'vContact'},
- TTL={ic:'IC Copy',qr:'A5 QR Poster',pdf:'To PDF',stamp:'Stamp Booking',about:'About us',contact:'Contact us'};
+const VIEWS={home:'vHome',ic:'mIC',qr:'mQR',pdf:'mPDF',stamp:'vStamp',tag:'vTag',about:'vAbout',contact:'vContact'},
+ TTL={ic:'IC Copy',qr:'A5 QR Poster',pdf:'To PDF',stamp:'Stamp Booking',tag:'Name Tag',about:'About us',contact:'Contact us'};
 let view='',depth=0;const still=matchMedia('(prefers-reduced-motion: reduce)');
 const lastSvc=()=>{try{const m=localStorage.mode;return /^(ic|qr|pdf)$/.test(m)?m:'ic'}catch(e){return 'ic'}};
 function show(v){view=v;mode=/^(ic|qr|pdf)$/.test(v)?v:'home';if(mode!='home')try{localStorage.mode=v}catch(e){}
@@ -649,6 +690,64 @@ $('#sshare').onclick=job(async()=>{if(!sFile)return;if(navigator.canShare&&navig
 $('#ssave').onclick=()=>sFile&&save(sFile,sFile.name);
 $('#snew').onclick=()=>{['r1','r2','r3','r4','r5','c1','c2','c3','c4','c5','sn','st','sm'].forEach(id=>$('#'+id).value='');$('#sr').hidden=true;sFile=null;sPreview();scrollTo({top:0,behavior:'smooth'})};
 sPreview();
+
+/* ---------- Name tag booking: design + preview, cashier submits a B&W PDF (NTAGS + last 4 digits of phone) ---------- */
+// sizes in mm. The epoxy size was not specified: 70 × 22 is assumed for the preview.
+const TG={E1:{w:70,h:22},E2:{w:70,h:17},E3:{w:65,h:20},EP:{w:70,h:22}},TGL={E1:'Option 1 (7 × 2.2 cm)',E2:'Option 2 (7 × 1.7 cm)',E3:'Option 3 (6.5 × 2 cm)'};
+const tp=$('#tp'),tpx=tp.getContext('2d'),rv=n=>document.querySelector(`input[name=${n}]:checked`).value;
+const tEng=()=>rv('tt')=='Engraved',tDim=()=>TG[tEng()?rv('tz'):'EP'],tLetters=t=>(t.match(/\p{L}/gu)||[]).length;
+const tName=()=>{const v=$('#tn').value.replace(/\s+/g,' ').trim();return $('#tu').checked?v.toUpperCase():v};
+// keep only letters, spaces and . ' - ; stop at 10 letters
+$('#tn').addEventListener('input',()=>{const e=$('#tn');let n=0,o='';for(const c of e.value.replace(/[^\p{L} .'\-]/gu,'').replace(/^\s+/,'').replace(/\s{2,}/g,' ')){if(/\p{L}/u.test(c)){if(n>=10)break;n++}else if(n>=10)break;o+=c}if(o!==e.value)e.value=o;tPreview()});
+function rr2(x,X,Y,w,h,r){x.beginPath();x.moveTo(X+r,Y);x.arcTo(X+w,Y,X+w,Y+h,r);x.arcTo(X+w,Y+h,X,Y+h,r);x.arcTo(X,Y+h,X,Y,r);x.arcTo(X,Y,X+w,Y,r);x.closePath()}
+function emblem(x,X,Y,w,h,label){   // placeholder: the official emblem artwork is applied by the shop
+ const cx=X+w/2,s=Math.min(w,h);x.save();x.strokeStyle='#5a4310';x.fillStyle='#5a4310';x.lineWidth=s*.035;
+ const sw=s*.42,sh=s*.5,sy=Y+h*.16;x.beginPath();x.moveTo(cx-sw/2,sy);x.lineTo(cx+sw/2,sy);x.lineTo(cx+sw/2,sy+sh*.55);x.quadraticCurveTo(cx+sw/2,sy+sh*.9,cx,sy+sh);x.quadraticCurveTo(cx-sw/2,sy+sh*.9,cx-sw/2,sy+sh*.55);x.closePath();x.stroke();
+ x.font=`700 ${s*.12}px Arial,sans-serif`;x.textAlign='center';x.textBaseline='middle';x.fillText(label.toUpperCase(),cx,Y+h*.84);x.font=`700 ${s*.1}px Arial,sans-serif`;x.fillText('EMBLEM',cx,sy+sh*.45);x.restore()}
+function drawTag(x,cx,cy,k){const d=tDim(),w=d.w*k,h=d.h*k,X=cx-w/2,Y=cy-h/2,name=tName()||'YOUR NAME',ghost=!tName(),
+  fam=$('#tf').value=='serif'?'"Times New Roman",Times,"Liberation Serif",serif':'"Segoe UI",Calibri,Arial,"Liberation Sans",sans-serif',wt=$('#tf').value=='serif'?'700':'600';
+ x.save();
+ if(tEng()){x.fillStyle='#f2f2f2';rr2(x,X,Y,w,h,1.2*k);x.fill();x.strokeStyle='#bdbdbd';x.lineWidth=.25*k;x.stroke();
+  const i=.9*k;x.fillStyle='#111';rr2(x,X+i,Y+i,w-2*i,h-2*i,.6*k);x.fill();
+  var tx0=X+i,tw=w-2*i,th=h-2*i,ink='#fff'}
+ else{const g=x.createLinearGradient(0,Y,0,Y+h);g.addColorStop(0,'#f6dd8a');g.addColorStop(.5,'#c08a26');g.addColorStop(1,'#8a5d12');x.fillStyle=g;rr2(x,X,Y,w,h,1.6*k);x.fill();
+  const i=1.1*k,pw=(h-2*i)*1.05,g2=x.createLinearGradient(X,Y,X+pw,Y+h);g2.addColorStop(0,'#fbe9a6');g2.addColorStop(1,'#e2bd57');x.fillStyle=g2;x.fillRect(X+i,Y+i,pw,h-2*i);
+  emblem(x,X+i,Y+i,pw,h-2*i,rv('te'));x.fillStyle='#0d0d0d';x.fillRect(X+i+pw,Y+i,w-2*i-pw,h-2*i);
+  var tx0=X+i+pw,tw=w-2*i-pw,th=h-2*i,ink='#e3bd5c'}
+ let f=th*.52;x.font=`${wt} ${f}px ${fam}`;const mw=x.measureText(name).width;if(mw>tw*.86)f*=tw*.86/mw;
+ x.font=`${wt} ${f}px ${fam}`;x.fillStyle=ink;x.globalAlpha=ghost?.35:1;x.textAlign='center';x.textBaseline='middle';x.fillText(name,tx0+tw/2,Y+h/2+f*.03);
+ x.restore()}
+let tfTouched=false;$('#tf').addEventListener('change',()=>tfTouched=true);
+function tPreview(){const e=tEng();$('#tgE').hidden=!e;$('#tgP').hidden=e;if(!tfTouched)$('#tf').value=e?'sans':'serif';
+ const d=tDim(),W=1200,k=(W-80)/70,H=Math.round(d.h*k+80);if(tp.height!=H)tp.height=H;tpx.fillStyle='#fff';tpx.fillRect(0,0,W,H);drawTag(tpx,W/2,H/2,k);
+ const n=tLetters($('#tn').value);$('#tnc').textContent=`One line, up to 10 letters (${n}/10 used).`;
+ $('#tph').textContent=e?`Engraved ${TGL[rv('tz')]}. Colours are a guide only.`:`Epoxy with ${rv('te')} emblem. The emblem here is a placeholder; the official emblem is used on your tag.`;
+ const dg=$('#tct').value.replace(/\D/g,'');$('#tsn').textContent='NTAGS'+(dg.length>=4?dg.slice(-4):'····');$('#tb').disabled=busy}
+document.querySelectorAll('#vTag input[type=radio],#vTag input[type=checkbox],#vTag select').forEach(e=>e.addEventListener('change',tPreview));$('#tct').addEventListener('input',tPreview);
+function tSheet(no){const c=document.createElement('canvas');c.width=PW;c.height=PH;const x=c.getContext('2d'),F='"Plus Jakarta Sans",Arial,sans-serif',k=MM,L=20*k,e=tEng(),d=tDim();
+ x.fillStyle='#fff';x.fillRect(0,0,PW,PH);x.fillStyle='#000';x.textBaseline='alphabetic';
+ x.font=`800 ${9*k}px ${F}`;x.fillText('Name tag order',L,30*k);x.textAlign='right';x.fillText(no,PW-L,30*k);x.textAlign='left';
+ x.font=`500 ${3.1*k}px ${F}`;x.fillText('Synly Trading & Bookstore Sdn Bhd · Lot 290-292, Parkcity Commerce Square, 97000 Bintulu · 086-337 891',L,38*k);x.fillRect(L,42*k,PW-2*L,.5*k);
+ const dt=new Date(Date.now()+8*36e5).toISOString().slice(0,16).replace('T',' ');
+ const rows=[['Series no.',no],['Date / time',dt],['Customer',sv('tcn')||'-'],['Phone',sv('tct')],['Name on tag',tName()],['Type',e?'Engraved':'Epoxy with logo'],[e?'Size':'Emblem',e?TGL[rv('tz')]:rv('te')+' (size 7 × 2.2 cm assumed)'],['Attachment',rv('ta')],['Font',$('#tf').selectedOptions[0].text+($('#tu').checked?', capitals':'')],['Cashier',sv('tcs')]];
+ let y=52*k;rows.forEach(([a,b])=>{x.font=`500 ${4.2*k}px ${F}`;x.fillStyle='#555';x.fillText(a,L,y);x.fillStyle='#000';x.font=`700 ${4.6*k}px ${F}`;x.fillText(b,L+42*k,y);y+=8*k});
+ y+=4*k;x.fillRect(L,y,PW-2*L,.3*k);y+=10*k;x.fillStyle='#555';x.font=`600 ${4*k}px ${F}`;x.fillText('Actual size',L,y);y+=4*k;
+ drawTag(x,L+d.w*k/2,y+d.h*k/2,k);y+=d.h*k+12*k;x.fillStyle='#555';x.fillText('Enlarged 2× for checking',L,y);y+=4*k;drawTag(x,PW/2,y+d.h*k,2*k);
+ x.fillStyle='#000';x.fillRect(L,PH-40*k,80*k,.4*k);x.fillRect(PW-L-80*k,PH-40*k,80*k,.4*k);
+ x.fillStyle='#555';x.font=`500 ${3.8*k}px ${F}`;x.fillText('Customer confirms the name above',L,PH-34*k);x.textAlign='right';x.fillText('Cashier: '+sv('tcs'),PW-L,PH-34*k);
+ return gray(c)}
+let tFile=null;
+$('#tb').onclick=job(async()=>{const dg=$('#tct').value.replace(/\D/g,'');
+ if(!tName()){toast('Please type the name for the tag.');$('#tn').focus();return}
+ if(dg.length<4){toast('Please enter the customer phone number.');$('#tct').focus();return}
+ if(!sv('tcs')){toast('Cashier: please fill in your name.');$('#tcs').focus();return}
+ if(document.fonts)await document.fonts.ready;const no='NTAGS'+dg.slice(-4),jpg=new Uint8Array(await(await toBlob(tSheet(no),.92)).arrayBuffer());
+ tFile=new File([buildPdf([{jpg,w:PW,h:PH,pw:A4W,ph:A4H,x:0,y:0,dw:A4W,dh:A4H}])],no+'.pdf',{type:'application/pdf'});
+ save(tFile,tFile.name);$('#tr').hidden=false;$('#trt').textContent=tFile.name+' saved to Downloads.';toast(tFile.name+' created')});
+$('#tshare').onclick=job(async()=>{if(!tFile)return;if(navigator.canShare&&navigator.canShare({files:[tFile]}))try{await navigator.share({files:[tFile]})}catch(e){}else save(tFile,tFile.name)});
+$('#tsave').onclick=()=>tFile&&save(tFile,tFile.name);
+$('#tnew').onclick=()=>{['tn','tcn','tct'].forEach(id=>$('#'+id).value='');$('#tr').hidden=true;tFile=null;tPreview();scrollTo({top:0,behavior:'smooth'})};
+tPreview();
 
 /* ---------- Buy me a coffee ---------- */
 const cd=$('#cd');$('#cof').onclick=()=>cd.showModal?cd.showModal():cd.setAttribute('open','');$('#cdx').onclick=()=>cd.close?cd.close():cd.removeAttribute('open');
