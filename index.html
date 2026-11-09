@@ -95,6 +95,11 @@ a.btn.p{background:var(--grad);color:#fff;border:0;box-shadow:0 4px 14px rgba(11
 .plate.epx{background:linear-gradient(90deg,#e8c766 0 30%,#111 30%);box-shadow:0 0 0 2px #c9952b}
 #tp{width:100%;height:auto;display:block;border-radius:8px;background:#fff}
 #tsn{padding:11px 12px;letter-spacing:.04em}
+.att{display:grid;gap:8px;margin-top:10px}.att:empty{display:none}
+.af{display:flex;align-items:center;gap:10px;padding:8px;border:1px solid var(--ln);border-radius:12px;background:var(--bg);font-size:.85rem}
+.af img,.af .pdf{width:44px;height:44px;border-radius:8px;object-fit:cover;flex:none;background:#fff}.af .pdf{display:grid;place-items:center;font-weight:800;font-size:.7rem;color:#b42318;border:1px solid var(--ln)}
+.af span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.af small{display:block;color:var(--mu)}
+.af button{padding:6px 10px;font-size:.8rem;border-radius:9px}
 .cash{border-style:dashed}.ono{display:flex;align-items:center;gap:2px;font:inherit;font-weight:700;color:var(--fg);background:var(--bg);border:1px solid var(--ln);border-radius:12px;padding:0 12px}
 .ono input{font:inherit;font-weight:700;border:0;background:transparent;color:var(--fg);padding:11px 0;width:100%;outline:0}
 .soonbox{text-align:center;padding:28px 18px}
@@ -231,7 +236,7 @@ footer{text-align:center;font-size:.76rem;color:var(--mu);padding:10px 16px 0}
 <div class="view" id="vStamp" hidden>
 <p class="lead">Design your stamp and see a preview. Our cashier will confirm the model and print your order.</p>
 <section><h2><i>1</i>Shape</h2><div class="seg" role="radiogroup" aria-label="Stamp shape">
-<label class="pick"><input type="radio" name="ss" value="rect" checked><span class="shp rect"></span><b>Rectangle</b><small>Up to 5 lines · max 7 × 2.5 cm</small></label>
+<label class="pick"><input type="radio" name="ss" value="rect" checked><span class="shp rect"></span><b>Rectangle</b><small>Up to 8 lines · max 7 × 2.5 cm</small></label>
 <label class="pick"><input type="radio" name="ss" value="round"><span class="shp round"></span><b>Round</b><small>Max 6 cm across · inner circle optional</small></label>
 </div></section>
 <section><h2><i>2</i>Stamp type &amp; ink</h2><div class="seg" role="radiogroup" aria-label="Stamp type">
@@ -244,7 +249,7 @@ footer{text-align:center;font-size:.76rem;color:var(--mu);padding:10px 16px 0}
 </div></section>
 <section><h2><i>3</i>Your text</h2>
 <div id="stR"><div class="tx">
-<input id="r1" maxlength="60" placeholder="Line 1 (e.g. company name)"><input id="r2" maxlength="60" placeholder="Line 2 (optional)"><input id="r3" maxlength="60" placeholder="Line 3 (optional)"><input id="r4" maxlength="60" placeholder="Line 4 (optional)"><input id="r5" maxlength="60" placeholder="Line 5 (optional)"></div>
+<input id="r1" maxlength="60" placeholder="Line 1 (e.g. company name)"><input id="r2" maxlength="60" placeholder="Line 2 (optional)"><input id="r3" maxlength="60" placeholder="Line 3 (optional)"><input id="r4" maxlength="60" placeholder="Line 4 (optional)"><input id="r5" maxlength="60" placeholder="Line 5 (optional)"><input id="r6" maxlength="60" placeholder="Line 6 (optional)"><input id="r7" maxlength="60" placeholder="Line 7 (optional)"><input id="r8" maxlength="60" placeholder="Line 8 (optional)"></div>
 <div class="opt" style="margin-top:12px"><label class="chip">Align <select id="ra"><option value="left">Left</option><option value="center">Centre</option></select></label><label class="chip">Bold <select id="rb"><option value="all">All lines</option><option value="first">First line</option><option value="none">None</option></select></label><label class="chip"><input type="checkbox" id="rx">Border</label></div></div>
 <div id="stC" hidden><div class="tx">
 <input id="c1" maxlength="60" placeholder="Around the edge (e.g. SYNLY TRADING &amp; BOOKSTORE SDN BHD)"><input id="c2" maxlength="60" placeholder="Around the bottom (optional)">
@@ -252,11 +257,15 @@ footer{text-align:center;font-size:.76rem;color:var(--mu);padding:10px 16px 0}
 <div class="opt" style="margin-top:12px"><label class="chip"><input type="checkbox" id="ci" checked>Inner circle</label><label class="chip"><input type="checkbox" id="cd" checked>Double outer ring</label><label class="chip"><input type="checkbox" id="cs" checked>Star</label></div></div>
 <div class="opt" style="margin-top:8px"><label class="chip">Font <select id="sf"><option value="serif">Serif (Times)</option><option value="sans">Sans (Arial)</option><option value="cond">Narrow bold</option></select></label></div>
 </section>
-<section><h2><i>4</i>Preview</h2><div class="paper"><canvas id="sp" width="1200" height="600" role="img" aria-label="Stamp preview"></canvas></div>
+<section><h2><i>4</i>Sample (optional)</h2>
+<div class="slot qs add" id="sa0" tabindex="0" role="button" aria-label="Attach a sample photo or PDF" style="height:96px"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M21 12.5l-8.5 8.5a5 5 0 0 1-7-7L14 5.5a3.3 3.3 0 0 1 4.7 4.7l-8.5 8.5a1.7 1.7 0 0 1-2.4-2.4L15.5 8.5"/></svg>Attach a photo or PDF of your existing stamp<input type="file" multiple accept="image/*,application/pdf,.pdf,.heic,.heif" hidden></div>
+<div class="att" id="sal"></div>
+<p class="hint">Already have a stamp or design? Attach it and our staff will match it.</p></section>
+<section><h2><i>5</i>Preview</h2><div class="paper"><canvas id="sp" width="1200" height="600" role="img" aria-label="Stamp preview"></canvas></div>
 <p class="hint" id="sph"></p></section>
-<section><h2><i>5</i>Your details</h2><div class="tx">
+<section><h2><i>6</i>Your details</h2><div class="tx">
 <input id="sn" maxlength="60" placeholder="Your name" autocomplete="name"><input id="st" maxlength="20" placeholder="Phone number" inputmode="tel" autocomplete="tel"></div></section>
-<section class="cash"><h2><i>6</i>For cashier</h2><div class="tx">
+<section class="cash"><h2><i>7</i>For cashier</h2><div class="tx">
 <label class="fn" style="margin:0">Model<input id="sm" maxlength="40" placeholder="e.g. Shiny S-844"></label>
 <label class="fn" style="margin:0">Cashier name<input id="scs" maxlength="40" placeholder="Cashier name"></label>
 <label class="fn" style="margin:0">Series number<span class="ono" id="ssn">STMP····</span></label></div>
@@ -279,8 +288,10 @@ footer{text-align:center;font-size:.76rem;color:var(--mu);padding:10px 16px 0}
 <label class="pick sm"><input type="radio" name="te" value="Sarawak" checked><b>Sarawak</b><small>State emblem · 7.5 × 2.5 cm</small></label>
 <label class="pick sm"><input type="radio" name="te" value="Malaysia"><b>Malaysia</b><small>National emblem · 7.5 × 2.5 cm</small></label>
 </div></section>
-<section><h2><i>3</i>Name</h2><div class="tx"><input id="tn" maxlength="16" placeholder="e.g. NURUL HANIS" autocapitalize="characters" autocomplete="off"></div>
-<p class="hint" id="tnc">One line, up to 10 letters.</p>
+<section><h2><i>3</i>Name</h2><div class="tx"><input id="tn" maxlength="16" placeholder="e.g. NURUL HANIS" autocapitalize="characters" autocomplete="off" aria-label="Line 1"></div>
+<p class="hint" id="tnc">Up to 10 letters.</p>
+<label class="fn">Line 2 (not recommended)<input id="tn2" maxlength="16" placeholder="Optional, e.g. a title or department" autocapitalize="characters" autocomplete="off"></label>
+<p class="hint" id="tnc2">A second line makes both lines smaller. Up to 10 letters.</p>
 <div class="opt" style="margin-top:12px"><label class="chip">Font <select id="tf"><option value="sans">Sans</option><option value="serif">Serif</option></select></label><label class="chip"><input type="checkbox" id="tu" checked>CAPITAL LETTERS</label></div></section>
 <section><h2><i>4</i>Attachment</h2><div class="seg seg3" role="radiogroup" aria-label="Attachment">
 <label class="pick sm"><input type="radio" name="ta" value="Pin" checked><b>Pin</b></label>
@@ -358,10 +369,10 @@ function enqueue(fs,slot){fs=fs.filter(f=>f&&/^image\//.test(f.type||'image/'));
   fs.slice(0,2).forEach((f,j)=>Q.push([f,ord[j]]));if(fs.length>2)toast('Only the first 2 images were used.')}
  if(cr.hidden)next()}
 function next(){if(!Q.length)return;const[f,i]=Q.shift();load(f,i)}
-function readImg(f,cb){const u=URL.createObjectURL(f),im=new Image();
+function readImg(f,cb,quiet){const u=URL.createObjectURL(f),im=new Image();
  im.onload=()=>{const k=Math.min(1,MAX/Math.max(im.width,im.height)),c=document.createElement('canvas');
   c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);cb(c)};
- im.onerror=()=>{URL.revokeObjectURL(u);alert('This image format is not supported. Ask the customer to resend as PNG or JPG.');cb(null)};im.src=u}
+ im.onerror=()=>{URL.revokeObjectURL(u);if(!quiet)alert('This image format is not supported. Ask the customer to resend as PNG or JPG.');cb(null)};im.src=u}
 function load(f,i){readImg(f,c=>c?openCrop(i,c):next())}
 const take=fs=>{if(mode=='home')go(fs.some(f=>/\.docx$/i.test(f.name||''))?'pdf':lastSvc());mode=='qr'?qload(fs):mode=='pdf'?padd(fs):enqueue(fs)};
 document.addEventListener('paste',e=>{if(e.clipboardData)take([...e.clipboardData.files])});
@@ -620,7 +631,7 @@ function drawStamp(x,cx,cy,k,ink='#000'){const fam=sFam(),cq=sCond(),
   wid=(t,wt,f)=>{x.font=`${wt} ${f}px ${fam}`;return x.measureText(t).width*cq},
   put=(t,px,py,wt,f,al,rot=0)=>{x.save();x.translate(px,py);if(rot)x.rotate(rot);x.scale(cq,1);x.font=`${wt} ${f}px ${fam}`;x.textAlign=al;x.fillText(t,0,0);x.restore()};
  x.save();x.fillStyle=x.strokeStyle=ink;x.textBaseline='middle';
- if(sShape()=='rect'){const{w,h,m}=SB.rect,L=['r1','r2','r3','r4','r5'].map(sv).filter(Boolean),n=Math.max(1,L.length),aw=(w-2*m)*k,ah=(h-2*m)*k,lh=ah/n,al=$('#ra').value,bm=$('#rb').value;
+ if(sShape()=='rect'){const{w,h,m}=SB.rect,L=['r1','r2','r3','r4','r5','r6','r7','r8'].map(sv).filter(Boolean),n=Math.max(1,L.length),aw=(w-2*m)*k,ah=(h-2*m)*k,lh=ah/n,al=$('#ra').value,bm=$('#rb').value;
   if(sck('rx')){x.lineWidth=.5*k;x.strokeRect(cx-w*k/2+.25*k,cy-h*k/2+.25*k,w*k-.5*k,h*k-.5*k)}
   const WT=i=>bm=='all'||bm=='first'&&!i?'700':'400',F0=lh*.84,fu=Math.min(F0,...L.map((t,i)=>F0*Math.min(1,aw/wid(t,WT(i),F0))));   // one letter size for every line, like a real stamp
   L.forEach((t,i)=>{const wt=WT(i),f=fu;
@@ -649,7 +660,7 @@ function drawStamp(x,cx,cy,k,ink='#000'){const fam=sFam(),cq=sCond(),
   const rc=(inner?ri:zIn)-1.2*k,n=C.length;
   if(n){const lh=Math.min(rc*.62,1.6*rc/n);C.forEach((t,i)=>{const dy=(i-(n-1)/2)*lh,hw=Math.sqrt(Math.max(0,rc*rc-(Math.abs(dy)+lh/2)**2))*1.85;let g=lh*.78;const tw=wid(t,'700',g);if(tw>hw)g*=hw/tw;put(t,cx,cy+dy,'700',g,'center')})}}
  x.restore()}
-function sReady(){return(sShape()=='rect'?['r1','r2','r3','r4','r5']:['c1','c2','c3','c4','c5']).some(id=>$('#'+id).value.trim())}
+function sReady(){return(sShape()=='rect'?['r1','r2','r3','r4','r5','r6','r7','r8']:['c1','c2','c3','c4','c5']).some(id=>$('#'+id).value.trim())}
 let sfTouched=false;$('#sf').addEventListener('change',()=>sfTouched=true);
 function sPreview(){const rect=sShape()=='rect';if(!sfTouched)$('#sf').value=rect?'serif':'cond';$('#stR').hidden=!rect;$('#stC').hidden=rect;
  const W=1200,H=rect?560:1200;if(sp.height!=H)sp.height=H;spx.fillStyle='#fff';spx.fillRect(0,0,W,H);
@@ -661,37 +672,59 @@ document.querySelectorAll('#vStamp input[type=radio],#vStamp input[type=checkbox
 const sDig=()=>$('#st').value.replace(/\D/g,''),sName=()=>'STMP'+sDig().slice(-4),sShow=()=>$('#ssn').textContent=sDig().length>=4?sName():'STMP····';
 $('#st').addEventListener('input',sShow);sShow();
 // A4 order sheet: details + stamp at actual size + 2x enlargement for checking
-function sSheet(no){const c=document.createElement('canvas');c.width=PW;c.height=PH;const x=c.getContext('2d'),F='"Plus Jakarta Sans",Arial,sans-serif',k=MM,L=20*k,rect=sShape()=='rect';
+function sSheet(no,np=0,other=[]){const c=document.createElement('canvas');c.width=PW;c.height=PH;const x=c.getContext('2d'),F='"Plus Jakarta Sans",Arial,sans-serif',k=MM,L=20*k,rect=sShape()=='rect';
  x.fillStyle='#fff';x.fillRect(0,0,PW,PH);x.fillStyle='#000';x.textBaseline='alphabetic';
  x.font=`800 ${9*k}px ${F}`;x.fillText('Stamp order',L,30*k);x.textAlign='right';x.fillText(no,PW-L,30*k);x.textAlign='left';
  x.font=`500 ${3.1*k}px ${F}`;x.fillText('Synly Trading & Bookstore Sdn Bhd · Lot 290-292, Parkcity Commerce Square, 97000 Bintulu · 086-337 891',L,38*k);
  x.fillRect(L,42*k,PW-2*L,.5*k);
  const d=new Date(Date.now()+8*36e5),dt=d.toISOString().slice(0,16).replace('T',' ');
- const rows=[['Series no.',no],['Date / time',dt],['Customer',sv('sn')||'-'],['Phone',sv('st')],['Shape',rect?'Rectangle (max 7 × 2.5 cm)':'Round (max 6 cm across)'+(sck('cd')?', double ring':'')+(sck('ci')?', inner circle':'')],['Font',$('#sf').selectedOptions[0].text+(rect?', '+($('#ra').value=='left'?'left':'centre')+' aligned':'')],['Stamp type',sKind()],['Ink colour',sInk()],['Model',sv('sm')||'-'],['Cashier',sv('scs')]];
- let y=52*k;rows.forEach(([a,b])=>{x.font=`500 ${4.2*k}px ${F}`;x.fillStyle='#555';x.fillText(a,L,y);x.fillStyle='#000';x.font=`700 ${4.6*k}px ${F}`;x.fillText(b,L+42*k,y);y+=8*k});
+ const rows=[['Series no.',no],['Date / time',dt],['Customer',sv('sn')||'-'],['Phone',sv('st')],['Shape',rect?'Rectangle (max 7 × 2.5 cm)':'Round (max 6 cm across)'+(sck('cd')?', double ring':'')+(sck('ci')?', inner circle':'')],['Font',$('#sf').selectedOptions[0].text+(rect?', '+($('#ra').value=='left'?'left':'centre')+' aligned':'')],['Stamp type',sKind()],['Ink colour',sInk()],['Model',sv('sm')||'-'],['Cashier',sv('scs')],['Sample',SA.length?((np?np+' photo'+(np>1?'s':'')+' (next pages)':'')+(np&&other.length?' + ':'')+(other.length?other.map(f=>f.name).join(', ').slice(0,60):'')):'-']];
+ let y=52*k;rows.forEach(([a,b])=>{x.font=`500 ${4.2*k}px ${F}`;x.fillStyle='#555';x.fillText(a,L,y);x.fillStyle='#000';x.font=`700 ${4.6*k}px ${F}`;x.fillText(b,L+42*k,y);y+=7*k});
  y+=2*k;x.fillStyle='#555';x.font=`500 ${4.2*k}px ${F}`;x.fillText('Text',L,y);x.fillStyle='#000';x.font=`600 ${4.4*k}px ${F}`;
- const T=rect?['r1','r2','r3','r4','r5'].map((id,i)=>sv(id)&&`Line ${i+1}: ${sv(id)}`):[sv('c1')&&'Around: '+sv('c1'),sv('c2')&&'Bottom: '+sv('c2'),...['c3','c4','c5'].map((id,i)=>sv(id)&&`Centre ${i+1}: ${sv(id)}`)];
- T.filter(Boolean).forEach(t=>{x.fillText(t,L+42*k,y);y+=7*k});
+ const T=rect?['r1','r2','r3','r4','r5','r6','r7','r8'].map((id,i)=>sv(id)&&`Line ${i+1}: ${sv(id)}`):[sv('c1')&&'Around: '+sv('c1'),sv('c2')&&'Bottom: '+sv('c2'),...['c3','c4','c5'].map((id,i)=>sv(id)&&`Centre ${i+1}: ${sv(id)}`)];
+ T.filter(Boolean).forEach(t=>{x.fillText(t,L+42*k,y);y+=6*k});
  y+=6*k;x.fillRect(L,y,PW-2*L,.3*k);y+=10*k;
  x.fillStyle='#555';x.font=`600 ${4*k}px ${F}`;x.fillText(rect?'Actual size':'Maximum size (final size per model)',L,y);
  const sh=rect?SB.rect.h:SB.round.d,sw=rect?SB.rect.w:SB.round.d;y+=4*k;
  if(rect){x.strokeStyle='#bbb';x.setLineDash([2*k,1.5*k]);x.lineWidth=.3*k;x.strokeRect(L,y,sw*k,sh*k);x.setLineDash([])}
  drawStamp(x,L+sw*k/2,y+sh*k/2,k);y+=sh*k+12*k;
- if(rect){x.fillStyle='#555';x.fillText('Enlarged 2× for checking',L,y);y+=4*k;drawStamp(x,PW/2,y+sh*k,2*k);y+=sh*2*k+12*k}
+ const z=Math.min(2,(PH-50*k-y-4*k)/(sh*k));   // enlargement shrinks if the order has many lines
+ let big=null;
+ if(rect&&z>=1.2){x.fillStyle='#555';x.fillText(`Enlarged ${Math.round(z*10)/10}× for checking`,L,y);y+=4*k;drawStamp(x,PW/2,y+sh*k*z/2,z*k);y+=sh*z*k+12*k}
+ else if(rect){x.fillStyle='#555';x.fillText('Enlarged view on the next page',L,y);   // no room: enlargement gets its own page
+  big=document.createElement('canvas');big.width=PW;big.height=PH;const g=big.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,PW,PH);g.fillStyle='#000';
+  g.font=`800 ${7*k}px ${F}`;g.fillText(no+' · enlarged 2.5× for checking',L,30*k);drawStamp(g,PW/2,30*k+20*k+sh*2.5*k/2,2.5*k)}
  x.fillStyle='#000';x.fillRect(L,PH-40*k,80*k,.4*k);x.fillRect(PW-L-80*k,PH-40*k,80*k,.4*k);
  x.fillStyle='#555';x.font=`500 ${3.8*k}px ${F}`;x.fillText('Customer confirms the text above',L,PH-34*k);x.textAlign='right';x.fillText('Cashier: '+sv('scs'),PW-L,PH-34*k);
- return c}
-let sFile=null;
+ return big?[c,big]:[c]}
+/* customer sample files: photos go into the order PDF as extra pages; PDFs and other files are shared alongside it */
+const SA=[],sal=$('#sal'),sa0=$('#sa0'),sain=sa0.querySelector('input');
+const isPdf=f=>/pdf/.test(f.type)||/\.pdf$/i.test(f.name||''),kb=b=>b>1048576?(b/1048576).toFixed(1)+' MB':Math.max(1,Math.round(b/1024))+' KB';
+function salist(){sal.innerHTML='';SA.forEach((f,i)=>{const d=document.createElement('div');d.className='af';
+ const th=isPdf(f)||!/^image\//.test(f.type)?`<div class="pdf">${isPdf(f)?'PDF':'FILE'}</div>`:`<img alt="" src="${URL.createObjectURL(f)}">`;
+ d.innerHTML=`${th}<span></span><button data-i="${i}" aria-label="Remove">&#10005;</button>`;const sp2=d.querySelector('span');sp2.textContent=f.name;const sm=document.createElement('small');sm.textContent=kb(f.size);sp2.append(sm);sal.append(d)})}
+function saAdd(fs){for(const f of fs)if(f&&f.size&&SA.length<10)SA.push(f);if(fs.length&&SA.length>=10)toast('Up to 10 sample files.');salist()}
+sal.onclick=e=>{const b=e.target.closest('button[data-i]');if(b){SA.splice(+b.dataset.i,1);salist()}};
+sain.onchange=()=>{saAdd([...sain.files]);sain.value=''};sa0.onclick=()=>sain.click();sa0.onkeydown=e=>{if(e.key=='Enter'||e.key==' '){e.preventDefault();sain.click()}};
+sa0.ondragover=e=>{e.preventDefault();sa0.classList.add('drag')};sa0.ondragleave=()=>sa0.classList.remove('drag');
+sa0.ondrop=e=>{e.preventDefault();e.stopPropagation();sa0.classList.remove('drag');saAdd([...e.dataTransfer.files])};
+async function samplePages(){const pages=[],other=[],mg=28.35;
+ for(const f of SA){let c=null;if(!isPdf(f)&&/^image\//.test(f.type||'image/'))c=await new Promise(ok=>readImg(f,ok,1));
+  if(!c){other.push(f);continue}
+  const b=await toBlob(c,.9),jpg=new Uint8Array(await b.arrayBuffer()),Lw=c.width>c.height,pw=Lw?A4H:A4W,ph=Lw?A4W:A4H,k2=Math.min((pw-2*mg)/c.width,(ph-2*mg)/c.height),dw=c.width*k2,dh=c.height*k2;
+  pages.push({jpg,w:c.width,h:c.height,pw,ph,x:(pw-dw)/2,y:(ph-dh)/2,dw,dh})}
+ return{pages,other}}
+let sFile=null,sOther=[];
 $('#sb').onclick=job(async()=>{if(sDig().length<4){toast('Please enter the customer phone number.');$('#st').focus();return}
  if(!sv('scs')){toast('Cashier: please fill in your name.');$('#scs').focus();return}
  if(!sv('sm')){toast('Cashier: please fill in the model.');$('#sm').focus();return}
- if(document.fonts)await document.fonts.ready;const no=sName(),c=sSheet(no),jpg=new Uint8Array(await(await toBlob(c,.92)).arrayBuffer());
- sFile=new File([buildPdf([{jpg,w:PW,h:PH,pw:A4W,ph:A4H,x:0,y:0,dw:A4W,dh:A4H}])],no+'.pdf',{type:'application/pdf'});
+ if(document.fonts)await document.fonts.ready;const no=sName(),{pages,other}=await samplePages(),cs=sSheet(no,pages.length,other),own=[];for(const c of cs)own.push({jpg:new Uint8Array(await(await toBlob(c,.92)).arrayBuffer()),w:PW,h:PH,pw:A4W,ph:A4H,x:0,y:0,dw:A4W,dh:A4H});
+ sFile=new File([buildPdf([...own,...pages])],no+'.pdf',{type:'application/pdf'});sOther=other;
  save(sFile,sFile.name);
- $('#sr').hidden=false;$('#srt').textContent=sFile.name+' saved to Downloads.';toast(sFile.name+' created')});
-$('#sshare').onclick=job(async()=>{if(!sFile)return;if(navigator.canShare&&navigator.canShare({files:[sFile]}))try{await navigator.share({files:[sFile]})}catch(e){}else save(sFile,sFile.name)});
-$('#ssave').onclick=()=>sFile&&save(sFile,sFile.name);
-$('#snew').onclick=()=>{['r1','r2','r3','r4','r5','c1','c2','c3','c4','c5','sn','st','sm'].forEach(id=>$('#'+id).value='');$('#sr').hidden=true;sFile=null;sPreview();sShow();scrollTo({top:0,behavior:'smooth'})};
+ $('#sr').hidden=false;$('#srt').textContent=sFile.name+' saved to Downloads'+(pages.length?` (with ${pages.length} sample photo page${pages.length>1?'s':''})`:'')+'.'+(other.length?` ${other.length} sample file${other.length>1?'s are':' is'} sent with it when you tap Share PDF.`:'');toast(sFile.name+' created')});
+$('#sshare').onclick=job(async()=>{if(!sFile)return;const fs=[sFile,...sOther];if(navigator.canShare&&navigator.canShare({files:fs}))try{await navigator.share({files:fs})}catch(e){}else fs.forEach(f=>save(f,f.name))});
+$('#ssave').onclick=()=>sFile&&[sFile,...sOther].forEach(f=>save(f,f.name));
+$('#snew').onclick=()=>{['r1','r2','r3','r4','r5','r6','r7','r8','c1','c2','c3','c4','c5','sn','st','sm'].forEach(id=>$('#'+id).value='');SA.length=0;salist();sOther=[];$('#sr').hidden=true;sFile=null;sPreview();sShow();scrollTo({top:0,behavior:'smooth'})};
 sPreview();
 
 /* ---------- Name tag booking: design + preview, cashier submits a B&W PDF (NTAGS + last 4 digits of phone) ---------- */
@@ -699,14 +732,13 @@ sPreview();
 const TG={E1:{w:70,h:22},E2:{w:70,h:17},E3:{w:65,h:20},EP:{w:75,h:25}},TGL={E1:'Option 1 (7 × 2.2 cm)',E2:'Option 2 (7 × 1.7 cm)',E3:'Option 3 (6.5 × 2 cm)'};
 const tp=$('#tp'),tpx=tp.getContext('2d'),rv=n=>document.querySelector(`input[name=${n}]:checked`).value;
 const tEng=()=>rv('tt')=='Engraved',tDim=()=>TG[tEng()?rv('tz'):'EP'],tLetters=t=>(t.match(/\p{L}/gu)||[]).length;
-const tName=()=>{const v=$('#tn').value.replace(/\s+/g,' ').trim();return $('#tu').checked?v.toUpperCase():v};
+const tLine=id=>{const v=$('#'+id).value.replace(/\s+/g,' ').trim();return $('#tu').checked?v.toUpperCase():v},tName=()=>tLine('tn'),tName2=()=>tLine('tn2');
 // keep only letters, spaces and . ' - ; stop at 10 letters
-$('#tn').addEventListener('input',()=>{const e=$('#tn');let n=0,o='';for(const c of e.value.replace(/[^\p{L} .'\-]/gu,'').replace(/^\s+/,'').replace(/\s{2,}/g,' ')){if(/\p{L}/u.test(c)){if(n>=10)break;n++}else if(n>=10)break;o+=c}if(o!==e.value)e.value=o;tPreview()});
+['tn','tn2'].forEach(id=>$('#'+id).addEventListener('input',()=>{const e=$('#'+id);let n=0,o='';for(const c of e.value.replace(/[^\p{L} .'\-]/gu,'').replace(/^\s+/,'').replace(/\s{2,}/g,' ')){if(/\p{L}/u.test(c)){if(n>=10)break;n++}else if(n>=10)break;o+=c}if(o!==e.value)e.value=o;tPreview()}));
 function rr2(x,X,Y,w,h,r){x.beginPath();x.moveTo(X+r,Y);x.arcTo(X+w,Y,X+w,Y+h,r);x.arcTo(X+w,Y+h,X,Y+h,r);x.arcTo(X,Y+h,X,Y,r);x.arcTo(X,Y,X+w,Y,r);x.closePath()}
-function emblem(x,X,Y,w,h,label){   // placeholder: the official emblem artwork is applied by the shop
- const cx=X+w/2,s=Math.min(w,h);x.save();x.strokeStyle='#5a4310';x.fillStyle='#5a4310';x.lineWidth=s*.035;
- const sw=s*.42,sh=s*.5,sy=Y+h*.16;x.beginPath();x.moveTo(cx-sw/2,sy);x.lineTo(cx+sw/2,sy);x.lineTo(cx+sw/2,sy+sh*.55);x.quadraticCurveTo(cx+sw/2,sy+sh*.9,cx,sy+sh);x.quadraticCurveTo(cx-sw/2,sy+sh*.9,cx-sw/2,sy+sh*.55);x.closePath();x.stroke();
- x.font=`700 ${s*.12}px Arial,sans-serif`;x.textAlign='center';x.textBaseline='middle';x.fillText(label.toUpperCase(),cx,Y+h*.84);x.font=`700 ${s*.1}px Arial,sans-serif`;x.fillText('EMBLEM',cx,sy+sh*.45);x.restore()}
+const EMB={};['Sarawak','Malaysia'].forEach(n=>{const i=new Image();i.onload=()=>{EMB[n]=i;if(typeof tPreview=='function')tPreview()};i.src='emblems/'+n.toLowerCase()+(n=='Sarawak'?'.svg':'.png')});
+function emblem(x,X,Y,w,h,label){const im=EMB[label];if(!im)return;const p=Math.min(w,h)*.08,iw=im.naturalWidth||im.width,ih=im.naturalHeight||im.height,s2=Math.min((w-2*p)/iw,(h-2*p)/ih),dw=iw*s2,dh=ih*s2;
+ x.drawImage(im,X+(w-dw)/2,Y+(h-dh)/2,dw,dh)}
 function drawTag(x,cx,cy,k){const d=tDim(),w=d.w*k,h=d.h*k,X=cx-w/2,Y=cy-h/2,name=tName()||'YOUR NAME',ghost=!tName(),
   fam=$('#tf').value=='serif'?'"Times New Roman",Times,"Liberation Serif",serif':'"Segoe UI",Calibri,Arial,"Liberation Sans",sans-serif',wt=$('#tf').value=='serif'?'700':'600';
  x.save();
@@ -714,17 +746,20 @@ function drawTag(x,cx,cy,k){const d=tDim(),w=d.w*k,h=d.h*k,X=cx-w/2,Y=cy-h/2,nam
   const i=.9*k;x.fillStyle='#111';rr2(x,X+i,Y+i,w-2*i,h-2*i,.6*k);x.fill();
   var tx0=X+i,tw=w-2*i,th=h-2*i,ink='#fff'}
  else{const g=x.createLinearGradient(0,Y,0,Y+h);g.addColorStop(0,'#f6dd8a');g.addColorStop(.5,'#c08a26');g.addColorStop(1,'#8a5d12');x.fillStyle=g;rr2(x,X,Y,w,h,1.6*k);x.fill();
-  const i=1.1*k,pw=(h-2*i)*1.05,g2=x.createLinearGradient(X,Y,X+pw,Y+h);g2.addColorStop(0,'#fbe9a6');g2.addColorStop(1,'#e2bd57');x.fillStyle=g2;x.fillRect(X+i,Y+i,pw,h-2*i);
+  const i=1.1*k,pw=(h-2*i)*(rv('te')=='Malaysia'?1.3:1.05),g2=x.createLinearGradient(X,Y,X+pw,Y+h);g2.addColorStop(0,'#fbe9a6');g2.addColorStop(1,'#e2bd57');x.fillStyle=g2;x.fillRect(X+i,Y+i,pw,h-2*i);
   emblem(x,X+i,Y+i,pw,h-2*i,rv('te'));x.fillStyle='#0d0d0d';x.fillRect(X+i+pw,Y+i,w-2*i-pw,h-2*i);
   var tx0=X+i+pw,tw=w-2*i-pw,th=h-2*i,ink='#e3bd5c'}
- let f=th*.52;x.font=`${wt} ${f}px ${fam}`;const mw=x.measureText(name).width;if(mw>tw*.86)f*=tw*.86/mw;
- x.font=`${wt} ${f}px ${fam}`;x.fillStyle=ink;x.globalAlpha=ghost?.35:1;x.textAlign='center';x.textBaseline='middle';x.fillText(name,tx0+tw/2,Y+h/2+f*.03);
+ const n2=tName2(),fit=(t,f)=>{x.font=`${wt} ${f}px ${fam}`;const mw=x.measureText(t).width;return mw>tw*.86?f*tw*.86/mw:f};
+ x.fillStyle=ink;x.globalAlpha=ghost?.35:1;x.textAlign='center';x.textBaseline='middle';
+ if(!n2){const f=fit(name,th*.52);x.font=`${wt} ${f}px ${fam}`;x.fillText(name,tx0+tw/2,Y+h/2+f*.03)}
+ else{const f1=fit(name,th*.38),f2=fit(n2,th*.27),gp=th*.06,tot=f1+gp+f2,y1=Y+h/2-tot/2+f1/2,y2=y1+f1/2+gp+f2/2;
+  x.font=`${wt} ${f1}px ${fam}`;x.fillText(name,tx0+tw/2,y1);x.font=`${wt} ${f2}px ${fam}`;x.fillText(n2,tx0+tw/2,y2)}
  x.restore()}
 let tfTouched=false;$('#tf').addEventListener('change',()=>tfTouched=true);
 function tPreview(){const e=tEng();$('#tgE').hidden=!e;$('#tgP').hidden=e;if(!tfTouched)$('#tf').value=e?'sans':'serif';
  const d=tDim(),W=1200,k=(W-80)/75,H=Math.round(d.h*k+80);if(tp.height!=H)tp.height=H;tpx.fillStyle='#fff';tpx.fillRect(0,0,W,H);drawTag(tpx,W/2,H/2,k);
- const n=tLetters($('#tn').value);$('#tnc').textContent=`One line, up to 10 letters (${n}/10 used).`;
- $('#tph').textContent=e?`Engraved ${TGL[rv('tz')]}. Colours are a guide only.`:`Epoxy with ${rv('te')} emblem, 7.5 × 2.5 cm. The emblem here is a placeholder; the official emblem is used on your tag.`;
+ $('#tnc').textContent=`Up to 10 letters (${tLetters($('#tn').value)}/10 used).`;$('#tnc2').textContent=`A second line makes both lines smaller. Up to 10 letters (${tLetters($('#tn2').value)}/10 used).`;
+ $('#tph').textContent=e?`Engraved ${TGL[rv('tz')]}. Colours are a guide only.`:`Epoxy with ${rv('te')} emblem, 7.5 × 2.5 cm. Colours are a guide only.`;
  const dg=$('#tct').value.replace(/\D/g,'');$('#tsn').textContent='NTAGS'+(dg.length>=4?dg.slice(-4):'····');$('#tb').disabled=busy}
 document.querySelectorAll('#vTag input[type=radio],#vTag input[type=checkbox],#vTag select').forEach(e=>e.addEventListener('change',tPreview));$('#tct').addEventListener('input',tPreview);
 function tSheet(no){const c=document.createElement('canvas');c.width=PW;c.height=PH;const x=c.getContext('2d'),F='"Plus Jakarta Sans",Arial,sans-serif',k=MM,L=20*k,e=tEng(),d=tDim();
@@ -732,7 +767,7 @@ function tSheet(no){const c=document.createElement('canvas');c.width=PW;c.height
  x.font=`800 ${9*k}px ${F}`;x.fillText('Name tag order',L,30*k);x.textAlign='right';x.fillText(no,PW-L,30*k);x.textAlign='left';
  x.font=`500 ${3.1*k}px ${F}`;x.fillText('Synly Trading & Bookstore Sdn Bhd · Lot 290-292, Parkcity Commerce Square, 97000 Bintulu · 086-337 891',L,38*k);x.fillRect(L,42*k,PW-2*L,.5*k);
  const dt=new Date(Date.now()+8*36e5).toISOString().slice(0,16).replace('T',' ');
- const rows=[['Series no.',no],['Date / time',dt],['Customer',sv('tcn')||'-'],['Phone',sv('tct')],['Name on tag',tName()],['Type',e?'Engraved':'Epoxy with logo'],[e?'Size':'Emblem',e?TGL[rv('tz')]:rv('te')+' (7.5 × 2.5 cm)'],['Attachment',rv('ta')],['Font',$('#tf').selectedOptions[0].text+($('#tu').checked?', capitals':'')],['Cashier',sv('tcs')]];
+ const rows=[['Series no.',no],['Date / time',dt],['Customer',sv('tcn')||'-'],['Phone',sv('tct')],['Name on tag',tName()+(tName2()?'  /  Line 2: '+tName2():'')],['Type',e?'Engraved':'Epoxy with logo'],[e?'Size':'Emblem',e?TGL[rv('tz')]:rv('te')+' (7.5 × 2.5 cm)'],['Attachment',rv('ta')],['Font',$('#tf').selectedOptions[0].text+($('#tu').checked?', capitals':'')],['Cashier',sv('tcs')]];
  let y=52*k;rows.forEach(([a,b])=>{x.font=`500 ${4.2*k}px ${F}`;x.fillStyle='#555';x.fillText(a,L,y);x.fillStyle='#000';x.font=`700 ${4.6*k}px ${F}`;x.fillText(b,L+42*k,y);y+=8*k});
  y+=4*k;x.fillRect(L,y,PW-2*L,.3*k);y+=10*k;x.fillStyle='#555';x.font=`600 ${4*k}px ${F}`;x.fillText('Actual size',L,y);y+=4*k;
  drawTag(x,L+d.w*k/2,y+d.h*k/2,k);y+=d.h*k+12*k;x.fillStyle='#555';x.fillText('Enlarged 2× for checking',L,y);y+=4*k;drawTag(x,PW/2,y+d.h*k,2*k);
@@ -749,7 +784,7 @@ $('#tb').onclick=job(async()=>{const dg=$('#tct').value.replace(/\D/g,'');
  save(tFile,tFile.name);$('#tr').hidden=false;$('#trt').textContent=tFile.name+' saved to Downloads.';toast(tFile.name+' created')});
 $('#tshare').onclick=job(async()=>{if(!tFile)return;if(navigator.canShare&&navigator.canShare({files:[tFile]}))try{await navigator.share({files:[tFile]})}catch(e){}else save(tFile,tFile.name)});
 $('#tsave').onclick=()=>tFile&&save(tFile,tFile.name);
-$('#tnew').onclick=()=>{['tn','tcn','tct'].forEach(id=>$('#'+id).value='');$('#tr').hidden=true;tFile=null;tPreview();scrollTo({top:0,behavior:'smooth'})};
+$('#tnew').onclick=()=>{['tn','tn2','tcn','tct'].forEach(id=>$('#'+id).value='');$('#tr').hidden=true;tFile=null;tPreview();scrollTo({top:0,behavior:'smooth'})};
 tPreview();
 
 /* ---------- Buy me a coffee ---------- */
