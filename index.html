@@ -79,6 +79,11 @@ a.btn.p{background:var(--grad);color:#fff;border:0;box-shadow:0 4px 14px rgba(11
 @media(prefers-color-scheme:dark){.pill{background:#3a2e0d;color:#f5c75b}}
 .about-hd{display:flex;gap:14px;align-items:center;margin-bottom:12px}.about-hd .lg{width:58px;height:58px}.about-hd .lg img{width:48px;height:48px}
 .about-hd h3{margin:0;font-size:1.1rem}.about-hd p{margin:2px 0 0;color:var(--mu);font-size:.85rem}
+.hrs{width:100%;border-collapse:collapse;font-size:.92rem}.hrs th{text-align:left;font-weight:500;color:var(--mu);padding:9px 0}.hrs td{text-align:right;font-weight:600;padding:9px 0}
+.hrs tr+tr th,.hrs tr+tr td{border-top:1px solid var(--ln)}.hrs tr.today th,.hrs tr.today td{color:var(--ac)}
+.open{margin-left:auto;text-transform:none;letter-spacing:0;font-size:.74rem;font-weight:700;padding:3px 10px;border-radius:20px}
+.open.on{background:var(--mint);color:var(--ac)}.open.off{background:#fde8e8;color:#b42318}
+@media(prefers-color-scheme:dark){.open.off{background:#3a1616;color:#ff8a80}}
 .svc{list-style:none;padding:0;margin:0;display:grid;gap:9px}.svc li{display:flex;gap:10px;align-items:center;font-size:.92rem}
 .svc li::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--grad);flex:none}
 .svc small{color:var(--mu)}
@@ -210,11 +215,17 @@ footer{text-align:center;font-size:.76rem;color:var(--mu);padding:10px 16px 0}
 <a class="btn p" href="https://wa.me/60127664819?text=Hi%20Synly%2C%20I%27d%20like%20to%20order%20a%20stamp." target="_blank" rel="noopener">Ask about stamps on WhatsApp</a></section>
 </div>
 <div class="view" id="vAbout" hidden>
-<section><div class="about-hd"><div class="lg"><img src="logo.png" alt=""></div><div><h3>Synly Trading &amp; Bookstore S/B</h3><p>Bookstore &amp; printing services</p></div></div>
-<p class="lead" style="margin:0">Your local bookstore and print shop. Send your documents from your phone and we'll have them ready.</p></section>
+<section><div class="about-hd"><div class="lg"><img src="logo.png" alt=""></div><div><h3>Synly Trading &amp; Bookstore Sdn Bhd</h3><p>Stationery, books &amp; printing</p></div></div>
+<p class="lead" style="margin:0">A trading company, stationery shop and bookstore in Parkcity Phase 4, Bintulu. Send your documents from your phone and we'll have them printed and ready.</p></section>
 <section><h2>What we do</h2><ul class="svc">
-<li>IC &amp; driving licence copies</li><li>A5 merchant QR posters</li><li>Photo &amp; Word printing (PDF)</li><li>Stamp booking <small>(coming soon)</small></li></ul></section>
+<li>IC &amp; driving licence copies</li><li>A5 merchant QR posters</li><li>Photo &amp; Word printing (PDF)</li><li>Stationery &amp; books</li><li>Stamp booking <small>(coming soon)</small></li></ul></section>
+<section><h2>Opening hours <span class="open" id="opn"></span></h2>
+<table class="hrs" id="hrs"><tr data-d="1,2,3,4,5"><th>Monday – Friday</th><td>8:15 am – 7:30 pm</td></tr><tr data-d="6"><th>Saturday</th><td>8:15 am – 6:30 pm</td></tr><tr data-d="0"><th>Sunday</th><td>8:30 am – 5:00 pm</td></tr></table></section>
+<section><h2>Visit us</h2><div class="list" style="margin:0">
+<a class="li" href="https://www.google.com/maps/search/?api=1&amp;query=Synly+Trading+%26+Bookstore+Sdn+Bhd+Parkcity+Commerce+Square+Bintulu" target="_blank" rel="noopener"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span><span>Lot 290-292, Parkcity Commerce Square<small>97000 Bintulu, Sarawak · Open in Google Maps</small></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></a>
+</div></section>
 <section><h2>Contact</h2><div class="list" style="margin:0">
+<a class="li" href="tel:+6086337891"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h3l2 5-2.5 1.5a11 11 0 0 0 5 5L14 13l5 2v3a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg></span><span>Call the shop<small>086-337 891</small></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></a>
 <a class="li" href="https://wa.me/60127664819" target="_blank" rel="noopener"><span class="ico wa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 18.7z"/><path d="M9 9.5c.3 2.3 2.2 4.2 4.5 4.5l1-1.2 2 .9-.4 1.6c-3.6.3-7.2-3.3-6.9-6.9l1.6-.4.9 2z"/></svg></span><span>WhatsApp<small>+60 12-766 4819</small></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></a></div></section>
 <section><h2>This app</h2><p class="lead" style="margin:0">Synly Printing Services (Synly PS) works offline and keeps your files on your phone until you choose to send them.</p></section>
 </div>
@@ -506,6 +517,13 @@ $('#pw').onclick=pjob(async f=>{const txt='Print request for Synly Printing Serv
 $('#ps').onclick=pjob(async f=>{if(canShare(f))try{await navigator.share({files:[f]})}catch(e){}else save(f,f.name)});
 $('#pp').onclick=pjob(async f=>{save(f,f.name);toast('PDF saved to Downloads')});
 qpaint();
+
+/* ---------- opening hours: live status in Bintulu time (UTC+8) ---------- */
+const HRS={0:[510,1020],1:[495,1170],2:[495,1170],3:[495,1170],4:[495,1170],5:[495,1170],6:[495,1110]};  // minutes after midnight
+function hours(){const n=new Date(Date.now()+8*36e5),d=n.getUTCDay(),m=n.getUTCHours()*60+n.getUTCMinutes(),[o,c]=HRS[d],e=$('#opn'),t=x=>{const h=Math.floor(x/60),mm=x%60;return (h%12||12)+(mm?':'+String(mm).padStart(2,'0'):'')+(h<12?' am':' pm')};
+ $('#hrs').querySelectorAll('tr').forEach(r=>r.classList.toggle('today',r.dataset.d.split(',').includes(''+d)));
+ const on=m>=o&&m<c;e.className='open '+(on?'on':'off');e.textContent=on?'Open now · until '+t(c):m<o?'Closed · opens '+t(o):'Closed · opens '+t(HRS[(d+1)%7][0])+' tomorrow'}
+hours();setInterval(hours,6e4);
 
 /* ---------- Buy me a coffee ---------- */
 const cd=$('#cd');$('#cof').onclick=()=>cd.showModal?cd.showModal():cd.setAttribute('open','');$('#cdx').onclick=()=>cd.close?cd.close():cd.removeAttribute('open');
