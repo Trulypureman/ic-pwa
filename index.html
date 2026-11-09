@@ -99,7 +99,7 @@ a.btn.p{background:var(--grad);color:#fff;border:0;box-shadow:0 4px 14px rgba(11
 .af{display:flex;align-items:center;gap:10px;padding:8px;border:1px solid var(--ln);border-radius:12px;background:var(--bg);font-size:.85rem}
 .af img,.af .pdf{width:44px;height:44px;border-radius:8px;object-fit:cover;flex:none;background:#fff}.af .pdf{display:grid;place-items:center;font-weight:800;font-size:.7rem;color:#b42318;border:1px solid var(--ln)}
 .af span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.af small{display:block;color:var(--mu)}
-.af button{padding:6px 10px;font-size:.8rem;border-radius:9px}
+.af button{padding:6px 10px;font-size:.8rem;border-radius:9px;flex:none}
 .cash{border-style:dashed}.ono{display:flex;align-items:center;gap:2px;font:inherit;font-weight:700;color:var(--fg);background:var(--bg);border:1px solid var(--ln);border-radius:12px;padding:0 12px}
 .ono input{font:inherit;font-weight:700;border:0;background:transparent;color:var(--fg);padding:11px 0;width:100%;outline:0}
 .soonbox{text-align:center;padding:28px 18px}
@@ -391,7 +391,7 @@ const lock=()=>(cur===0||cur===1)&&$('#lk').checked;
 try{$('#lk').checked=!!localStorage.lk}catch(e){}
 function ratioBox(){let{x,y,w,h}=box;if(w/h>R){const n=h*R;x+=(w-n)/2;w=n}else{const n=w/R;y+=(h-n)/2;h=n}box={x,y,w,h}}
 $('#lk').onchange=()=>{try{localStorage.lk=$('#lk').checked?1:''}catch(e){}if(lock())ratioBox();draw()};
-function openCrop(i,im,st){cur=i;img=im;$('#ct').textContent='Crop '+(i==='q'?'QR':i==='p'?'page '+(pi+1):NM[i]);$('#lkw').hidden=!(i===0||i===1);
+function openCrop(i,im,st){cur=i;img=im;$('#ct').textContent='Crop '+(i==='q'?'QR':i==='p'?'page '+(pi+1):i==='a'?'sample':NM[i]);$('#lkw').hidden=!(i===0||i===1);
  if(cr.hidden){cr.hidden=false;history.pushState({crop:1},'')}layout();
  box=st?{...st}:{x:0,y:0,w:img.width,h:img.height};if(!st&&lock())ratioBox();fit();$('#ok').focus()}
 function hideCrop(){if(cr.hidden)return;cr.hidden=true;ptrs.clear();drag=null;next()}
@@ -445,11 +445,11 @@ cv.onpointermove=e=>{const p=ptrs.get(e.pointerId);if(!p||!drag)return;const o=[
 cv.onpointerup=cv.onpointercancel=e=>{ptrs.delete(e.pointerId);if(!ptrs.size)drag=null};
 
 $('#cx').onclick=closeCrop;
-$('#ok').onclick=()=>{const{x,y,w,h}=box,q=cur==='q'||cur==='p',k=q?Math.min(1,MAX/Math.max(w,h)):0,c=document.createElement('canvas');
+$('#ok').onclick=()=>{const{x,y,w,h}=box,q=cur==='q'||cur==='p'||cur==='a',k=q?Math.min(1,MAX/Math.max(w,h)):0,c=document.createElement('canvas');
  c.width=q?Math.round(w*k):CW;c.height=q?Math.round(h*k):CH;
  const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);g.imageSmoothingQuality='high';
  g.drawImage(img,x,y,w,h,0,0,c.width,c.height);
- if(cur==='p')pcrop(c,box);else if(q){qimg=c;qsrc={img,st:{...box}};qpaint()}else{cards[cur]=c;src[cur]={img,st:{...box}};thumbs();render()}closeCrop()};
+ if(cur==='p')pcrop(c,box);else if(cur==='a')acrop(c,box);else if(q){qimg=c;qsrc={img,st:{...box}};qpaint()}else{cards[cur]=c;src[cur]={img,st:{...box}};thumbs();render()}closeCrop()};
 
 /* ---------- A4 page ---------- */
 const gc=new WeakMap();
@@ -708,9 +708,14 @@ const SA=[],sal=$('#sal'),sa0=$('#sa0'),sain=sa0.querySelector('input');
 const isPdf=f=>/pdf/.test(f.type)||/\.pdf$/i.test(f.name||''),kb=b=>b>1048576?(b/1048576).toFixed(1)+' MB':Math.max(1,Math.round(b/1024))+' KB';
 function salist(){if(typeof sPreview=='function')setTimeout(sPreview);sal.innerHTML='';SA.forEach((f,i)=>{const d=document.createElement('div');d.className='af';
  const th=isPdf(f)||!/^image\//.test(f.type)?`<div class="pdf">${isPdf(f)?'PDF':'FILE'}</div>`:`<img alt="" src="${URL.createObjectURL(f)}">`;
- d.innerHTML=`${th}<span></span><button data-i="${i}" aria-label="Remove">&#10005;</button>`;const sp2=d.querySelector('span');sp2.textContent=f.name;const sm=document.createElement('small');sm.textContent=kb(f.size);sp2.append(sm);sal.append(d)})}
+ d.innerHTML=`${th}<span></span>${/^image\//.test(f.type)&&!isPdf(f)?`<button data-c="${i}" aria-label="Crop">&#9986; Crop</button>`:""}<button data-i="${i}" aria-label="Remove">&#10005;</button>`;const sp2=d.querySelector('span');sp2.textContent=f.name;const sm=document.createElement('small');sm.textContent=kb(f.size);sp2.append(sm);sal.append(d)})}
 function saAdd(fs){for(const f of fs)if(f&&f.size&&SA.length<10)SA.push(f);if(fs.length&&SA.length>=10)toast('Up to 10 sample files.');salist()}
-sal.onclick=e=>{const b=e.target.closest('button[data-i]');if(b){SA.splice(+b.dataset.i,1);salist()}};
+sal.onclick=e=>{const b=e.target.closest('button[data-i]'),c=e.target.closest('button[data-c]');
+ if(b){SA.splice(+b.dataset.i,1);salist()}
+ else if(c){const i=+c.dataset.c,f=SA[i],src=f._src||f;ai=i;readImg(src,cv=>{if(cv)openCrop('a',cv,f._st);else toast('This photo format cannot be cropped here; it will be sent as it is.')},1)}};
+// crop result replaces the attachment with a JPEG; the original is kept so it can be re-cropped
+let ai=0;async function acrop(c,st){const f=SA[ai];if(!f)return;const b=await toBlob(c,.92),n=new File([b],(f._src||f).name.replace(/\.[^.]+$/,'')+'-cropped.jpg',{type:'image/jpeg'});
+ n._src=f._src||f;n._st={...st};SA[ai]=n;salist()}
 sain.onchange=()=>{saAdd([...sain.files]);sain.value=''};sa0.onclick=()=>sain.click();sa0.onkeydown=e=>{if(e.key=='Enter'||e.key==' '){e.preventDefault();sain.click()}};
 sa0.ondragover=e=>{e.preventDefault();sa0.classList.add('drag')};sa0.ondragleave=()=>sa0.classList.remove('drag');
 sa0.ondrop=e=>{e.preventDefault();e.stopPropagation();sa0.classList.remove('drag');saAdd([...e.dataTransfer.files])};
