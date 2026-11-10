@@ -342,7 +342,7 @@ html.dark .st.bad{background:#5a2420;color:#ffd9d6}html.dark .st.err{background:
 <input id="c1" maxlength="60" placeholder="Around the edge (e.g. SYNLY TRADING &amp; BOOKSTORE SDN BHD)"><input id="c2" maxlength="60" placeholder="Around the bottom (optional)">
 <input id="c3" maxlength="30" placeholder="Centre line 1 (e.g. 821682-H)"><input id="c4" maxlength="30" placeholder="Centre line 2 (optional)"><input id="c5" maxlength="30" placeholder="Centre line 3 (optional)"></div>
 <div class="opt" style="margin-top:12px"><label class="chip"><input type="checkbox" id="ci" checked>Inner circle</label><label class="chip"><input type="checkbox" id="cd" checked>Double outer ring</label><label class="chip"><input type="checkbox" id="cs" checked>Star</label></div></div>
-<div class="opt" style="margin-top:8px"><label class="chip">Font <select id="sf"><option value="serif">Serif (Times)</option><option value="sans">Sans (Arial)</option><option value="cond">Narrow bold</option></select></label></div>
+<select id="sf" hidden aria-hidden="true" tabindex="-1"><option value="serif">Serif (Times)</option><option value="cond">Narrow bold</option></select>
 </section>
 <section><h2><i>4</i>Sample (optional)</h2>
 <div class="slot qs add" id="sa0" tabindex="0" role="button" aria-label="Attach a sample photo or PDF" style="height:96px"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M21 12.5l-8.5 8.5a5 5 0 0 1-7-7L14 5.5a3.3 3.3 0 0 1 4.7 4.7l-8.5 8.5a1.7 1.7 0 0 1-2.4-2.4L15.5 8.5"/></svg>Attach a photo or PDF of your existing stamp<input type="file" multiple accept="image/*,application/pdf,.pdf,.heic,.heif" hidden></div>
@@ -367,19 +367,19 @@ html.dark .st.bad{background:#5a2420;color:#ffd9d6}html.dark .st.err{background:
 <label class="pick"><input type="radio" name="tt" value="Epoxy"><span class="plate epx"></span><b>Epoxy with logo</b><small>Gold frame with emblem</small></label>
 </div></section>
 <section id="tgE"><h2><i>2</i>Size</h2><div class="seg seg3" role="radiogroup" aria-label="Size">
-<label class="pick sm"><input type="radio" name="tz" value="E1" checked><b>Option 1</b><small>7 × 2.2 cm</small></label>
-<label class="pick sm"><input type="radio" name="tz" value="E2"><b>Option 2</b><small>7 × 1.7 cm</small></label>
-<label class="pick sm"><input type="radio" name="tz" value="E3"><b>Option 3</b><small>6.5 × 2 cm</small></label>
+<label class="pick sm"><input type="radio" name="tz" value="E1" checked><span class="plate eng" style="width:56px;height:18px"></span><b>Option 1</b></label>
+<label class="pick sm"><input type="radio" name="tz" value="E2"><span class="plate eng" style="width:56px;height:14px"></span><b>Option 2</b></label>
+<label class="pick sm"><input type="radio" name="tz" value="E3"><span class="plate eng" style="width:52px;height:16px"></span><b>Option 3</b></label>
 </div></section>
 <section id="tgP" hidden><h2><i>2</i>Emblem</h2><div class="seg" role="radiogroup" aria-label="Emblem">
-<label class="pick sm"><input type="radio" name="te" value="Sarawak" checked><b>Sarawak</b><small>State emblem · 7.5 × 2.5 cm</small></label>
-<label class="pick sm"><input type="radio" name="te" value="Malaysia"><b>Malaysia</b><small>National emblem · 7.5 × 2.5 cm</small></label>
+<label class="pick sm"><input type="radio" name="te" value="Sarawak" checked><b>Sarawak</b><small>State emblem</small></label>
+<label class="pick sm"><input type="radio" name="te" value="Malaysia"><b>Malaysia</b><small>National emblem</small></label>
 </div></section>
 <section><h2><i>3</i>Name</h2><div class="tx"><input id="tn" maxlength="16" placeholder="e.g. NURUL HANIS" autocapitalize="characters" autocomplete="off" aria-label="Line 1"></div>
 <p class="hint" id="tnc">Up to 10 letters.</p>
 <label class="fn">Line 2 (not recommended)<input id="tn2" maxlength="16" placeholder="Optional, e.g. a title or department" autocapitalize="characters" autocomplete="off"></label>
 <p class="hint" id="tnc2">A second line makes both lines smaller. Up to 10 letters.</p>
-<div class="opt" style="margin-top:12px"><label class="chip">Font <select id="tf"><option value="sans">Sans</option><option value="serif">Serif</option></select></label><label class="chip"><input type="checkbox" id="tu" checked>CAPITAL LETTERS</label></div></section>
+<div class="opt" style="margin-top:12px"><select id="tf" hidden aria-hidden="true" tabindex="-1"><option value="sans">Sans</option><option value="serif">Serif</option></select><label class="chip"><input type="checkbox" id="tu" checked>CAPITAL LETTERS</label></div></section>
 <section><h2><i>4</i>Attachment</h2><div class="seg seg3" role="radiogroup" aria-label="Attachment">
 <label class="pick sm"><input type="radio" name="ta" value="Pin" checked><b>Pin</b></label>
 <label class="pick sm"><input type="radio" name="ta" value="Magnet"><b>Magnet</b></label>
@@ -770,8 +770,7 @@ function drawStamp(x,cx,cy,k,ink='#000'){const fam=sFam(),cq=sCond(),
  x.restore()}
 function sHasText(){return(sShape()=='rect'?['r1','r2','r3','r4','r5','r6','r7','r8']:['c1','c2','c3','c4','c5']).some(id=>$('#'+id).value.trim())}
 const sReady=()=>sHasText()||(typeof SA!='undefined'&&SA.length>0);   // a sample attachment is enough, text lines are then optional
-let sfTouched=false;$('#sf').addEventListener('change',()=>sfTouched=true);
-function sPreview(){const rect=sShape()=='rect';if(!sfTouched)$('#sf').value=rect?'serif':'cond';$('#stR').hidden=!rect;$('#stC').hidden=rect;
+function sPreview(){const rect=sShape()=='rect';$('#sf').value=rect?'serif':'cond';/* lettering style follows the shape, like the shop's own stamps */$('#stR').hidden=!rect;$('#stC').hidden=rect;
  const W=1200,H=rect?560:1200;if(sp.height!=H)sp.height=H;spx.fillStyle='#fff';spx.fillRect(0,0,W,H);
  const k=rect?(W-80)/SB.rect.w:(H-80)/SB.round.d;
  if(!sHasText()&&typeof SA!='undefined'&&SA.length){spx.fillStyle='#5a6e62';spx.textAlign='center';spx.textBaseline='middle';spx.font=`600 ${rect?46:60}px "Plus Jakarta Sans",Arial,sans-serif`;spx.fillText('Sample attached',W/2,H/2-(rect?30:40));spx.font=`500 ${rect?34:44}px "Plus Jakarta Sans",Arial,sans-serif`;spx.fillText('No text needed: our staff will follow your sample',W/2,H/2+(rect?30:40))}
@@ -789,7 +788,7 @@ function sSheet(no,imgs=[],other=[]){const np=imgs.length;const c=document.creat
  x.font=`500 ${3.1*k}px ${F}`;x.fillText('Synly Trading & Bookstore Sdn Bhd · Lot 290-292, Parkcity Commerce Square, 97000 Bintulu · 086-337 891',L,38*k);
  x.fillRect(L,42*k,PW-2*L,.5*k);
  const d=new Date(Date.now()+8*36e5),dt=d.toISOString().slice(0,16).replace('T',' ');
- const rows=[['Series no.',no],['Date / time',dt],['Customer',sv('sn')||'-'],['Phone',sv('st')],['Shape',rect?'Rectangle (max 7 × 2.5 cm)':'Round (max 6 cm across)'+(sck('cd')?', double ring':'')+(sck('ci')?', inner circle':'')],['Font',$('#sf').selectedOptions[0].text+(rect?', '+($('#ra').value=='left'?'left':'centre')+' aligned':'')],['Stamp type',sKind()],['Ink colour',sInk()],['Model',sv('sm')||'-'],['Cashier',sv('scs')],['Sample',SA.length?((np?np+' photo'+(np>1?'s':'')+' (below)':'')+(np&&other.length?' + ':'')+(other.length?other.map(f=>f.name).join(', ').slice(0,60):'')):'-']];
+ const rows=[['Series no.',no],['Date / time',dt],['Customer',sv('sn')||'-'],['Phone',sv('st')],['Shape',rect?'Rectangle (max 7 × 2.5 cm)':'Round (max 6 cm across)'+(sck('cd')?', double ring':'')+(sck('ci')?', inner circle':'')],...(rect?[['Alignment',$('#ra').value=='left'?'Left':'Centre']]:[]),['Stamp type',sKind()],['Ink colour',sInk()],['Model',sv('sm')||'-'],['Cashier',sv('scs')],['Sample',SA.length?((np?np+' photo'+(np>1?'s':'')+' (below)':'')+(np&&other.length?' + ':'')+(other.length?other.map(f=>f.name).join(', ').slice(0,60):'')):'-']];
  let y=52*k;rows.forEach(([a,b])=>{x.font=`500 ${4.2*k}px ${F}`;x.fillStyle='#555';x.fillText(a,L,y);x.fillStyle='#000';x.font=`700 ${4.6*k}px ${F}`;x.fillText(b,L+42*k,y);y+=7*k});
  y+=2*k;x.fillStyle='#555';x.font=`500 ${4.2*k}px ${F}`;x.fillText('Text',L,y);x.fillStyle='#000';x.font=`600 ${4.4*k}px ${F}`;
  const T=rect?['r1','r2','r3','r4','r5','r6','r7','r8'].map((id,i)=>sv(id)&&`Line ${i+1}: ${sv(id)}`):[sv('c1')&&'Around: '+sv('c1'),sv('c2')&&'Bottom: '+sv('c2'),...['c3','c4','c5'].map((id,i)=>sv(id)&&`Centre ${i+1}: ${sv(id)}`)];
@@ -877,11 +876,10 @@ function drawTag(x,cx,cy,k){const d=tDim(),w=d.w*k,h=d.h*k,X=cx-w/2,Y=cy-h/2,nam
  else{const f1=fit(name,th*.38),f2=fit(n2,th*.27),gp=th*.06,tot=f1+gp+f2,y1=Y+h/2-tot/2+f1/2,y2=y1+f1/2+gp+f2/2;
   x.font=`${wt} ${f1}px ${fam}`;x.fillText(name,tx0+tw/2,y1);x.font=`${wt} ${f2}px ${fam}`;x.fillText(n2,tx0+tw/2,y2)}
  x.restore()}
-let tfTouched=false;$('#tf').addEventListener('change',()=>tfTouched=true);
-function tPreview(){const e=tEng();$('#tgE').hidden=!e;$('#tgP').hidden=e;if(!tfTouched)$('#tf').value=e?'sans':'serif';
+function tPreview(){const e=tEng();$('#tgE').hidden=!e;$('#tgP').hidden=e;$('#tf').value=e?'sans':'serif';/* engraved = sans, epoxy = serif, like the samples */
  const d=tDim(),W=1200,k=(W-80)/75,H=Math.round(d.h*k+80);if(tp.height!=H)tp.height=H;tpx.fillStyle='#fff';tpx.fillRect(0,0,W,H);drawTag(tpx,W/2,H/2,k);
  $('#tnc').textContent=`Up to 10 letters (${tLetters($('#tn').value)}/10 used).`;$('#tnc2').textContent=`A second line makes both lines smaller. Up to 10 letters (${tLetters($('#tn2').value)}/10 used).`;
- $('#tph').textContent=e?`Engraved ${TGL[rv('tz')]}. Colours are a guide only.`:`Epoxy with ${rv('te')} emblem, 7.5 × 2.5 cm. Colours are a guide only.`;
+ $('#tph').textContent=e?`Engraved, ${{E1:'Option 1',E2:'Option 2',E3:'Option 3'}[rv('tz')]}. Colours are a guide only.`:`Epoxy with ${rv('te')} emblem. Colours are a guide only.`;
  const dg=$('#tct').value.replace(/\D/g,'');$('#tsn').textContent='NTAGS'+(dg.length>=4?dg.slice(-4):'····');$('#tb').disabled=busy}
 document.querySelectorAll('#vTag input[type=radio],#vTag input[type=checkbox],#vTag select').forEach(e=>e.addEventListener('change',tPreview));$('#tct').addEventListener('input',tPreview);
 function tSheet(no){const c=document.createElement('canvas');c.width=PW;c.height=PH;const x=c.getContext('2d'),F='"Plus Jakarta Sans",Arial,sans-serif',k=MM,L=20*k,e=tEng(),d=tDim();
@@ -889,7 +887,7 @@ function tSheet(no){const c=document.createElement('canvas');c.width=PW;c.height
  x.font=`800 ${9*k}px ${F}`;x.fillText('Name tag order',L,30*k);x.textAlign='right';x.fillText(no,PW-L,30*k);x.textAlign='left';
  x.font=`500 ${3.1*k}px ${F}`;x.fillText('Synly Trading & Bookstore Sdn Bhd · Lot 290-292, Parkcity Commerce Square, 97000 Bintulu · 086-337 891',L,38*k);x.fillRect(L,42*k,PW-2*L,.5*k);
  const dt=new Date(Date.now()+8*36e5).toISOString().slice(0,16).replace('T',' ');
- const rows=[['Series no.',no],['Date / time',dt],['Customer',sv('tcn')||'-'],['Phone',sv('tct')],['Name on tag',tName()+(tName2()?'  /  Line 2: '+tName2():'')],['Type',e?'Engraved':'Epoxy with logo'],[e?'Size':'Emblem',e?TGL[rv('tz')]:rv('te')+' (7.5 × 2.5 cm)'],['Attachment',rv('ta')],['Font',$('#tf').selectedOptions[0].text+($('#tu').checked?', capitals':'')],['Cashier',sv('tcs')]];
+ const rows=[['Series no.',no],['Date / time',dt],['Customer',sv('tcn')||'-'],['Phone',sv('tct')],['Name on tag',tName()+(tName2()?'  /  Line 2: '+tName2():'')],['Type',e?'Engraved':'Epoxy with logo'],[e?'Size':'Emblem',e?TGL[rv('tz')]:rv('te')+' (7.5 × 2.5 cm)'],['Attachment',rv('ta')],['Capitals',$('#tu').checked?'Yes':'No'],['Cashier',sv('tcs')]];
  let y=52*k;rows.forEach(([a,b])=>{x.font=`500 ${4.2*k}px ${F}`;x.fillStyle='#555';x.fillText(a,L,y);x.fillStyle='#000';x.font=`700 ${4.6*k}px ${F}`;x.fillText(b,L+42*k,y);y+=8*k});
  y+=4*k;x.fillRect(L,y,PW-2*L,.3*k);y+=10*k;x.fillStyle='#555';x.font=`600 ${4*k}px ${F}`;x.fillText('Actual size',L,y);y+=4*k;
  drawTag(x,L+d.w*k/2,y+d.h*k/2,k);y+=d.h*k+12*k;x.fillStyle='#555';x.fillText('Enlarged 2× for checking',L,y);y+=4*k;drawTag(x,PW/2,y+d.h*k,2*k);
