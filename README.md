@@ -10,7 +10,7 @@ Customers send IC or driving licence screenshots to the shop phone. Printing the
 
 ## Features
 
-- Home screen with one button per service: **IC Copy**, **A5 QR Poster**, **To PDF**, **Stamp Booking**, **Name Tag**, plus small **About us** and **Contact us** buttons at the top right (Contact us has opening hours with live open status, address with Google Maps, phone and WhatsApp). Synly green gradient theme, light and dark mode, smooth slide transitions (respects reduced-motion). Phone back button returns home; links ending in `#ic`, `#qr`, `#pdf`, `#stamp` or `#about` open that screen directly
+- Home screen with one button per service: **IC Copy**, **A5 QR Poster**, **To PDF**, **Stamp Booking**, **Name Tag**, **Unlock PDF**, plus small **About us** and **Contact us** buttons at the top right (Contact us has opening hours with live open status, address with Google Maps, phone and WhatsApp). Synly green gradient theme, light and dark mode, smooth slide transitions (respects reduced-motion). Phone back button returns home; links ending in `#ic`, `#qr`, `#pdf`, `#stamp` or `#about` open that screen directly
 
 - Pick Depan and Belakang screenshots (PNG, JPG, WebP; HEIC only where the browser supports it)
 - Free crop box for both IC and A5 QR: drag corners or edges to resize, drag inside to move, pinch or slide to zoom. Optional "Lock card shape" for IC (the cropped IC area is fitted to the 85.6 × 54 mm card)
@@ -25,6 +25,7 @@ Customers send IC or driving licence screenshots to the shop phone. Printing the
 - **To PDF** tab for customers and staff: add photos and Word (.docx) files, reorder, crop photos, optional margins and black & white, name the file, then **Send PDF to Synly on WhatsApp** (+60 12-766 4819), Share, or Save. Send customers the link ending in `#pdf` to open this tab directly. DOCX is converted on the phone (docx-preview + html2canvas, in `lib/`); complex Word layouts or fonts may differ slightly, so check the preview. Old .doc files are not supported
 - **Stamp Booking** (on the shop device): customer chooses Rectangle (up to 8 lines, max 7 × 2.5 cm, 0.5 cm kept clear each side) or Round (max 6 cm across, double outer ring, optional inner circle, text around the edge or top + bottom, star, up to 3 centre lines; styled after the shop's own stamps), Regular or Self-ink, Blue or Black ink, types the text (optional when a sample is attached), can attach photos or PDFs of an existing stamp (photos can be cropped and are printed on the order sheet), and sees a live preview in that ink colour. Cashier fills in their name and the model and taps Submit to create a one-page A4 PDF (details incl. ink colour and cashier, text, stamp at actual/maximum size with an enlargement when there is room, customer sample photos, signature lines) named `STMP` + last 4 digits of the customer's phone (e.g. `STMP6789.pdf`)
 - **Name Tag** booking (on the shop device): Engraved (Option 1: 7 × 2.2 cm, Option 2: 7 × 1.7 cm, Option 3: 6.5 × 2 cm) or Epoxy with logo (Sarawak or Malaysia emblem; 7.5 × 2.5 cm; emblem images in `emblems/`), one line up to 10 letters plus an optional second line (not recommended), Pin / Magnet / Special pin, live preview. Cashier enters their name and taps Submit to create an A4 B&W PDF named `NTAGS` + last 4 digits of the customer's phone (e.g. `NTAGS6789.pdf`)
+- **Unlock PDF** (customers and staff): add many PDFs, type the password once, Unlock all. Each file shows Unlocked / Not locked / Wrong password; a file with a different password gets its own password box and Retry. Print-only locked files unlock without a password. Reorder, then **Merge & Share** (one PDF for the printer), Merge & Save, Send to Synly on WhatsApp, Save each, or Save all (ZIP). Runs on the phone with qpdf (WebAssembly), works offline; passwords are never saved and are cleared when leaving the page, on New batch, or after 5 minutes idle
 - Works offline once installed; nothing is uploaded or stored
 
 ## Files
@@ -34,7 +35,7 @@ Customers send IC or driving licence screenshots to the shop phone. Printing the
 | `index.html` | The whole app (HTML, CSS, JavaScript, PDF writer) |
 | `manifest.json` | PWA install details |
 | `sw.js` | Service worker (offline support, network-first updates) |
-| `lib/` | docx-preview (Apache-2.0), JSZip (MIT), html2canvas (MIT) for .docx conversion, loaded only when a .docx is added |
+| `lib/` | docx-preview (Apache-2.0), JSZip (MIT), html2canvas (MIT) for .docx conversion; qpdf 11 WebAssembly (`qpdf.js` + `qpdf.wasm`, Apache-2.0, build by @neslinesli93/qpdf-wasm, ISC) for Unlock PDF. Each loads only when its section is used |
 | `donate-qr.png` | DuitNow QR shown by the "Buy me a coffee" button in the footer |
 | `fonts/` | Plus Jakarta Sans and Fredoka (SIL Open Font License), self-hosted so they work offline |
 | `logo.png` | Synly logo shown in the header |

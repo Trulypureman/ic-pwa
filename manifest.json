@@ -2,7 +2,7 @@
   "id": "./",
   "name": "Synly Printing Services",
   "short_name": "Synly PS",
-  "description": "Print IC front and back on one A4 page, merchant QR posters at A5, and turn photos or Word files into a PDF for WhatsApp.",
+  "description": "Print IC copies and A5 QR posters, turn photos or Word files into a PDF, book stamps and name tags, and unlock and merge PDFs.",
   "lang": "en",
   "start_url": "./index.html",
   "scope": "./",
@@ -51,7 +51,9 @@
           "accept": [
             "image/*",
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            ".docx"
+            ".docx",
+            "application/pdf",
+            ".pdf"
           ]
         }
       ]
