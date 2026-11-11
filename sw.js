@@ -1,4 +1,4 @@
-const V='ic-v33',S='ic-share',A=['./','index.html','manifest.json','logo.png','icon-192.png','icon-512.png','donate-qr.png','emblems/sarawak.svg','emblems/malaysia.png','fonts/plus-jakarta-sans.woff2','fonts/fredoka.woff2','lib/jszip.min.js','lib/qpdf.js','lib/qpdf.wasm','lib/docx-preview.min.js','lib/html2canvas.min.js'];
+const V='ic-v34',S='ic-share',A=['./','index.html','manifest.json','logo.png','icon-192.png','icon-512.png','donate-qr.png','emblems/sarawak.svg','emblems/malaysia.png','fonts/plus-jakarta-sans.woff2','fonts/fredoka.woff2','lib/jszip.min.js','lib/qpdf.js','lib/qpdf.wasm','lib/docx-preview.min.js','lib/html2canvas.min.js'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(V).then(c=>c.addAll(A)));self.skipWaiting()});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==V&&x!==S).map(x=>caches.delete(x)))));self.clients.claim()});
 

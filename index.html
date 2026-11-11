@@ -251,24 +251,26 @@ html.dark .st.bad{background:#5a2420;color:#ffd9d6}html.dark .st.err{background:
 .mask{-webkit-text-security:disc;text-security:disc}
 #egg{touch-action:manipulation;user-select:none;-webkit-user-select:none;cursor:default}#egg.pop{animation:egg .25s var(--ease)}
 @keyframes egg{50%{transform:scale(1.12) rotate(-6deg)}}
-/* 2nd Easter egg: tap the "&" in the home heading */
+/* 2nd Easter egg: tap the "&" in the home heading 10 times */
+.amp.pop{animation:egg .25s var(--ease)}
 .amp{cursor:default;-webkit-user-select:none;user-select:none;touch-action:manipulation;display:inline-block}
 #eg2{position:fixed;inset:0;z-index:40;background:rgba(6,20,12,.72);display:grid;place-items:center;padding:16px;backdrop-filter:blur(3px)}
 .eg2c{display:grid;justify-items:center;gap:10px;max-width:420px}
 .bub{position:relative;background:var(--card);color:var(--fg);border:var(--bw) solid var(--ink);box-shadow:var(--sh);border-radius:18px;padding:12px 18px;font-family:var(--disp);font-size:1.25rem;font-weight:600;text-align:center}
 .bub b{color:var(--ac2)}html:not(.dark) .bub b{color:var(--ac2)}
 .bub::after{content:"";position:absolute;left:50%;bottom:-12px;width:20px;height:20px;background:var(--card);border-right:var(--bw) solid var(--ink);border-bottom:var(--bw) solid var(--ink);transform:translateX(-50%) rotate(45deg)}
-.fig{position:relative}.fig img{display:block;height:min(58vh,480px);width:auto;filter:drop-shadow(6px 8px 0 rgba(0,0,0,.25))}
-.wv{position:absolute;right:-26px;top:34%;font-size:3.2rem;transform-origin:70% 80%}
+.fig{position:relative;margin:34px 46px 0 0}.fig img{display:block;height:min(54vh,460px);width:auto}
+.fig .arm{position:absolute;inset:0;transform-origin:79.93% 34.14%;transform:rotate(-140deg)}   /* the arm is its own layer, pivoting at the shoulder */
 #eg2 small{color:#e8f5ec;font-size:.8rem;opacity:.85}
 @media(prefers-reduced-motion:no-preference){
  #eg2:not([hidden]) .eg2c{animation:egIn .55s cubic-bezier(.2,1.4,.4,1) both}
  #eg2:not([hidden]) .fig{animation:egRock 1.6s ease-in-out .55s infinite;transform-origin:50% 100%}
- #eg2:not([hidden]) .wv{animation:egWave 1s ease-in-out .4s infinite}
+ #eg2:not([hidden]) .arm{animation:egArmUp .5s .45s cubic-bezier(.3,1.3,.5,1) both,egWave .55s ease-in-out .95s infinite alternate}
  #eg2:not([hidden]) .bub{animation:egBub .5s .25s cubic-bezier(.2,1.6,.4,1) both}}
 @keyframes egIn{from{opacity:0;transform:translateY(60px) scale(.4)}}
-@keyframes egRock{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
-@keyframes egWave{0%,100%{transform:rotate(-10deg)}25%{transform:rotate(25deg)}50%{transform:rotate(-10deg)}75%{transform:rotate(25deg)}}
+@keyframes egRock{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+@keyframes egArmUp{from{transform:rotate(0deg)}to{transform:rotate(-128deg)}}
+@keyframes egWave{from{transform:rotate(-128deg)}to{transform:rotate(-156deg)}}
 @keyframes egBub{from{opacity:0;transform:scale(.5)}}
 #pi{display:none}
 @page{size:A4;margin:0}
@@ -462,7 +464,7 @@ html.dark .st.bad{background:#5a2420;color:#ffd9d6}html.dark .st.err{background:
 <div class="row"><a class="btn" href="donate-qr.png" download="Synly-easter-egg-QR.png">Save QR</a><button class="p" id="cdx">Close</button></div></dialog>
 <div id="eg2" hidden role="dialog" aria-modal="true" aria-label="Second Easter egg"><div class="eg2c">
 <div class="bub">Hey, you found the <b>2nd Easter Egg!</b></div>
-<div class="fig"><img alt="AhChai waving" width="522" height="900"><span class="wv" aria-hidden="true">&#128075;</span></div>
+<div class="fig"><img class="bd" alt="AhChai waving" width="522" height="900"><img class="arm" alt="" width="522" height="900"></div>
 <small>Tap anywhere to close</small></div></div>
 <div id="tst" role="status" aria-live="polite"><span></span><button hidden></button></div>
 <img id="pi" alt="">
@@ -1004,9 +1006,10 @@ $('#thm').onclick=()=>{const d=document.documentElement.classList.toggle('dark')
  document.querySelector('meta[name=theme-color]').content=d?'#1d3b2b':'#f3faf1'};
 if(!document.documentElement.classList.contains('dark'))document.querySelector('meta[name=theme-color]').content='#f3faf1';
 
-/* ---------- 2nd Easter egg: tap the "&" in the home heading ---------- */
-const eg2=$('#eg2'),eg2i=eg2.querySelector('img');
-$('#egg2').addEventListener('click',()=>{if(!eg2i.src)eg2i.src='doodle.webp';eg2.hidden=false});
+/* ---------- 2nd Easter egg: tap the "&" in the home heading 10 times ---------- */
+const eg2=$('#eg2'),eg2b=eg2.querySelector('.bd'),eg2a=eg2.querySelector('.arm');let e2N=0,e2T=0;
+$('#egg2').addEventListener('click',()=>{const t=Date.now();e2N=t-e2T>2000?1:e2N+1;e2T=t;const g=$('#egg2');g.classList.remove('pop');void g.offsetWidth;if(e2N>=6)g.classList.add('pop');
+ if(e2N>=10){e2N=0;if(!eg2b.src){eg2b.src='doodle-body.webp';eg2a.src='doodle-arm.webp'}eg2.hidden=false}});   // 10 taps; a pause of over 2 s starts again
 eg2.addEventListener('click',()=>eg2.hidden=true);addEventListener('keydown',e=>{if(e.key=='Escape'&&!eg2.hidden)eg2.hidden=true});
 
 /* ---------- Easter egg: tap the header logo 15 times (a pause of over 2 s starts the count again) ---------- */
