@@ -37,6 +37,7 @@ Customers send IC or driving licence screenshots to the shop phone. Printing the
 | `sw.js` | Service worker (offline support, network-first updates) |
 | `lib/` | docx-preview (Apache-2.0), JSZip (MIT), html2canvas (MIT) for .docx conversion; qpdf 11 WebAssembly (`qpdf.js` + `qpdf.wasm`, Apache-2.0, build by @neslinesli93/qpdf-wasm, ISC) for Unlock PDF. Each loads only when its section is used |
 | `donate-qr.png` | DuitNow QR for the Easter egg (tap the header logo 15 times) |
+| `doodle.webp` | Doodle for the second Easter egg (tap the "&" in the home heading) |
 | `fonts/` | Plus Jakarta Sans and Fredoka (SIL Open Font License), self-hosted so they work offline |
 | `logo.png` | Synly logo shown in the header |
 | `icon-192.png`, `icon-512.png` | Home-screen icons |
