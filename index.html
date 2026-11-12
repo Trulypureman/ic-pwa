@@ -378,7 +378,7 @@ html.dark .st.bad{background:#5a2420;color:#ffd9d6}html.dark .st.err{background:
 <label class="fn" style="margin:0">Cashier name<input id="scs" maxlength="40" placeholder="Cashier name"></label>
 <label class="fn" style="margin:0">Series number<span class="ono" id="ssn">STMP····</span></label></div>
 <button class="p" id="sb" style="width:100%;margin-top:14px">Submit &amp; create PDF</button>
-<div id="sr" hidden><p class="hint" id="srt"></p><div class="row" style="margin-top:10px"><button id="sshare">Share PDF</button><button id="ssave">Save again</button></div>
+<div id="sr" hidden><p class="hint" id="srt"></p><button class="wa" id="sshare" style="width:100%;margin-top:10px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;vertical-align:-3px;margin-right:6px"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 18.7z"/></svg>Send via WhatsApp</button><button id="ssave" style="width:100%;margin-top:10px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;vertical-align:-3px;margin-right:6px"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Save to Downloads</button>
 <button id="snew" style="width:100%;margin-top:10px">New order</button></div></section>
 </div>
 <div class="view" id="vTag" hidden>
@@ -414,7 +414,7 @@ html.dark .st.bad{background:#5a2420;color:#ffd9d6}html.dark .st.err{background:
 <label class="fn" style="margin:0">Cashier name<input id="tcs" maxlength="40" placeholder="Cashier name"></label>
 <label class="fn" style="margin:0">Series number<span class="ono" id="tsn">NTAGS····</span></label></div>
 <button class="p" id="tb" style="width:100%;margin-top:14px">Submit &amp; create PDF</button>
-<div id="tr" hidden><p class="hint" id="trt"></p><div class="row" style="margin-top:10px"><button id="tshare">Share PDF</button><button id="tsave">Save again</button></div>
+<div id="tr" hidden><p class="hint" id="trt"></p><button class="wa" id="tshare" style="width:100%;margin-top:10px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;vertical-align:-3px;margin-right:6px"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 18.7z"/></svg>Send via WhatsApp</button><button id="tsave" style="width:100%;margin-top:10px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;vertical-align:-3px;margin-right:6px"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Save to Downloads</button>
 <button id="tnew" style="width:100%;margin-top:10px">New order</button></div></section>
 </div>
 <div class="view" id="vUnl" hidden>
@@ -621,7 +621,7 @@ const A4W=595.28,A4H=841.89;
 
 const jpeg=c=>new Promise(r=>{c=c||pg;if(c===pg&&raf){cancelAnimationFrame(raf);paint()}c.toBlob(r,'image/jpeg',.92)});
 const name=(e,q)=>(q?'QR-A5-':'IC-')+new Date().toISOString().slice(0,10)+'.'+e;
-function save(b,n){const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=n;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),4e3)}
+function save(b,n){const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=n;a.rel='noopener';a.style.display='none';document.body.append(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},6e4)}
 async function pdf(c){return buildPdf([{jpg:new Uint8Array(await(await jpeg(c)).arrayBuffer()),w:PW,h:PH,pw:A4W,ph:A4H,x:0,y:0,dw:A4W,dh:A4H}])}
 let busy=false;const job=fn=>async()=>{if(busy)return;busy=true;paint();try{await fn()}catch(e){toast('Something went wrong. Please try again.')}finally{busy=false;paint()}};
 const outs=(c,q,[p,sh,j,t])=>{
@@ -867,9 +867,12 @@ $('#sb').onclick=job(async()=>{if(sDig().length<4){toast('Please enter the custo
  if(document.fonts)await document.fonts.ready;const no=sName(),{imgs,other}=await sampleImgs(),c=sSheet(no,imgs,other),jpg=new Uint8Array(await(await toBlob(c,.92)).arrayBuffer());
  sFile=new File([buildPdf([{jpg,w:PW,h:PH,pw:A4W,ph:A4H,x:0,y:0,dw:A4W,dh:A4H}])],no+'.pdf',{type:'application/pdf'});sOther=other;
  save(sFile,sFile.name);
- $('#sr').hidden=false;$('#srt').textContent=sFile.name+' saved to Downloads (1 page'+(imgs.length?', sample included':'')+').'+(other.length?` ${other.length} PDF sample${other.length>1?'s are':' is'} sent with it when you tap Share PDF.`:'');toast(sFile.name+' created')});
-$('#sshare').onclick=job(async()=>{if(!sFile)return;const fs=[sFile,...sOther];if(navigator.canShare&&navigator.canShare({files:fs}))try{await navigator.share({files:fs})}catch(e){}else fs.forEach(f=>save(f,f.name))});
-$('#ssave').onclick=()=>sFile&&[sFile,...sOther].forEach(f=>save(f,f.name));
+ $('#sr').hidden=false;$('#srt').textContent=sFile.name+' saved to Downloads (1 page'+(imgs.length?', sample included':'')+').'+(other.length?` ${other.length} PDF sample${other.length>1?'s are':' is'} sent with it when you tap Send via WhatsApp.`:'');toast(sFile.name+' created')});
+async function waSend(fs,cap){if(navigator.canShare&&navigator.canShare({files:fs})){try{await navigator.share({files:fs,text:cap})}catch(e){if(e&&e.name!='AbortError')try{await navigator.share({files:fs})}catch(x){}}return}
+ fs.forEach(f=>save(f,f.name));toast('Saved to Downloads. Attach it in WhatsApp.');open('https://wa.me/?text='+encodeURIComponent(cap),'_blank','noopener')}
+const saveAll=fs=>{fs.forEach((f,i)=>setTimeout(()=>save(f,f.name),i*400));toast(fs.length>1?fs.length+' files saved to Downloads':fs[0].name+' saved to Downloads')};
+$('#sshare').onclick=job(async()=>{if(sFile)await waSend([sFile,...sOther],'Synly stamp order '+sFile.name.replace('.pdf','')+(sv('sn')?' – '+sv('sn'):''))});
+$('#ssave').onclick=()=>sFile&&saveAll([sFile,...sOther]);
 $('#snew').onclick=()=>{['r1','r2','r3','r4','r5','r6','r7','r8','c1','c2','c3','c4','c5','sn','st','sm'].forEach(id=>$('#'+id).value='');SA.length=0;salist();sOther=[];$('#sr').hidden=true;sFile=null;sPreview();sShow();scrollTo({top:0,behavior:'smooth'})};
 sPreview();
 
@@ -927,8 +930,8 @@ $('#tb').onclick=job(async()=>{const dg=$('#tct').value.replace(/\D/g,'');
  if(document.fonts)await document.fonts.ready;const no='NTAGS'+dg.slice(-4),jpg=new Uint8Array(await(await toBlob(tSheet(no),.92)).arrayBuffer());
  tFile=new File([buildPdf([{jpg,w:PW,h:PH,pw:A4W,ph:A4H,x:0,y:0,dw:A4W,dh:A4H}])],no+'.pdf',{type:'application/pdf'});
  save(tFile,tFile.name);$('#tr').hidden=false;$('#trt').textContent=tFile.name+' saved to Downloads.';toast(tFile.name+' created')});
-$('#tshare').onclick=job(async()=>{if(!tFile)return;if(navigator.canShare&&navigator.canShare({files:[tFile]}))try{await navigator.share({files:[tFile]})}catch(e){}else save(tFile,tFile.name)});
-$('#tsave').onclick=()=>tFile&&save(tFile,tFile.name);
+$('#tshare').onclick=job(async()=>{if(tFile)await waSend([tFile],'Synly name tag order '+tFile.name.replace('.pdf','')+(sv('tcn')?' – '+sv('tcn'):''))});
+$('#tsave').onclick=()=>tFile&&saveAll([tFile]);
 $('#tnew').onclick=()=>{['tn','tn2','tcn','tct'].forEach(id=>$('#'+id).value='');$('#tr').hidden=true;tFile=null;tPreview();scrollTo({top:0,behavior:'smooth'})};
 tPreview();
 
