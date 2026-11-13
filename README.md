@@ -17,7 +17,7 @@ Customers send IC or driving licence screenshots to the shop phone. Printing the
 - Rotate left or right if the screenshot is the wrong way round
 - Both cards centred on A4 at real size
 - Rounded corners (3.18 mm radius), optional border, optional grayscale
-- JPN-style watermark band ("palang") across each card with editable text, e.g. FOR BANK ACCOUNT PURPOSE ONLY (on by default, remembered)
+- JPN-style watermark band ("palang") across the top-left corner of each card with editable text, e.g. FOR BANK ACCOUNT PURPOSE ONLY (on by default, remembered)
 - Size % setting for print calibration (all options saved on the device)
 - Share photos straight from WhatsApp or Gallery to the installed app (Android); paste or drag-and-drop also works
 - Re-crop or remove a card after choosing it, and swap Depan / Belakang

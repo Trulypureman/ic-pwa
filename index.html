@@ -595,10 +595,10 @@ function gray(c){if(gc.has(c))return gc.get(c);const t=document.createElement('c
 
 function rr(x,y,w,h,r){pc.beginPath();pc.moveTo(x+r,y);pc.arcTo(x+w,y,x+w,y+h,r);pc.arcTo(x+w,y+h,x,y+h,r);pc.arcTo(x,y+h,x,y,r);pc.arcTo(x,y,x+w,y,r);pc.closePath()}
 // JPN-style watermark: a slanted band across the card, two thin lines with the purpose written between them
-function palang(x,y,w,h,t){const L=w*1.08,bh=h*.19,lw=Math.max(2,h*.012);pc.save();pc.translate(x+w*.58,y+h*.32);pc.rotate(-28*Math.PI/180);
+function palang(x,y,w,h,t){const L=w*.46,bh=h*.095,lw=Math.max(2,h*.009);pc.save();pc.translate(x+w*.055,y+h*.085);pc.rotate(-45*Math.PI/180);   /* short band across the top-left corner, like JPN's sample */
  pc.strokeStyle=pc.fillStyle='#000';pc.lineWidth=lw;pc.beginPath();pc.moveTo(-L/2,-bh/2);pc.lineTo(L/2,-bh/2);pc.moveTo(-L/2,bh/2);pc.lineTo(L/2,bh/2);pc.stroke();
- let f=bh*.62;pc.font=`600 ${f}px "Plus Jakarta Sans",Arial,sans-serif`;const tw=pc.measureText(t).width;if(tw>L*.9)f*=L*.9/tw;
- pc.font=`600 ${f}px "Plus Jakarta Sans",Arial,sans-serif`;pc.textAlign='center';pc.textBaseline='middle';pc.fillText(t,0,f*.04);pc.restore()}
+ let f=bh*.66;pc.font=`700 ${f}px Arial,"Plus Jakarta Sans",sans-serif`;const tw=pc.measureText(t).width;if(tw>L*.86)f*=L*.86/tw;
+ pc.font=`700 ${f}px Arial,"Plus Jakarta Sans",sans-serif`;pc.textAlign='center';pc.textBaseline='middle';pc.fillText(t,0,f*.04);pc.restore()}
 let raf=0;function render(){if(!raf)raf=requestAnimationFrame(paint)}
 function paint(){raf=0;const v=Math.max(70,Math.min(130,+$('#sc').value||100)),k=v/100;saveOpt();
  pc.fillStyle='#fff';pc.fillRect(0,0,PW,PH);
