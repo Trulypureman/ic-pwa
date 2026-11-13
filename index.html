@@ -304,7 +304,10 @@ html.dark .st.bad{background:#5a2420;color:#ffd9d6}html.dark .st.err{background:
 <label class="chip"><input type="checkbox" id="bd" checked>Border</label>
 <label class="chip"><input type="checkbox" id="gr">Grayscale</label>
 <label class="chip">Size<input type="number" id="sc" value="100" min="70" max="130" step="5" inputmode="numeric">%</label>
-</div></section>
+<label class="chip"><input type="checkbox" id="wm" checked>Watermark</label>
+</div>
+<label class="fn" id="wmf">Watermark text<input id="wt" maxlength="40" value="FOR VERIFICATION PURPOSE ONLY" placeholder="e.g. FOR BANK ACCOUNT PURPOSE ONLY" autocapitalize="characters" autocomplete="off"></label>
+<p class="hint" id="wmh">Recommended by JPN: write what this copy is for, so it cannot be misused for anything else.</p></section>
 <section><h2><i>3</i>Preview (A4)</h2><div class="paper"><canvas id="pg" width="2480" height="3508" role="img" aria-label="A4 preview"></canvas></div></section>
 <section><h2><i>4</i>Print or save</h2>
 <div class="row" style="margin-bottom:10px"><button class="p" id="bp" disabled>Save PDF</button><button id="bs" disabled>Share</button></div>
@@ -479,9 +482,9 @@ let tt;function toast(m,a,fn){const t=$('#tst'),b=t.querySelector('button');t.qu
  b.hidden=!a;if(a){b.textContent=a;b.onclick=()=>{t.classList.remove('on');fn()}}t.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),a?8e3:3e3)}
 
 /* ---------- options (persisted) ---------- */
-const OPT=['rd','bd','gr'];
-try{const o=JSON.parse(localStorage.opt||'{}');OPT.forEach(k=>{if(k in o)$('#'+k).checked=o[k]});if(o.sc)$('#sc').value=o.sc;else if(localStorage.sc)$('#sc').value=localStorage.sc}catch(e){}
-function saveOpt(){try{const o={sc:$('#sc').value};OPT.forEach(k=>o[k]=$('#'+k).checked);localStorage.opt=JSON.stringify(o)}catch(e){}}
+const OPT=['rd','bd','gr','wm'];
+try{const o=JSON.parse(localStorage.opt||'{}');OPT.forEach(k=>{if(k in o)$('#'+k).checked=o[k]});if(o.sc)$('#sc').value=o.sc;else if(localStorage.sc)$('#sc').value=localStorage.sc;if(typeof o.wt=='string')$('#wt').value=o.wt}catch(e){}
+function saveOpt(){$('#wmf').hidden=$('#wmh').hidden=!$('#wm').checked;try{const o={sc:$('#sc').value,wt:$('#wt').value};OPT.forEach(k=>o[k]=$('#'+k).checked);localStorage.opt=JSON.stringify(o)}catch(e){}}
 
 /* ---------- slots ---------- */
 [0,1].forEach(i=>{const el=$('#s'+i),inp=el.querySelector('input');
@@ -591,15 +594,21 @@ function gray(c){if(gc.has(c))return gc.get(c);const t=document.createElement('c
  for(let i=0;i<a.length;i+=4)a[i]=a[i+1]=a[i+2]=.299*a[i]+.587*a[i+1]+.114*a[i+2];x.putImageData(d,0,0);gc.set(c,t);return t}
 
 function rr(x,y,w,h,r){pc.beginPath();pc.moveTo(x+r,y);pc.arcTo(x+w,y,x+w,y+h,r);pc.arcTo(x+w,y+h,x,y+h,r);pc.arcTo(x,y+h,x,y,r);pc.arcTo(x,y,x+w,y,r);pc.closePath()}
+// JPN-style watermark: a slanted band across the card, two thin lines with the purpose written between them
+function palang(x,y,w,h,t){const L=w*1.08,bh=h*.19,lw=Math.max(2,h*.012);pc.save();pc.translate(x+w*.42,y+h*.45);pc.rotate(-28*Math.PI/180);
+ pc.strokeStyle=pc.fillStyle='#000';pc.lineWidth=lw;pc.beginPath();pc.moveTo(-L/2,-bh/2);pc.lineTo(L/2,-bh/2);pc.moveTo(-L/2,bh/2);pc.lineTo(L/2,bh/2);pc.stroke();
+ let f=bh*.62;pc.font=`600 ${f}px "Plus Jakarta Sans",Arial,sans-serif`;const tw=pc.measureText(t).width;if(tw>L*.9)f*=L*.9/tw;
+ pc.font=`600 ${f}px "Plus Jakarta Sans",Arial,sans-serif`;pc.textAlign='center';pc.textBaseline='middle';pc.fillText(t,0,f*.04);pc.restore()}
 let raf=0;function render(){if(!raf)raf=requestAnimationFrame(paint)}
 function paint(){raf=0;const v=Math.max(70,Math.min(130,+$('#sc').value||100)),k=v/100;saveOpt();
  pc.fillStyle='#fff';pc.fillRect(0,0,PW,PH);
  const L=[0,1].filter(i=>cards[i]),n=L.length,GAP=12,bh=n*54*k+(n-1)*GAP,top=(297-bh)/2,w=CW*k,h=CH*k,x=(PW-w)/2,r=3.18*MM*k;
  L.forEach((i,j)=>{const y=(top+j*(54*k+GAP))*MM,c=cards[i];
   pc.save();if($('#rd').checked){rr(x,y,w,h,r);pc.clip()}pc.drawImage($('#gr').checked?gray(c):c,x,y,w,h);pc.restore();
-  if($('#bd').checked){pc.strokeStyle='#777';pc.lineWidth=3;if($('#rd').checked){rr(x,y,w,h,r);pc.stroke()}else pc.strokeRect(x,y,w,h)}});
+  if($('#bd').checked){pc.strokeStyle='#777';pc.lineWidth=3;if($('#rd').checked){rr(x,y,w,h,r);pc.stroke()}else pc.strokeRect(x,y,w,h)}
+  if($('#wm').checked&&$('#wt').value.trim())palang(x,y,w,h,$('#wt').value.trim().toUpperCase())});
  ['#bp','#bs','#bj','#bt','#br'].forEach(b=>$(b).disabled=!n||busy);$('#bw').disabled=!n;qbtn();pbtn();if(typeof sReady=='function')$('#sb').disabled=busy||!sReady();if($('#tb'))$('#tb').disabled=busy;if(typeof ubtn=='function')ubtn()}
-['#rd','#bd','#gr'].forEach(q=>$(q).onchange=render);
+['#rd','#bd','#gr','#wm'].forEach(q=>$(q).onchange=render);$('#wt').oninput=render;
 $('#sc').oninput=render;$('#sc').onchange=()=>{const e=$('#sc');e.value=Math.max(70,Math.min(130,+e.value||100));render()};
 
 $('#bw').onclick=()=>{cards.reverse();src.reverse();thumbs();render()};
