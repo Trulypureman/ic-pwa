@@ -272,6 +272,7 @@ html.dark .st.bad{background:#5a2420;color:#ffd9d6}html.dark .st.err{background:
 @keyframes egArmUp{from{transform:rotate(0deg)}to{transform:rotate(-128deg)}}
 @keyframes egWave{from{transform:rotate(-128deg)}to{transform:rotate(-156deg)}}
 @keyframes egBub{from{opacity:0;transform:scale(.5)}}
+#kgv{width:100%;height:auto;display:block;background:#fff;border-radius:4px;border:2px solid var(--ink)}
 #pi{display:none}
 @page{size:A4;margin:0}
 @media print{body{background:#fff;padding:0}body>*{display:none!important}#pi{display:block!important;width:210mm;height:297mm}}
@@ -288,6 +289,7 @@ html.dark .st.bad{background:#5a2420;color:#ffd9d6}html.dark .st.err{background:
 <button class="tile" data-go="stamp"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 12V9.5a2.5 2.5 0 1 1 5 0V12"/><path d="M5 12h14a1 1 0 0 1 1 1v3H4v-3a1 1 0 0 1 1-1zM6 20h12"/></svg></span><b>Stamp Booking</b><small>Rectangle or round, preview first</small></button>
 <button class="tile" data-go="tag"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="7" width="19" height="10" rx="2"/><path d="M6.5 12h7M16.5 10.5v3"/></svg></span><b>Name Tag</b><small>Engraved or epoxy with emblem</small></button>
 <button class="tile" data-go="unlock"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 7.6-1.8"/><circle cx="12" cy="15.5" r="1.4"/></svg></span><b>Unlock PDF</b><small>Remove password, merge to print</small></button>
+<button class="tile" data-go="collage"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="10" rx="1.5"/><rect x="13" y="3" width="8" height="6" rx="1.5"/><rect x="13" y="11" width="8" height="10" rx="1.5"/><rect x="3" y="15" width="8" height="6" rx="1.5"/></svg></span><b>Collage</b><small>2 or more photos on one A4</small></button>
 </div>
 <footer>Created by AhChai for Synly Trading &amp; Bookstore S/B<br>Your files stay on this phone.</footer>
 </div>
@@ -439,6 +441,26 @@ html.dark .st.bad{background:#5a2420;color:#ffd9d6}html.dark .st.err{background:
 <button id="unew" style="width:100%;margin-top:10px">New batch (clear everything)</button>
 <p class="hint" id="umh">Only unlocked files are merged.</p></section>
 </div>
+<div class="view" id="vCol" hidden>
+<p class="lead">Put 2 or more photos on one A4 page. They are arranged automatically to fill the page.</p>
+<section><h2><i>1</i>Add photos</h2>
+<div class="slot qs add" id="k0" tabindex="0" role="button" aria-label="Add photos"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Tap to add photos<input type="file" multiple accept="image/*" hidden></div>
+<div class="pl" id="kl"></div>
+<div class="row" id="kcr" style="margin-top:10px" hidden><button id="kc">Clear all</button></div>
+<p class="hint" id="kh">Add at least 2 photos. Use the arrows to change the order and &#9986; to crop.</p></section>
+<section><h2><i>2</i>Layout</h2><div class="seg" role="radiogroup" aria-label="Page orientation">
+<label class="pick sm"><input type="radio" name="ko" value="Portrait" checked><span class="plate" style="width:16px;height:22px;border:2.5px solid currentColor;border-radius:2px;margin-bottom:6px"></span><b>Portrait</b></label>
+<label class="pick sm"><input type="radio" name="ko" value="Landscape"><span class="plate" style="width:22px;height:16px;border:2.5px solid currentColor;border-radius:2px;margin:3px 0 9px"></span><b>Landscape</b></label>
+</div><div class="opt" style="margin-top:12px">
+<label class="chip"><input type="checkbox" id="kf">Fill boxes (crop edges)</label>
+<label class="chip"><input type="checkbox" id="kb">Thin border</label>
+<label class="chip">Gap <select id="kg"><option value="none">None</option><option value="small" selected>Small</option><option value="large">Large</option></select></label>
+</div></section>
+<section><h2><i>3</i>Preview (A4)</h2><div class="paper"><canvas id="kgv" width="2480" height="3508" role="img" aria-label="Collage preview"></canvas></div></section>
+<section><h2><i>4</i>Print or save</h2>
+<div class="row" style="margin-bottom:10px"><button class="p" id="kp" disabled>Save PDF</button><button id="ks" disabled>Share</button></div>
+<div class="row"><button id="kj" disabled>Save JPEG</button><button id="kt" disabled>Print</button></div></section>
+</div>
 <div class="view" id="vContact" hidden>
 <section><h2>Opening hours <span class="open" id="opn"></span></h2>
 <table class="hrs" id="hrs"><tr data-d="1,2,3,4,5"><th>Monday – Friday</th><td>8:15 am – 7:30 pm</td></tr><tr data-d="6"><th>Saturday</th><td>8:15 am – 6:30 pm</td></tr><tr data-d="0"><th>Sunday</th><td>8:30 am – 5:00 pm</td></tr></table></section>
@@ -510,13 +532,13 @@ function readImg(f,cb,quiet){const u=URL.createObjectURL(f),im=new Image();
  im.onerror=()=>{URL.revokeObjectURL(u);if(!quiet)alert('This image format is not supported. Ask the customer to resend as PNG or JPG.');cb(null)};im.src=u}
 function load(f,i){readImg(f,c=>c?openCrop(i,c):next())}
 const isPdfF=f=>/pdf/.test(f.type||'')||/\.pdf$/i.test(f.name||'');
-const take=fs=>{if(mode=='home')go(fs.some(isPdfF)?'unlock':fs.some(f=>/\.docx$/i.test(f.name||''))?'pdf':lastSvc());mode=='unlock'?uadd(fs):mode=='qr'?qload(fs):mode=='pdf'?padd(fs):enqueue(fs)};
+const take=fs=>{if(mode=='home')go(fs.some(isPdfF)?'unlock':fs.some(f=>/\.docx$/i.test(f.name||''))?'pdf':lastSvc());mode=='unlock'?uadd(fs):mode=='collage'?kadd(fs):mode=='qr'?qload(fs):mode=='pdf'?padd(fs):enqueue(fs)};
 document.addEventListener('paste',e=>{if(e.clipboardData)take([...e.clipboardData.files])});
 document.addEventListener('dragover',e=>e.preventDefault());
 document.addEventListener('drop',e=>{e.preventDefault();take([...e.dataTransfer.files])});
 async function takeShared(){if(!/[?&]shared=/.test(location.search))return;history.replaceState(null,'',location.pathname);
  try{const c=await caches.open('ic-share'),fs=[];for(const k of await c.keys()){const r=await c.match(k);if(r)fs.push(await r.blob());await c.delete(k)}
-  if(fs.length){if(mode=='home')go(fs.some(f=>/pdf/.test(f.type||''))?'unlock':fs.some(f=>/wordprocessingml/.test(f.type||''))?'pdf':lastSvc());if(mode=='unlock')uadd(fs);else if(mode=='qr')qload(fs);else if(mode=='pdf')padd(fs);else{cards.fill(null);src.fill(null);thumbs();render();enqueue(fs)}}}catch(e){}}
+  if(fs.length){if(mode=='home')go(fs.some(f=>/pdf/.test(f.type||''))?'unlock':fs.some(f=>/wordprocessingml/.test(f.type||''))?'pdf':lastSvc());if(mode=='unlock')uadd(fs);else if(mode=='collage')kadd(fs);else if(mode=='qr')qload(fs);else if(mode=='pdf')padd(fs);else{cards.fill(null);src.fill(null);thumbs();render();enqueue(fs)}}}catch(e){}}
 
 /* ---------- crop: free, resizable box (image coordinates) ---------- */
 // cur = 0/1 for the IC cards, 'q' for the A5 QR image. box = {x,y,w,h} in image pixels.
@@ -527,7 +549,7 @@ const lock=()=>(cur===0||cur===1)&&$('#lk').checked;
 try{$('#lk').checked=!!localStorage.lk}catch(e){}
 function ratioBox(){let{x,y,w,h}=box;if(w/h>R){const n=h*R;x+=(w-n)/2;w=n}else{const n=w/R;y+=(h-n)/2;h=n}box={x,y,w,h}}
 $('#lk').onchange=()=>{try{localStorage.lk=$('#lk').checked?1:''}catch(e){}if(lock())ratioBox();draw()};
-function openCrop(i,im,st){cur=i;img=im;$('#ct').textContent='Crop '+(i==='q'?'QR':i==='p'?'page '+(pi+1):i==='a'?'sample':NM[i]);$('#lkw').hidden=!(i===0||i===1);
+function openCrop(i,im,st){cur=i;img=im;$('#ct').textContent='Crop '+(i==='q'?'QR':i==='p'?'page '+(pi+1):i==='a'?'sample':i==='k'?'photo '+(ki+1):NM[i]);$('#lkw').hidden=!(i===0||i===1);
  if(cr.hidden){cr.hidden=false;history.pushState({crop:1},'')}layout();
  box=st?{...st}:{x:0,y:0,w:img.width,h:img.height};if(!st&&lock())ratioBox();fit();$('#ok').focus()}
 function hideCrop(){if(cr.hidden)return;cr.hidden=true;ptrs.clear();drag=null;next()}
@@ -581,11 +603,11 @@ cv.onpointermove=e=>{const p=ptrs.get(e.pointerId);if(!p||!drag)return;const o=[
 cv.onpointerup=cv.onpointercancel=e=>{ptrs.delete(e.pointerId);if(!ptrs.size)drag=null};
 
 $('#cx').onclick=closeCrop;
-$('#ok').onclick=()=>{const{x,y,w,h}=box,q=cur==='q'||cur==='p'||cur==='a',k=q?Math.min(1,MAX/Math.max(w,h)):0,c=document.createElement('canvas');
+$('#ok').onclick=()=>{const{x,y,w,h}=box,q=cur==='q'||cur==='p'||cur==='a'||cur==='k',k=q?Math.min(1,MAX/Math.max(w,h)):0,c=document.createElement('canvas');
  c.width=q?Math.round(w*k):CW;c.height=q?Math.round(h*k):CH;
  const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);g.imageSmoothingQuality='high';
  g.drawImage(img,x,y,w,h,0,0,c.width,c.height);
- if(cur==='p')pcrop(c,box);else if(cur==='a')acrop(c,box);else if(q){qimg=c;qsrc={img,st:{...box}};qpaint()}else{cards[cur]=c;src[cur]={img,st:{...box}};thumbs();render()}closeCrop()};
+ if(cur==='p')pcrop(c,box);else if(cur==='a')acrop(c,box);else if(cur==='k')kcrop(c,box);else if(q){qimg=c;qsrc={img,st:{...box}};qpaint()}else{cards[cur]=c;src[cur]={img,st:{...box}};thumbs();render()}closeCrop()};
 
 /* ---------- A4 page ---------- */
 const gc=new WeakMap();
@@ -607,7 +629,7 @@ function paint(){raf=0;const v=Math.max(70,Math.min(130,+$('#sc').value||100)),k
   pc.save();if($('#rd').checked){rr(x,y,w,h,r);pc.clip()}pc.drawImage($('#gr').checked?gray(c):c,x,y,w,h);pc.restore();
   if($('#bd').checked){pc.strokeStyle='#777';pc.lineWidth=3;if($('#rd').checked){rr(x,y,w,h,r);pc.stroke()}else pc.strokeRect(x,y,w,h)}
   if($('#wm').checked&&$('#wt').value.trim())palang(x,y,w,h,$('#wt').value.trim().toUpperCase())});
- ['#bp','#bs','#bj','#bt','#br'].forEach(b=>$(b).disabled=!n||busy);$('#bw').disabled=!n;qbtn();pbtn();if(typeof sReady=='function')$('#sb').disabled=busy||!sReady();if($('#tb'))$('#tb').disabled=busy;if(typeof ubtn=='function')ubtn()}
+ ['#bp','#bs','#bj','#bt','#br'].forEach(b=>$(b).disabled=!n||busy);$('#bw').disabled=!n;qbtn();pbtn();if(typeof sReady=='function')$('#sb').disabled=busy||!sReady();if($('#tb'))$('#tb').disabled=busy;if(typeof ubtn=='function')ubtn();if(typeof kbtn=='function')kbtn()}
 ['#rd','#bd','#gr','#wm'].forEach(q=>$(q).onchange=render);$('#wt').oninput=render;
 $('#sc').oninput=render;$('#sc').onchange=()=>{const e=$('#sc');e.value=Math.max(70,Math.min(130,+e.value||100));render()};
 
@@ -629,16 +651,17 @@ function buildPdf(pages){const enc=new TextEncoder(),parts=[],off=[],f=v=>(+v).t
 const A4W=595.28,A4H=841.89;
 
 const jpeg=c=>new Promise(r=>{c=c||pg;if(c===pg&&raf){cancelAnimationFrame(raf);paint()}c.toBlob(r,'image/jpeg',.92)});
-const name=(e,q)=>(q?'QR-A5-':'IC-')+new Date().toISOString().slice(0,10)+'.'+e;
+const name=(e,q)=>(typeof q=='string'?q:q?'QR-A5-':'IC-')+new Date().toISOString().slice(0,10)+'.'+e;
 function save(b,n){const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=n;a.rel='noopener';a.style.display='none';document.body.append(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},6e4)}
-async function pdf(c){return buildPdf([{jpg:new Uint8Array(await(await jpeg(c)).arrayBuffer()),w:PW,h:PH,pw:A4W,ph:A4H,x:0,y:0,dw:A4W,dh:A4H}])}
+async function pdf(c){c=c||pg;const L=c.width>c.height,pw=L?A4H:A4W,ph=L?A4W:A4H;return buildPdf([{jpg:new Uint8Array(await(await jpeg(c)).arrayBuffer()),w:c.width,h:c.height,pw,ph,x:0,y:0,dw:pw,dh:ph}])}
+function rot90(c){const d=document.createElement('canvas');d.width=c.height;d.height=c.width;const x=d.getContext('2d');x.translate(d.width,0);x.rotate(Math.PI/2);x.drawImage(c,0,0);return d}
 let busy=false;const job=fn=>async()=>{if(busy)return;busy=true;paint();try{await fn()}catch(e){toast('Something went wrong. Please try again.')}finally{busy=false;paint()}};
 const outs=(c,q,[p,sh,j,t])=>{
  $(p).onclick=job(async()=>{save(await pdf(c),name('pdf',q));toast('PDF saved to Downloads')});
  $(j).onclick=job(async()=>{save(await jpeg(c),name('jpg',q));toast('JPEG saved to Downloads')});
  $(sh).onclick=job(async()=>{const f=new File([await pdf(c)],name('pdf',q),{type:'application/pdf'});
   if(navigator.canShare&&navigator.canShare({files:[f]}))try{await navigator.share({files:[f]})}catch(e){}else save(f,f.name)});
- $(t).onclick=job(async()=>{const pi=$('#pi'),u=URL.createObjectURL(await jpeg(c));
+ $(t).onclick=job(async()=>{const pi=$('#pi'),u=URL.createObjectURL(await jpeg(c.width>c.height?rot90(c):c));   /* the printer page is portrait */
   await new Promise(r=>{pi.onload=r;pi.src=u});print();setTimeout(()=>{URL.revokeObjectURL(u);pi.removeAttribute('src')},6e4)})};
 outs(pg,0,['#bp','#bs','#bj','#bt']);
 
@@ -664,11 +687,11 @@ qslot.ondragover=e=>{e.preventDefault();qslot.classList.add('drag')};qslot.ondra
 qslot.ondrop=e=>{e.preventDefault();e.stopPropagation();qslot.classList.remove('drag');qload([...e.dataTransfer.files])};
 outs(qg,1,['#qp','#qs','#qj','#qt']);
 /* ---------- navigation: home + one view per service, with smooth transitions ---------- */
-const VIEWS={home:'vHome',ic:'mIC',qr:'mQR',pdf:'mPDF',stamp:'vStamp',tag:'vTag',unlock:'vUnl',about:'vAbout',contact:'vContact'},
- TTL={ic:'IC Copy',qr:'A5 QR Poster',pdf:'To PDF',stamp:'Stamp Booking',tag:'Name Tag',unlock:'Unlock PDF',about:'About us',contact:'Contact us'};
+const VIEWS={home:'vHome',ic:'mIC',qr:'mQR',pdf:'mPDF',stamp:'vStamp',tag:'vTag',unlock:'vUnl',collage:'vCol',about:'vAbout',contact:'vContact'},
+ TTL={ic:'IC Copy',qr:'A5 QR Poster',pdf:'To PDF',stamp:'Stamp Booking',tag:'Name Tag',unlock:'Unlock PDF',collage:'Collage',about:'About us',contact:'Contact us'};
 let view='',depth=0;const still=matchMedia('(prefers-reduced-motion: reduce)');
 const lastSvc=()=>{try{const m=localStorage.mode;return /^(ic|qr|pdf)$/.test(m)?m:'ic'}catch(e){return 'ic'}};
-function show(v){if(view==='unlock'&&v!=='unlock'&&typeof uWipe=='function')uWipe();view=v;mode=/^(ic|qr|pdf|unlock)$/.test(v)?v:'home';if(mode!='home')try{localStorage.mode=v}catch(e){}
+function show(v){if(view==='unlock'&&v!=='unlock'&&typeof uWipe=='function')uWipe();view=v;mode=/^(ic|qr|pdf|unlock|collage)$/.test(v)?v:'home';if(mode!='home')try{localStorage.mode=v}catch(e){}
  for(const k in VIEWS){const el=$('#'+VIEWS[k]);el.hidden=k!=v;el.classList.remove('in')}
  const el=$('#'+VIEWS[v]);void el.offsetWidth;el.classList.add('in');
  document.body.classList.toggle('sub',v!='home');$('#back').hidden=v=='home';
@@ -1012,6 +1035,43 @@ uin.onchange=()=>{const f=[...uin.files];uin.value='';uadd(f)};u0.onclick=()=>ui
 u0.ondragover=e=>{e.preventDefault();u0.classList.add('drag')};u0.ondragleave=()=>u0.classList.remove('drag');
 u0.ondrop=e=>{e.preventDefault();e.stopPropagation();u0.classList.remove('drag');uadd([...e.dataTransfer.files])};
 ulist();
+
+/* ---------- Collage: 2+ photos arranged automatically on one A4 page ---------- */
+const K=[],kl=$('#kl'),k0=$('#k0'),kin=k0.querySelector('input'),kgv=$('#kgv'),kx=kgv.getContext('2d'),KMAX=2400,KO=['kf','kb'];let ki=0;
+try{const o=JSON.parse(localStorage.kopt||'{}');KO.forEach(k=>{if(k in o)$('#'+k).checked=o[k]});if(o.kg)$('#kg').value=o.kg;if(o.ko)document.querySelector(`input[name=ko][value=${o.ko}]`).checked=true}catch(e){}
+const kshrink=c=>{const z=Math.min(1,KMAX/Math.max(c.width,c.height));if(z==1)return c;const d=document.createElement('canvas');d.width=Math.round(c.width*z);d.height=Math.round(c.height*z);d.getContext('2d').drawImage(c,0,0,d.width,d.height);return d};
+async function kadd(fs){fs=[...fs].filter(f=>f&&/^image\//.test(f.type||'image/'));if(!fs.length||busy)return;busy=true;paint();let bad=0;
+ try{for(let i=0;i<fs.length;i++){if(K.length>=20){toast('Up to 20 photos on one page.');break}busyMsg(`Adding ${i+1} of ${fs.length}…`);
+  const c=await new Promise(ok=>readImg(fs[i],ok,1));if(c){const s2=kshrink(c);K.push({src:s2,st:null,img:s2,th:thumb(s2)})}else bad++}}
+ finally{busy=false;busyMsg('');klist();paint()}if(bad)toast(bad+' photo'+(bad>1?'s':'')+' could not be opened (try PNG or JPG).')}
+function klist(){kl.innerHTML='';K.forEach((k,i)=>{const d=document.createElement('div');d.className='pv';
+ d.innerHTML=`<img alt="Photo ${i+1}" src="${k.th}"><b>${i+1}</b><div class="ctl"><button data-a="u" data-i="${i}" aria-label="Move earlier" ${i?'':'disabled'}>&#8593;</button><button data-a="d" data-i="${i}" aria-label="Move later" ${i<K.length-1?'':'disabled'}>&#8595;</button><button data-a="e" data-i="${i}" aria-label="Crop">&#9986;</button><button data-a="x" data-i="${i}" aria-label="Remove">&#10005;</button></div>`;kl.append(d)});
+ $('#kcr').hidden=!K.length;kpaint()}
+kl.onclick=e=>{const a=e.target.closest('[data-a]');if(!a||busy)return;const i=+a.dataset.i,t=a.dataset.a;
+ if(t=='u')[K[i-1],K[i]]=[K[i],K[i-1]];else if(t=='d')[K[i+1],K[i]]=[K[i],K[i+1]];else if(t=='x')K.splice(i,1);
+ else if(t=='e'){ki=i;return openCrop('k',K[i].src,K[i].st)}klist()};
+function kcrop(c,st){const k=K[ki];if(!k)return;k.img=kshrink(c);k.st={...st};k.th=thumb(k.img);klist()}
+$('#kc').onclick=()=>{if(confirm('Remove all photos?')){K.length=0;klist()}};
+// pick the number of columns that shows the photos biggest, then centre a short last row
+function kpaint(){try{const o={kg:$('#kg').value,ko:rv('ko')};KO.forEach(k=>o[k]=$('#'+k).checked);localStorage.kopt=JSON.stringify(o)}catch(e){}
+ const L=rv('ko')=='Landscape',W=L?PH:PW,H=L?PW:PH;if(kgv.width!=W){kgv.width=W;kgv.height=H}kx.fillStyle='#fff';kx.fillRect(0,0,W,H);
+ const n=K.length,m=8*MM,g={none:0,small:3,large:8}[$('#kg').value]*MM,fill=$('#kf').checked,bd=$('#kb').checked;
+ if(n){const AW=W-2*m,AH=H-2*m;let best=null;
+  for(let c=1;c<=n;c++){const r=Math.ceil(n/c),cw=(AW-(c-1)*g)/c,ch=(AH-(r-1)*g)/r;if(cw<=0||ch<=0)continue;let sc=0;
+   K.forEach(k=>{const z=Math.min(cw/k.img.width,ch/k.img.height);sc+=z*z*k.img.width*k.img.height});if(!best||sc>best.sc)best={c,r,cw,ch,sc}}
+  const{c,cw,ch}=best;kx.imageSmoothingQuality='high';kx.strokeStyle='#999';kx.lineWidth=3;
+  K.forEach((k,i)=>{const row=Math.floor(i/c),col=i%c,inRow=Math.min(c,n-row*c),off=(AW-(inRow*cw+(inRow-1)*g))/2,X=m+off+col*(cw+g),Y=m+row*(ch+g),im=k.img;
+   if(fill){const z=Math.max(cw/im.width,ch/im.height),sw=cw/z,sh=ch/z;kx.drawImage(im,(im.width-sw)/2,(im.height-sh)/2,sw,sh,X,Y,cw,ch);if(bd)kx.strokeRect(X,Y,cw,ch)}
+   else{const z=Math.min(cw/im.width,ch/im.height),dw=im.width*z,dh=im.height*z,dx=X+(cw-dw)/2,dy=Y+(ch-dh)/2;kx.drawImage(im,dx,dy,dw,dh);if(bd)kx.strokeRect(dx,dy,dw,dh)}})}
+ kbtn()}
+function kbtn(){['#kp','#ks','#kj','#kt'].forEach(b=>$(b).disabled=K.length<2||busy);
+ $('#kh').textContent=K.length<2?`Add at least 2 photos${K.length?' (1 more needed)':''}. Use the arrows to change the order and ✂ to crop.`:`${K.length} photos on one A4 page. Use the arrows to change the order and ✂ to crop.`}
+['kf','kb','kg'].forEach(id=>$('#'+id).onchange=kpaint);document.querySelectorAll('input[name=ko]').forEach(e=>e.onchange=kpaint);
+kin.onchange=()=>{const f=[...kin.files];kin.value='';kadd(f)};k0.onclick=()=>kin.click();k0.onkeydown=e=>{if(e.key=='Enter'||e.key==' '){e.preventDefault();kin.click()}};
+k0.ondragover=e=>{e.preventDefault();k0.classList.add('drag')};k0.ondragleave=()=>k0.classList.remove('drag');
+k0.ondrop=e=>{e.preventDefault();e.stopPropagation();k0.classList.remove('drag');kadd([...e.dataTransfer.files])};
+outs(kgv,'Collage-',['#kp','#ks','#kj','#kt']);
+kpaint();
 
 /* ---------- theme: dark by default, light on request (remembered) ---------- */
 $('#thm').onclick=()=>{const d=document.documentElement.classList.toggle('dark');try{localStorage.theme=d?'dark':'light'}catch(e){}
