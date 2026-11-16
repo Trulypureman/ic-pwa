@@ -657,7 +657,8 @@ const A4W=595.28,A4H=841.89;
 
 const jpeg=c=>new Promise(r=>{c=c||pg;if(c===pg&&raf){cancelAnimationFrame(raf);paint()}c.toBlob(r,'image/jpeg',.92)});
 const name=(e,q)=>(typeof q=='string'?q:q?'QR-A5-':'IC-')+new Date().toISOString().slice(0,10)+'.'+e;
-function save(b,n){const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=n;a.rel='noopener';a.style.display='none';document.body.append(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},6e4)}
+function save(b,n){const a=document.createElement('a');a.href=URL.createObjectURL(/\.pdf$/i.test(n)?new Blob([b],{type:'application/octet-stream'}):b);   /* generic type: phones store it instead of opening the PDF reader */
+ a.download=n;a.rel='noopener';a.style.display='none';document.body.append(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},6e4)}
 async function pdf(c){c=c||pg;const L=c.width>c.height,pw=L?A4H:A4W,ph=L?A4W:A4H;return buildPdf([{jpg:new Uint8Array(await(await jpeg(c)).arrayBuffer()),w:c.width,h:c.height,pw,ph,x:0,y:0,dw:pw,dh:ph}])}
 function rot90(c){const d=document.createElement('canvas');d.width=c.height;d.height=c.width;const x=d.getContext('2d');x.translate(d.width,0);x.rotate(Math.PI/2);x.drawImage(c,0,0);return d}
 let busy=false;const job=fn=>async()=>{if(busy)return;busy=true;paint();try{await fn()}catch(e){toast('Something went wrong. Please try again.')}finally{busy=false;paint()}};
@@ -841,8 +842,10 @@ function sPreview(){const rect=sShape()=='rect';$('#sf').value=rect?'serif':'con
  $('#sph').textContent=rect?'Preview in your ink colour. Rectangle up to 7 × 2.5 cm; final size is chosen by our staff to suit your text.':'Preview in your ink colour at maximum size (6 cm across). Our staff choose the final size to suit your text.'}
 document.querySelectorAll('#vStamp input,#vStamp select').forEach(e=>{if(!['sn','st','sm','so'].includes(e.id))e.addEventListener('input',sPreview)});
 document.querySelectorAll('#vStamp input[type=radio],#vStamp input[type=checkbox],#vStamp select').forEach(e=>e.addEventListener('change',sPreview));
-const sDig=()=>$('#st').value.replace(/\D/g,''),sName=()=>'STMP'+sDig().slice(-4),sShow=()=>$('#ssn').textContent=sDig().length>=4?sName():'STMP····';
-$('#st').addEventListener('input',sShow);sShow();
+/* order numbers: prefix + random 6 digits; numbers already issued on this device are never reused */
+function newSer(pre){let u=[];try{u=JSON.parse(localStorage.serUsed||'[]')}catch(e){}let id;do{id=pre+(100000+crypto.getRandomValues(new Uint32Array(1))[0]%900000)}while(u.includes(id));return id}
+function markSer(id){try{const u=JSON.parse(localStorage.serUsed||'[]');if(!u.includes(id))u.push(id);localStorage.serUsed=JSON.stringify(u.slice(-2000))}catch(e){}}
+let sId=newSer('STMP');const sDig=()=>$('#st').value.replace(/\D/g,''),sName=()=>sId,sShow=()=>$('#ssn').textContent=sId;sShow();
 // A4 order sheet: details + stamp at actual size + 2x enlargement for checking
 function sSheet(no,imgs=[],other=[]){const np=imgs.length;const c=document.createElement('canvas');c.width=PW;c.height=PH;const x=c.getContext('2d'),F='"Plus Jakarta Sans",Arial,sans-serif',k=MM,L=20*k,rect=sShape()=='rect';
  x.fillStyle='#fff';x.fillRect(0,0,PW,PH);x.fillStyle='#000';x.textBaseline='alphabetic';
@@ -903,14 +906,19 @@ $('#sb').onclick=job(async()=>{if(sDig().length<4){toast('Please enter the custo
  if(!sv('sm')){toast('Cashier: please fill in the model.');$('#sm').focus();return}
  if(document.fonts)await document.fonts.ready;const no=sName(),{imgs,other}=await sampleImgs(),c=sSheet(no,imgs,other),jpg=new Uint8Array(await(await toBlob(c,.92)).arrayBuffer());
  sFile=new File([buildPdf([{jpg,w:PW,h:PH,pw:A4W,ph:A4H,x:0,y:0,dw:A4W,dh:A4H}])],no+'.pdf',{type:'application/pdf'});sOther=other;
- save(sFile,sFile.name);
- $('#sr').hidden=false;$('#srt').textContent=sFile.name+' saved to Downloads (1 page'+(imgs.length?', sample included':'')+').'+(other.length?` ${other.length} PDF sample${other.length>1?'s are':' is'} sent with it when you tap Send via WhatsApp.`:'');toast(sFile.name+' created')});
-async function waSend(fs,cap){if(navigator.canShare&&navigator.canShare({files:fs})){try{await navigator.share({files:fs,text:cap})}catch(e){if(e&&e.name!='AbortError')try{await navigator.share({files:fs})}catch(x){}}return}
- fs.forEach(f=>save(f,f.name));toast('Saved to Downloads. Attach it in WhatsApp.');open('https://wa.me/?text='+encodeURIComponent(cap),'_blank','noopener')}
+ markSer(no);
+ $('#sr').hidden=false;$('#srt').textContent=sFile.name+' is ready (1 page'+(imgs.length?', sample included':'')+'). Send it on WhatsApp or save it to Downloads.'+(other.length?` ${other.length} PDF sample${other.length>1?'s are':' is'} sent with it when you tap Send via WhatsApp.`:'');toast(sFile.name+' ready');$('#sr').scrollIntoView({behavior:'smooth',block:'center'})});
+// returns 'sent', 'cancel' (customer closed the share sheet) or 'fallback' (saved + WhatsApp opened)
+async function waSend(fs,cap){if(navigator.canShare&&navigator.canShare({files:fs})){try{await navigator.share({files:fs,text:cap});return'sent'}catch(e){if(e&&e.name=='AbortError')return'cancel';try{await navigator.share({files:fs});return'sent'}catch(x){return x&&x.name=='AbortError'?'cancel':'fallback'}}}
+ fs.forEach(f=>save(f,f.name));toast('Saved to Downloads. Attach it in WhatsApp.');open('https://wa.me/?text='+encodeURIComponent(cap),'_blank','noopener');return'fallback'}
+// after sending: clear for the next customer; after saving: clear in 6 s unless the cashier taps Keep order
+let nxT=0;function nextOrder(reset,how){clearTimeout(nxT);if(how=='send'){reset();toast('Sent. Ready for the next order.');return}
+ nxT=setTimeout(()=>{reset();toast('Ready for the next order.')},6000);toast('Saved to Downloads. New order in 6 seconds.','Keep order',()=>clearTimeout(nxT))}
 const saveAll=fs=>{fs.forEach((f,i)=>setTimeout(()=>save(f,f.name),i*400));toast(fs.length>1?fs.length+' files saved to Downloads':fs[0].name+' saved to Downloads')};
-$('#sshare').onclick=job(async()=>{if(sFile)await waSend([sFile,...sOther],'Synly stamp order '+sFile.name.replace('.pdf','')+(sv('sn')?' – '+sv('sn'):''))});
-$('#ssave').onclick=()=>sFile&&saveAll([sFile,...sOther]);
-$('#snew').onclick=()=>{['r1','r2','r3','r4','r5','r6','r7','r8','c1','c2','c3','c4','c5','sn','st','sm'].forEach(id=>$('#'+id).value='');SA.length=0;salist();sOther=[];$('#sr').hidden=true;sFile=null;sPreview();sShow();scrollTo({top:0,behavior:'smooth'})};
+$('#sshare').onclick=job(async()=>{if(!sFile)return;const r2=await waSend([sFile,...sOther],'Synly stamp order '+sFile.name.replace('.pdf','')+(sv('sn')?' – '+sv('sn'):''));if(r2!='cancel')nextOrder(sReset,'send')});
+$('#ssave').onclick=()=>{if(!sFile)return;saveAll([sFile,...sOther]);nextOrder(sReset,'save')};
+function sReset(){clearTimeout(nxT);sId=newSer('STMP');['r1','r2','r3','r4','r5','r6','r7','r8','c1','c2','c3','c4','c5','sn','st','sm'].forEach(id=>$('#'+id).value='');SA.length=0;salist();sOther=[];$('#sr').hidden=true;sFile=null;sPreview();sShow();scrollTo({top:0,behavior:'smooth'})}
+$('#snew').onclick=sReset;;
 sPreview();
 
 /* ---------- Name tag booking: design + preview, cashier submits a B&W PDF (NTAGS + last 4 digits of phone) ---------- */
@@ -945,7 +953,7 @@ function tPreview(){const e=tEng();$('#tgE').hidden=!e;$('#tgP').hidden=e;$('#tf
  const d=tDim(),W=1200,k=(W-80)/75,H=Math.round(d.h*k+80);if(tp.height!=H)tp.height=H;tpx.fillStyle='#fff';tpx.fillRect(0,0,W,H);drawTag(tpx,W/2,H/2,k);
  $('#tnc').textContent=`Up to 10 letters (${tLetters($('#tn').value)}/10 used).`;$('#tnc2').textContent=`A second line makes both lines smaller. Up to 10 letters (${tLetters($('#tn2').value)}/10 used).`;
  $('#tph').textContent=e?`Engraved, ${{E1:'Option 1',E2:'Option 2',E3:'Option 3'}[rv('tz')]}. Colours are a guide only.`:`Epoxy with ${rv('te')} emblem. Colours are a guide only.`;
- const dg=$('#tct').value.replace(/\D/g,'');$('#tsn').textContent='NTAGS'+(dg.length>=4?dg.slice(-4):'····');$('#tb').disabled=busy}
+ $('#tsn').textContent=tId;$('#tb').disabled=busy}
 document.querySelectorAll('#vTag input[type=radio],#vTag input[type=checkbox],#vTag select').forEach(e=>e.addEventListener('change',tPreview));$('#tct').addEventListener('input',tPreview);
 function tSheet(no){const c=document.createElement('canvas');c.width=PW;c.height=PH;const x=c.getContext('2d'),F='"Plus Jakarta Sans",Arial,sans-serif',k=MM,L=20*k,e=tEng(),d=tDim();
  x.fillStyle='#fff';x.fillRect(0,0,PW,PH);x.fillStyle='#000';x.textBaseline='alphabetic';
@@ -959,17 +967,18 @@ function tSheet(no){const c=document.createElement('canvas');c.width=PW;c.height
  x.fillStyle='#000';x.fillRect(L,PH-40*k,80*k,.4*k);x.fillRect(PW-L-80*k,PH-40*k,80*k,.4*k);
  x.fillStyle='#555';x.font=`500 ${3.8*k}px ${F}`;x.fillText('Customer confirms the name above',L,PH-34*k);x.textAlign='right';x.fillText('Cashier: '+sv('tcs'),PW-L,PH-34*k);
  return gray(c)}
-let tFile=null;
+let tFile=null,tId=newSer('NTAGS');
 $('#tb').onclick=job(async()=>{const dg=$('#tct').value.replace(/\D/g,'');
  if(!tName()){toast('Please type the name for the tag.');$('#tn').focus();return}
  if(dg.length<4){toast('Please enter the customer phone number.');$('#tct').focus();return}
  if(!sv('tcs')){toast('Cashier: please fill in your name.');$('#tcs').focus();return}
- if(document.fonts)await document.fonts.ready;const no='NTAGS'+dg.slice(-4),jpg=new Uint8Array(await(await toBlob(tSheet(no),.92)).arrayBuffer());
+ if(document.fonts)await document.fonts.ready;const no=tId,jpg=new Uint8Array(await(await toBlob(tSheet(no),.92)).arrayBuffer());
  tFile=new File([buildPdf([{jpg,w:PW,h:PH,pw:A4W,ph:A4H,x:0,y:0,dw:A4W,dh:A4H}])],no+'.pdf',{type:'application/pdf'});
- save(tFile,tFile.name);$('#tr').hidden=false;$('#trt').textContent=tFile.name+' saved to Downloads.';toast(tFile.name+' created')});
-$('#tshare').onclick=job(async()=>{if(tFile)await waSend([tFile],'Synly name tag order '+tFile.name.replace('.pdf','')+(sv('tcn')?' – '+sv('tcn'):''))});
-$('#tsave').onclick=()=>tFile&&saveAll([tFile]);
-$('#tnew').onclick=()=>{['tn','tn2','tcn','tct'].forEach(id=>$('#'+id).value='');$('#tr').hidden=true;tFile=null;tPreview();scrollTo({top:0,behavior:'smooth'})};
+ markSer(no);$('#tr').hidden=false;$('#trt').textContent=tFile.name+' is ready. Send it on WhatsApp or save it to Downloads.';toast(tFile.name+' ready');$('#tr').scrollIntoView({behavior:'smooth',block:'center'})});
+$('#tshare').onclick=job(async()=>{if(!tFile)return;const r2=await waSend([tFile],'Synly name tag order '+tFile.name.replace('.pdf','')+(sv('tcn')?' – '+sv('tcn'):''));if(r2!='cancel')nextOrder(tReset,'send')});
+$('#tsave').onclick=()=>{if(!tFile)return;saveAll([tFile]);nextOrder(tReset,'save')};
+function tReset(){clearTimeout(nxT);tId=newSer('NTAGS');['tn','tn2','tcn','tct'].forEach(id=>$('#'+id).value='');$('#tr').hidden=true;tFile=null;tPreview();scrollTo({top:0,behavior:'smooth'})}
+$('#tnew').onclick=tReset;
 tPreview();
 
 /* ---------- Unlock PDF: qpdf (WebAssembly) runs on this phone; passwords are never stored ---------- */
