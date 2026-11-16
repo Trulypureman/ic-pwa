@@ -277,6 +277,12 @@ html.dark .st.bad{background:#5a2420;color:#ffd9d6}html.dark .st.err{background:
 #fx{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;opacity:.9;transition:opacity .6s}
 body.sub #fx{opacity:.45}
 header{background:color-mix(in srgb,var(--bg) 72%,transparent)!important;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}body.sub header{background:var(--card)!important}
+.sol{display:grid;gap:8px}
+.so{display:flex;gap:10px;align-items:center;border:var(--bw) solid var(--ink);border-radius:14px;padding:8px;background:var(--bg)}
+.so img{width:84px;height:46px;object-fit:contain;background:#fff;border-radius:8px;border:1.5px solid var(--ink);flex:none}
+.so span{flex:1;min-width:0;font-size:.84rem;line-height:1.3}.so span b{display:block;font-family:var(--disp)}
+.so span small{display:block;color:var(--mu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.so button{padding:6px 10px;font-size:.8rem;border-radius:9px;box-shadow:none;flex:none}
 #pi{display:none}
 @page{size:A4;margin:0}
 @media print{body{background:#fff;padding:0}body>*{display:none!important}#pi{display:block!important;width:210mm;height:297mm}}
@@ -353,6 +359,7 @@ header{background:color-mix(in srgb,var(--bg) 72%,transparent)!important;-webkit
 </div>
 <div class="view" id="vStamp" hidden>
 <p class="lead">Design your stamp and see a preview. Our cashier will confirm the model and print your order.</p>
+<section id="sos" hidden><h2>Your order <span class="st ok" id="soc"></span></h2><div class="sol" id="sol"></div><p class="hint">Designing stamp <b id="son"></b> below. Tap Edit to change a stamp already added.</p></section>
 <section><h2><i>1</i>Shape</h2><div class="seg" role="radiogroup" aria-label="Stamp shape">
 <label class="pick"><input type="radio" name="ss" value="rect" checked><span class="shp rect"></span><b>Rectangle</b><small>Up to 8 lines · max 7 × 2.5 cm</small></label>
 <label class="pick"><input type="radio" name="ss" value="round"><span class="shp round"></span><b>Round</b><small>Max 6 cm across · inner circle optional</small></label>
@@ -380,11 +387,13 @@ header{background:color-mix(in srgb,var(--bg) 72%,transparent)!important;-webkit
 <div class="att" id="sal"></div>
 <p class="hint">Already have a stamp or design? Attach it and our staff will match it. With a sample attached, the text lines are optional.</p></section>
 <section><h2><i>5</i>Preview</h2><div class="paper"><canvas id="sp" width="1200" height="600" role="img" aria-label="Stamp preview"></canvas></div>
-<p class="hint" id="sph"></p></section>
+<p class="hint" id="sph"></p>
+<button id="sadd" style="width:100%;margin-top:12px">+ Add another stamp to this order</button></section>
 <section><h2><i>6</i>Your details</h2><div class="tx">
 <input id="sn" maxlength="60" placeholder="Your name" autocomplete="name"><input id="st" maxlength="20" placeholder="Phone number" inputmode="tel" autocomplete="tel"></div></section>
 <section class="cash"><h2><i>7</i>For cashier</h2><div class="tx">
-<label class="fn" style="margin:0">Model<input id="sm" maxlength="40" placeholder="e.g. Shiny S-844"></label>
+<div id="sml" class="tx"></div>
+<label class="fn" style="margin:0"><span id="sml0">Model</span><input id="sm" maxlength="40" placeholder="e.g. Shiny S-844"></label>
 <label class="fn" style="margin:0">Cashier name<input id="scs" maxlength="40" placeholder="Cashier name"></label>
 <label class="fn" style="margin:0">Series number<span class="ono" id="ssn">STMP····</span></label></div>
 <button class="p" id="sb" style="width:100%;margin-top:14px">Submit &amp; create PDF</button>
@@ -634,7 +643,7 @@ function paint(){raf=0;const v=Math.max(70,Math.min(130,+$('#sc').value||100)),k
   pc.save();if($('#rd').checked){rr(x,y,w,h,r);pc.clip()}pc.drawImage($('#gr').checked?gray(c):c,x,y,w,h);pc.restore();
   if($('#bd').checked){pc.strokeStyle='#777';pc.lineWidth=3;if($('#rd').checked){rr(x,y,w,h,r);pc.stroke()}else pc.strokeRect(x,y,w,h)}
   if($('#wm').checked&&$('#wt').value.trim())palang(x,y,w,h,$('#wt').value.trim().toUpperCase())});
- ['#bp','#bs','#bj','#bt','#br'].forEach(b=>$(b).disabled=!n||busy);$('#bw').disabled=!n;qbtn();pbtn();if(typeof sReady=='function')$('#sb').disabled=busy||!sReady();if($('#tb'))$('#tb').disabled=busy;if(typeof ubtn=='function')ubtn();if(typeof kbtn=='function')kbtn()}
+ ['#bp','#bs','#bj','#bt','#br'].forEach(b=>$(b).disabled=!n||busy);$('#bw').disabled=!n;qbtn();pbtn();if(typeof sReady=='function')$('#sb').disabled=busy||!(sReady()||SO.length);if($('#tb'))$('#tb').disabled=busy;if(typeof ubtn=='function')ubtn();if(typeof kbtn=='function')kbtn()}
 ['#rd','#bd','#gr','#wm'].forEach(q=>$(q).onchange=render);$('#wt').oninput=render;
 $('#sc').oninput=render;$('#sc').onchange=()=>{const e=$('#sc');e.value=Math.max(70,Math.min(130,+e.value||100));render()};
 
@@ -838,7 +847,7 @@ function sPreview(){const rect=sShape()=='rect';$('#sf').value=rect?'serif':'con
  const k=rect?(W-80)/SB.rect.w:(H-80)/SB.round.d;
  if(!sHasText()&&typeof SA!='undefined'&&SA.length){spx.fillStyle='#5a6e62';spx.textAlign='center';spx.textBaseline='middle';spx.font=`600 ${rect?46:60}px "Plus Jakarta Sans",Arial,sans-serif`;spx.fillText('Sample attached',W/2,H/2-(rect?30:40));spx.font=`500 ${rect?34:44}px "Plus Jakarta Sans",Arial,sans-serif`;spx.fillText('No text needed: our staff will follow your sample',W/2,H/2+(rect?30:40))}
  else drawStamp(spx,W/2,H/2,k,INK[sInk()]);
- $('#sb').disabled=busy||!sReady();
+ $('#sb').disabled=busy||!(sReady()||SO.length);
  $('#sph').textContent=rect?'Preview in your ink colour. Rectangle up to 7 × 2.5 cm; final size is chosen by our staff to suit your text.':'Preview in your ink colour at maximum size (6 cm across). Our staff choose the final size to suit your text.'}
 document.querySelectorAll('#vStamp input,#vStamp select').forEach(e=>{if(!['sn','st','sm','so'].includes(e.id))e.addEventListener('input',sPreview)});
 document.querySelectorAll('#vStamp input[type=radio],#vStamp input[type=checkbox],#vStamp select').forEach(e=>e.addEventListener('change',sPreview));
@@ -847,9 +856,9 @@ function newSer(pre){let u=[];try{u=JSON.parse(localStorage.serUsed||'[]')}catch
 function markSer(id){try{const u=JSON.parse(localStorage.serUsed||'[]');if(!u.includes(id))u.push(id);localStorage.serUsed=JSON.stringify(u.slice(-2000))}catch(e){}}
 let sId=newSer('STMP');const sDig=()=>$('#st').value.replace(/\D/g,''),sName=()=>sId,sShow=()=>$('#ssn').textContent=sId;sShow();
 // A4 order sheet: details + stamp at actual size + 2x enlargement for checking
-function sSheet(no,imgs=[],other=[]){const np=imgs.length;const c=document.createElement('canvas');c.width=PW;c.height=PH;const x=c.getContext('2d'),F='"Plus Jakarta Sans",Arial,sans-serif',k=MM,L=20*k,rect=sShape()=='rect';
+function sSheet(no,imgs=[],other=[],ttl){const np=imgs.length;const c=document.createElement('canvas');c.width=PW;c.height=PH;const x=c.getContext('2d'),F='"Plus Jakarta Sans",Arial,sans-serif',k=MM,L=20*k,rect=sShape()=='rect';
  x.fillStyle='#fff';x.fillRect(0,0,PW,PH);x.fillStyle='#000';x.textBaseline='alphabetic';
- x.font=`800 ${9*k}px ${F}`;x.fillText('Stamp order',L,30*k);x.textAlign='right';x.fillText(no,PW-L,30*k);x.textAlign='left';
+ x.font=`800 ${9*k}px ${F}`;x.fillText(ttl||'Stamp order',L,30*k);x.textAlign='right';x.fillText(no,PW-L,30*k);x.textAlign='left';
  x.font=`500 ${3.1*k}px ${F}`;x.fillText('Synly Trading & Bookstore Sdn Bhd · Lot 290-292, Parkcity Commerce Square, 97000 Bintulu · 086-337 891',L,38*k);
  x.fillRect(L,42*k,PW-2*L,.5*k);
  const d=new Date(Date.now()+8*36e5),dt=d.toISOString().slice(0,16).replace('T',' ');
@@ -901,13 +910,42 @@ async function sampleImgs(){const imgs=[],other=[];
  for(const f of SA){const c=!isPdf(f)&&/^image\//.test(f.type||'image/')?await new Promise(ok=>readImg(f,ok,1)):null;if(c)imgs.push(c);else other.push(f)}
  return{imgs,other}}
 let sFile=null,sOther=[];
+/* ---- several stamps in one order: each stamp is a snapshot of the designer ---- */
+const SF=['r1','r2','r3','r4','r5','r6','r7','r8','c1','c2','c3','c4','c5'],SC=['rx','ci','cd','cs'],SR=['ss','sk','sc2'],SO=[];let sEdit=-1;
+function sSnap(){const o={v:{},c:{},r:{},ra:$('#ra').value,rb:$('#rb').value,samples:[...SA],model:$('#sm').value};SF.forEach(k=>o.v[k]=$('#'+k).value);SC.forEach(k=>o.c[k]=$('#'+k).checked);SR.forEach(k=>o.r[k]=rv(k));return o}
+function sLoad(o){SF.forEach(k=>$('#'+k).value=o.v[k]||'');SC.forEach(k=>$('#'+k).checked=!!o.c[k]);SR.forEach(k=>{const e=document.querySelector(`input[name=${k}][value="${o.r[k]}"]`);if(e)e.checked=true});
+ $('#ra').value=o.ra;$('#rb').value=o.rb;SA.length=0;SA.push(...o.samples);$('#sm').value=o.model||'';$('#sf').value=o.r.ss=='rect'?'serif':'cond'}
+const sWith=(o,fn)=>{const cur=sSnap();sLoad(o);try{return fn()}finally{sLoad(cur)}};
+const sDesc=o=>{const t=SF.map(k=>o.v[k]).filter(Boolean);return(o.r.ss=='rect'?'Rectangle':'Round')+' · '+o.r.sk+' · '+o.r.sc2+' ink'+(t.length?'':' · sample only')};
+function sThumb(o){return sWith(o,()=>{const c=document.createElement('canvas'),rect=sShape()=='rect';c.width=420;c.height=rect?170:420;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);
+ if(sHasText())drawStamp(x,c.width/2,c.height/2,rect?(c.width-30)/SB.rect.w:(c.height-30)/SB.round.d,INK[sInk()]);else{x.fillStyle='#5a6e62';x.font='600 30px Arial';x.textAlign='center';x.fillText('Sample attached',c.width/2,c.height/2)}return c.toDataURL('image/png')})}
+function sOrder(){const n=SO.length;$('#sos').hidden=!n;$('#soc').textContent=n+' stamp'+(n>1?'s':'')+' added';$('#son').textContent=n+1;$('#sol').innerHTML='';
+ SO.forEach((o,i)=>{const d=document.createElement('div');d.className='so';d.innerHTML=`<img alt="Stamp ${i+1}" src="${o.th}"><span><b>Stamp ${i+1}</b><small></small></span><button data-e="${i}">Edit</button><button data-x="${i}" aria-label="Remove stamp ${i+1}">&#10005;</button>`;
+  d.querySelector('small').textContent=sDesc(o)+(SF.map(k=>o.v[k]).find(Boolean)?' · '+SF.map(k=>o.v[k]).find(Boolean):'');$('#sol').append(d)});
+ // cashier: one model box per stamp
+ $('#sml').innerHTML='';SO.forEach((o,i)=>{const l=document.createElement('label');l.className='fn';l.style.margin='0';l.innerHTML=`Model for stamp ${i+1} <small style="color:var(--mu)">(${o.r.ss=='rect'?'rectangle':'round'})</small><input data-m="${i}" maxlength="40" placeholder="e.g. Shiny S-844">`;l.querySelector('input').value=o.model||'';$('#sml').append(l)});
+ $('#sml0').textContent=n?`Model for stamp ${n+1} (the one being designed)`:'Model';$('#sadd').textContent=`+ Add another stamp to this order`}
+$('#sml').oninput=e=>{const t=e.target.closest('[data-m]');if(t)SO[+t.dataset.m].model=t.value};
+function sClearDesign(){SF.forEach(k=>$('#'+k).value='');SA.length=0;salist();$('#sm').value='';sPreview()}
+$('#sadd').onclick=()=>{if(!sReady()){toast('Type the stamp text or attach a sample first.');$('#r1').focus();return}
+ const o=sSnap();o.th=sThumb(o);if(sEdit>=0&&sEdit<=SO.length){SO.splice(sEdit,0,o)}else SO.push(o);const at=sEdit>=0?sEdit+1:SO.length;sEdit=-1;sClearDesign();sOrder();$('#sr').hidden=true;sFile=null;toast(`Stamp ${at} saved. Design stamp ${SO.length+1}, or submit the order.`);$('#sos').scrollIntoView({behavior:'smooth',block:'start'})};
+$('#sol').onclick=e=>{const ed=e.target.closest('[data-e]'),rm=e.target.closest('[data-x]');
+ if(rm){if(confirm('Remove stamp '+(+rm.dataset.x+1)+' from this order?')){const j=+rm.dataset.x;SO.splice(j,1);if(sEdit>j)sEdit--;sOrder();$('#sr').hidden=true;sFile=null}}
+ else if(ed){const i=+ed.dataset.e;if(sReady()){const cur=sSnap();cur.th=sThumb(cur);SO.push(cur)}   // keep what was being designed
+  const o=SO.splice(i,1)[0];sEdit=i;sLoad(o);salist();sPreview();sOrder();$('#sr').hidden=true;sFile=null;toast('Editing stamp. Tap “Add another stamp” or Submit when done.');scrollTo({top:0,behavior:'smooth'})}};
 $('#sb').onclick=job(async()=>{if(sDig().length<4){toast('Please enter the customer phone number.');$('#st').focus();return}
  if(!sv('scs')){toast('Cashier: please fill in your name.');$('#scs').focus();return}
- if(!sv('sm')){toast('Cashier: please fill in the model.');$('#sm').focus();return}
- if(document.fonts)await document.fonts.ready;const no=sName(),{imgs,other}=await sampleImgs(),c=sSheet(no,imgs,other),jpg=new Uint8Array(await(await toBlob(c,.92)).arrayBuffer());
- sFile=new File([buildPdf([{jpg,w:PW,h:PH,pw:A4W,ph:A4H,x:0,y:0,dw:A4W,dh:A4H}])],no+'.pdf',{type:'application/pdf'});sOther=other;
+ const items=[...SO.map(o=>({...o,samples:[...o.samples]}))];if(sReady()){const cu=sSnap();if(sEdit>=0&&sEdit<=items.length)items.splice(sEdit,0,cu);else items.push(cu)}
+ if(!items.length){toast('Design a stamp first.');return}
+ const miss=items.findIndex(o=>!(o.model||'').trim());if(miss>=0){toast(`Cashier: please fill in the model for stamp ${miss+1}.`);(miss<SO.length?$(`[data-m="${miss}"]`):$('#sm')).focus();return}
+ if(document.fonts)await document.fonts.ready;const no=sName(),n=items.length,cur=sSnap(),pages=[],other=[];let photos=0;
+ try{for(let i=0;i<n;i++){busyMsg(`Preparing stamp ${i+1} of ${n}…`);sLoad(items[i]);const sm=await sampleImgs();photos+=sm.imgs.length;other.push(...sm.other);
+  const c=sSheet(no,sm.imgs,sm.other,n>1?`Stamp ${i+1} of ${n}`:'Stamp order');pages.push({jpg:new Uint8Array(await(await toBlob(c,.92)).arrayBuffer()),w:PW,h:PH,pw:A4W,ph:A4H,x:0,y:0,dw:A4W,dh:A4H})}}
+ finally{sLoad(cur);busyMsg('')}
+ const imgs={length:photos};
+ sFile=new File([buildPdf(pages)],no+'.pdf',{type:'application/pdf'});sOther=other;
  markSer(no);
- $('#sr').hidden=false;$('#srt').textContent=sFile.name+' is ready (1 page'+(imgs.length?', sample included':'')+'). Send it on WhatsApp or save it to Downloads.'+(other.length?` ${other.length} PDF sample${other.length>1?'s are':' is'} sent with it when you tap Send via WhatsApp.`:'');toast(sFile.name+' ready');$('#sr').scrollIntoView({behavior:'smooth',block:'center'})});
+ $('#sr').hidden=false;$('#srt').textContent=sFile.name+' is ready ('+(n>1?n+' stamps, one page each':'1 page')+(imgs.length?', samples included':'')+'). Send it on WhatsApp or save it to Downloads.'+(other.length?` ${other.length} PDF sample${other.length>1?'s are':' is'} sent with it when you tap Send via WhatsApp.`:'');toast(sFile.name+' ready');$('#sr').scrollIntoView({behavior:'smooth',block:'center'})});
 // returns 'sent', 'cancel' (customer closed the share sheet) or 'fallback' (saved + WhatsApp opened)
 async function waSend(fs,cap){if(navigator.canShare&&navigator.canShare({files:fs})){try{await navigator.share({files:fs,text:cap});return'sent'}catch(e){if(e&&e.name=='AbortError')return'cancel';try{await navigator.share({files:fs});return'sent'}catch(x){return x&&x.name=='AbortError'?'cancel':'fallback'}}}
  fs.forEach(f=>save(f,f.name));toast('Saved to Downloads. Attach it in WhatsApp.');open('https://wa.me/?text='+encodeURIComponent(cap),'_blank','noopener');return'fallback'}
@@ -915,9 +953,9 @@ async function waSend(fs,cap){if(navigator.canShare&&navigator.canShare({files:f
 let nxT=0;function nextOrder(reset,how){clearTimeout(nxT);if(how=='send'){reset();toast('Sent. Ready for the next order.');return}
  nxT=setTimeout(()=>{reset();toast('Ready for the next order.')},6000);toast('Saved to Downloads. New order in 6 seconds.','Keep order',()=>clearTimeout(nxT))}
 const saveAll=fs=>{fs.forEach((f,i)=>setTimeout(()=>save(f,f.name),i*400));toast(fs.length>1?fs.length+' files saved to Downloads':fs[0].name+' saved to Downloads')};
-$('#sshare').onclick=job(async()=>{if(!sFile)return;const r2=await waSend([sFile,...sOther],'Synly stamp order '+sFile.name.replace('.pdf','')+(sv('sn')?' – '+sv('sn'):''));if(r2!='cancel')nextOrder(sReset,'send')});
+$('#sshare').onclick=job(async()=>{if(!sFile)return;const k2=SO.length+(sReady()?1:0),r2=await waSend([sFile,...sOther],'Synly stamp order '+sFile.name.replace('.pdf','')+(k2>1?` (${k2} stamps)`:'')+(sv('sn')?' – '+sv('sn'):''));if(r2!='cancel')nextOrder(sReset,'send')});
 $('#ssave').onclick=()=>{if(!sFile)return;saveAll([sFile,...sOther]);nextOrder(sReset,'save')};
-function sReset(){clearTimeout(nxT);sId=newSer('STMP');['r1','r2','r3','r4','r5','r6','r7','r8','c1','c2','c3','c4','c5','sn','st','sm'].forEach(id=>$('#'+id).value='');SA.length=0;salist();sOther=[];$('#sr').hidden=true;sFile=null;sPreview();sShow();scrollTo({top:0,behavior:'smooth'})}
+function sReset(){clearTimeout(nxT);sId=newSer('STMP');SO.length=0;sEdit=-1;sOrder();['r1','r2','r3','r4','r5','r6','r7','r8','c1','c2','c3','c4','c5','sn','st','sm'].forEach(id=>$('#'+id).value='');SA.length=0;salist();sOther=[];$('#sr').hidden=true;sFile=null;sPreview();sShow();scrollTo({top:0,behavior:'smooth'})}
 $('#snew').onclick=sReset;;
 sPreview();
 
