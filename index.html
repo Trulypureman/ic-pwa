@@ -283,6 +283,8 @@ header{background:color-mix(in srgb,var(--bg) 72%,transparent)!important;-webkit
 .so span{flex:1;min-width:0;font-size:.84rem;line-height:1.3}.so span b{display:block;font-family:var(--disp)}
 .so span small{display:block;color:var(--mu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .so button{padding:6px 10px;font-size:.8rem;border-radius:9px;box-shadow:none;flex:none}
+.fn textarea{font:inherit;color:var(--fg);background:var(--card);border:var(--bw) solid var(--ink);border-radius:12px;padding:10px 12px;resize:vertical;min-height:70px}
+.fn textarea:focus{border-color:var(--ac2);box-shadow:3px 3px 0 var(--ac);outline:0}
 #pi{display:none}
 @page{size:A4;margin:0}
 @media print{body{background:#fff;padding:0}body>*{display:none!important}#pi{display:block!important;width:210mm;height:297mm}}
@@ -390,7 +392,9 @@ header{background:color-mix(in srgb,var(--bg) 72%,transparent)!important;-webkit
 <p class="hint" id="sph"></p>
 <button id="sadd" style="width:100%;margin-top:12px">+ Add another stamp to this order</button></section>
 <section><h2><i>6</i>Your details</h2><div class="tx">
-<input id="sn" maxlength="60" placeholder="Your name" autocomplete="name"><input id="st" maxlength="20" placeholder="Phone number" inputmode="tel" autocomplete="tel"></div></section>
+<input id="sn" maxlength="60" placeholder="Your name" autocomplete="name"><input id="st" maxlength="20" placeholder="Phone number" inputmode="tel" autocomplete="tel"></div>
+<label class="fn">Remark (optional)<textarea id="srm" maxlength="200" rows="3" placeholder="e.g. Need by Friday, 2 pieces each, copy the logo from my sample"></textarea></label>
+<p class="hint" id="srmc">For the whole order. Up to 200 characters.</p></section>
 <section class="cash"><h2><i>7</i>For cashier</h2><div class="tx">
 <div id="sml" class="tx"></div>
 <label class="fn" style="margin:0"><span id="sml0">Model</span><input id="sm" maxlength="40" placeholder="e.g. Shiny S-844"></label>
@@ -849,7 +853,7 @@ function sPreview(){const rect=sShape()=='rect';$('#sf').value=rect?'serif':'con
  else drawStamp(spx,W/2,H/2,k,INK[sInk()]);
  $('#sb').disabled=busy||!(sReady()||SO.length);
  $('#sph').textContent=rect?'Preview in your ink colour. Rectangle up to 7 × 2.5 cm; final size is chosen by our staff to suit your text.':'Preview in your ink colour at maximum size (6 cm across). Our staff choose the final size to suit your text.'}
-document.querySelectorAll('#vStamp input,#vStamp select').forEach(e=>{if(!['sn','st','sm','so'].includes(e.id))e.addEventListener('input',sPreview)});
+document.querySelectorAll('#vStamp input,#vStamp select').forEach(e=>{if(!['sn','st','sm','so','srm'].includes(e.id))e.addEventListener('input',sPreview)});
 document.querySelectorAll('#vStamp input[type=radio],#vStamp input[type=checkbox],#vStamp select').forEach(e=>e.addEventListener('change',sPreview));
 /* order numbers: prefix + random 6 digits; numbers already issued on this device are never reused */
 function newSer(pre){let u=[];try{u=JSON.parse(localStorage.serUsed||'[]')}catch(e){}let id;do{id=pre+(100000+crypto.getRandomValues(new Uint32Array(1))[0]%900000)}while(u.includes(id));return id}
@@ -862,8 +866,10 @@ function sSheet(no,imgs=[],other=[],ttl){const np=imgs.length;const c=document.c
  x.font=`500 ${3.1*k}px ${F}`;x.fillText('Synly Trading & Bookstore Sdn Bhd · Lot 290-292, Parkcity Commerce Square, 97000 Bintulu · 086-337 891',L,38*k);
  x.fillRect(L,42*k,PW-2*L,.5*k);
  const d=new Date(Date.now()+8*36e5),dt=d.toISOString().slice(0,16).replace('T',' ');
- const rows=[['Series no.',no],['Date / time',dt],['Customer',sv('sn')||'-'],['Phone',sv('st')],['Shape',rect?'Rectangle (max 7 × 2.5 cm)':'Round (max 6 cm across)'+(sck('cd')?', double ring':'')+(sck('ci')?', inner circle':'')],...(rect?[['Alignment',$('#ra').value=='left'?'Left':'Centre']]:[]),['Stamp type',sKind()],['Ink colour',sInk()],['Model',sv('sm')||'-'],['Cashier',sv('scs')],['Sample',SA.length?((np?np+' photo'+(np>1?'s':'')+' (below)':'')+(np&&other.length?' + ':'')+(other.length?other.map(f=>f.name).join(', ').slice(0,60):'')):'-']];
- let y=52*k;rows.forEach(([a,b])=>{x.font=`500 ${4.2*k}px ${F}`;x.fillStyle='#555';x.fillText(a,L,y);x.fillStyle='#000';x.font=`700 ${4.6*k}px ${F}`;x.fillText(b,L+42*k,y);y+=7*k});
+ const rows=[['Series no.',no],['Date / time',dt],['Customer',sv('sn')||'-'],['Phone',sv('st')],['Shape',rect?'Rectangle (max 7 × 2.5 cm)':'Round (max 6 cm across)'+(sck('cd')?', double ring':'')+(sck('ci')?', inner circle':'')],...(rect?[['Alignment',$('#ra').value=='left'?'Left':'Centre']]:[]),['Stamp type',sKind()],['Ink colour',sInk()],['Model',sv('sm')||'-'],['Cashier',sv('scs')],['Sample',SA.length?((np?np+' photo'+(np>1?'s':'')+' (below)':'')+(np&&other.length?' + ':'')+(other.length?other.map(f=>f.name).join(', ').slice(0,60):'')):'-'],['Remark',$('#srm').value.trim().replace(/\s+/g,' ')||'-']];
+ let y=52*k;rows.forEach(([a,b])=>{x.font=`500 ${4.2*k}px ${F}`;x.fillStyle='#555';x.fillText(a,L,y);x.fillStyle='#000';x.font=`700 ${4.6*k}px ${F}`;
+  const mw=PW-L-(L+42*k),ws=String(b).split(' '),ln=[];let cur='';for(const w of ws){const t=cur?cur+' '+w:w;if(x.measureText(t).width>mw&&cur){ln.push(cur);cur=w}else cur=t}ln.push(cur);   /* long values (remark) wrap, max 3 lines */
+  ln.slice(0,3).forEach((t,i)=>{x.fillText(i==2&&ln.length>3?t+'…':t,L+42*k,y);y+=(i<Math.min(3,ln.length)-1?5.6:7)*k})});
  y+=2*k;x.fillStyle='#555';x.font=`500 ${4.2*k}px ${F}`;x.fillText('Text',L,y);x.fillStyle='#000';x.font=`600 ${4.4*k}px ${F}`;
  const T=rect?['r1','r2','r3','r4','r5','r6','r7','r8'].map((id,i)=>sv(id)&&`Line ${i+1}: ${sv(id)}`):[sv('c1')&&'Around: '+sv('c1'),sv('c2')&&'Bottom: '+sv('c2'),...['c3','c4','c5'].map((id,i)=>sv(id)&&`Centre ${i+1}: ${sv(id)}`)];
  if(!sHasText())T.splice(0,T.length,'As per attached sample');
@@ -955,7 +961,7 @@ let nxT=0;function nextOrder(reset,how){clearTimeout(nxT);if(how=='send'){reset(
 const saveAll=fs=>{fs.forEach((f,i)=>setTimeout(()=>save(f,f.name),i*400));toast(fs.length>1?fs.length+' files saved to Downloads':fs[0].name+' saved to Downloads')};
 $('#sshare').onclick=job(async()=>{if(!sFile)return;const k2=SO.length+(sReady()?1:0),r2=await waSend([sFile,...sOther],'Synly stamp order '+sFile.name.replace('.pdf','')+(k2>1?` (${k2} stamps)`:'')+(sv('sn')?' – '+sv('sn'):''));if(r2!='cancel')nextOrder(sReset,'send')});
 $('#ssave').onclick=()=>{if(!sFile)return;saveAll([sFile,...sOther]);nextOrder(sReset,'save')};
-function sReset(){clearTimeout(nxT);sId=newSer('STMP');SO.length=0;sEdit=-1;sOrder();['r1','r2','r3','r4','r5','r6','r7','r8','c1','c2','c3','c4','c5','sn','st','sm'].forEach(id=>$('#'+id).value='');SA.length=0;salist();sOther=[];$('#sr').hidden=true;sFile=null;sPreview();sShow();scrollTo({top:0,behavior:'smooth'})}
+function sReset(){clearTimeout(nxT);sId=newSer('STMP');SO.length=0;sEdit=-1;sOrder();['r1','r2','r3','r4','r5','r6','r7','r8','c1','c2','c3','c4','c5','sn','st','sm','srm'].forEach(id=>$('#'+id).value='');SA.length=0;salist();sOther=[];$('#sr').hidden=true;sFile=null;sPreview();sShow();scrollTo({top:0,behavior:'smooth'})}
 $('#snew').onclick=sReset;;
 sPreview();
 
