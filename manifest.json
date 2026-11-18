@@ -53,7 +53,9 @@
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
             ".docx",
             "application/pdf",
-            ".pdf"
+            ".pdf",
+            "application/msword",
+            ".doc"
           ]
         }
       ]

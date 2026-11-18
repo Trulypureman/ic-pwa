@@ -349,10 +349,13 @@ header{background:color-mix(in srgb,var(--bg) 72%,transparent)!important;-webkit
 <div class="view" id="mPDF" hidden>
 <p class="lead">Turn photos and Word files into one PDF, then send it to Synly on WhatsApp.</p>
 <section><h2><i>1</i>Add photos or Word files</h2>
-<div class="slot qs add" id="p0" tabindex="0" role="button" aria-label="Add photos or Word files"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Tap to add photos or .docx<input type="file" multiple accept="image/*,.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" hidden></div>
+<div class="row"><button class="p" id="pph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;vertical-align:-4px;margin-right:6px"><rect x="3" y="5" width="18" height="14" rx="2.5"/><circle cx="9" cy="10" r="1.8"/><path d="M21 16l-5-5-8 8"/></svg>Photos</button><button id="pfl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;vertical-align:-4px;margin-right:6px"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>Word / files</button></div>
+<input type="file" id="pinI" multiple accept="image/*" hidden><input type="file" id="pinF" multiple hidden>
+<div class="slot qs add" id="p0" tabindex="0" role="button" aria-label="Drop files here" style="height:64px;margin-top:10px">or drop files here</div>
 <div class="pl" id="pl"></div>
+<div class="att" id="pxl"></div>
 <div class="row" id="pcr" style="margin-top:10px" hidden><button id="pc">Clear all</button></div>
-<p class="hint">Each photo becomes one page; use the arrows to change the order. Word files (.docx) are converted page by page. Old .doc files are not supported: save them as .docx or PDF first.</p></section>
+<p class="hint">Photos and Word (.docx) become PDF pages; use the arrows to change the order. Old Word (.doc), PDF and other files can't be converted on the phone, so they are <b>sent to Synly as they are</b>, together with your PDF.</p></section>
 <section><h2><i>2</i>Options</h2><div class="opt">
 <label class="chip"><input type="checkbox" id="pm" checked>Page margins</label>
 <label class="chip"><input type="checkbox" id="pb">Black &amp; white</label>
@@ -731,7 +734,7 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-go]');if(t
 show(fromHash());
 
 /* ---------- To PDF: photos and .docx into one PDF, sent to the shop on WhatsApp ---------- */
-const WA='60127664819',P=[],pl=$('#pl'),pslot=$('#p0'),pin=pslot.querySelector('input'),bz=$('#bz');
+const WA='60127664819',P=[],pl=$('#pl'),pslot=$('#p0'),bz=$('#bz');
 const busyMsg=m=>{bz.hidden=!m;if(m)bz.querySelector('span').textContent=m};
 const toBlob=(c,q=.9)=>new Promise(r=>c.toBlob(r,'image/jpeg',q));
 async function toCanvas(b){const i=await createImageBitmap(b),c=document.createElement('canvas');c.width=i.width;c.height=i.height;c.getContext('2d').drawImage(i,0,0);i.close&&i.close();return c}
@@ -739,6 +742,11 @@ function thumb(c){const t=document.createElement('canvas'),k=240/Math.max(c.widt
  const x=t.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,t.width,t.height);x.drawImage(c,0,0,t.width,t.height);return t.toDataURL('image/jpeg',.7)}
 async function page(c,doc){return{jpg:await toBlob(c),w:c.width,h:c.height,th:thumb(c),...doc}}
 const isDocx=f=>/\.docx$/i.test(f.name||'')||/wordprocessingml/.test(f.type||'');
+const fext=f=>((f.name||'').toLowerCase().match(/\.([a-z0-9]+)$/)||[])[1]||'';
+const isImgF=f=>/^image\//.test(f.type||'')||/^(jpe?g|png|webp|gif|heic|heif|bmp|avif)$/.test(fext(f));
+// Word files shared from some apps arrive with no proper type: look inside (a .docx is a zip holding word/document.xml)
+async function sniffDocx(f){try{if(f.size>30e6)return false;const b=new Uint8Array(await f.arrayBuffer());return b[0]==0x50&&b[1]==0x4B&&new TextDecoder('latin1').decode(b).includes('word/document.xml')}catch(e){return false}}
+const PX=[];   /* files that can't be converted on the phone (.doc, PDF, Excel…): sent to Synly as they are */
 const readImgP=f=>new Promise(r=>readImg(f,r));
 let libs;function loadLibs(){return libs=libs||['lib/jszip.min.js','lib/docx-preview.min.js','lib/html2canvas.min.js'].reduce((p,u)=>p.then(()=>new Promise((ok,no)=>{
  const e=document.createElement('script');e.src=u;e.onload=ok;e.onerror=()=>{libs=null;no(new Error(u))};document.head.append(e)})),Promise.resolve())}
@@ -747,7 +755,7 @@ let libs;function loadLibs(){return libs=libs||['lib/jszip.min.js','lib/docx-pre
 async function docxPages(f){await loadLibs();const host=document.createElement('div');host.style.cssText='position:fixed;left:0;top:0;z-index:-1;background:#fff;color:#000';
  document.body.append(host);const out=[];
  try{await docx.renderAsync(f,host,host,{className:'docx',inWrapper:false,breakPages:true,ignoreLastRenderedPageBreak:false,useBase64URL:true,renderHeaders:true,renderFooters:true});
-  const st=document.createElement('style');st.textContent='section.docx{box-shadow:none!important;border:0!important;border-radius:0!important;margin:0!important}section.docx *{hyphens:manual!important;-webkit-hyphens:manual!important}';host.append(st);
+  const st=document.createElement('style');st.textContent='section.docx{box-shadow:none!important;border:0!important;border-radius:0!important;margin:0!important;background:#fff!important;color:#000!important;animation:none!important;transform:none!important}section.docx *{hyphens:manual!important;-webkit-hyphens:manual!important}';host.append(st);
   if(document.fonts)await document.fonts.ready;
   const secs=[...host.querySelectorAll('section.docx')];
   for(let j=0;j<secs.length;j++){const sec=secs[j],r=sec.getBoundingClientRect(),cs=getComputedStyle(sec);busyMsg(`Converting ${f.name}… page ${j+1} of ${secs.length}`);
@@ -761,24 +769,32 @@ async function docxPages(f){await loadLibs();const host=document.createElement('
     const sy=Math.round(a*k),sh=Math.min(Math.round((cuts.length==1?ph:e-a)*k),shot.height-sy);if(sh>0)x.drawImage(shot,0,sy,W,sh,0,Math.round(d*k),W,sh);
     out.push(await page(c,{doc:1,pw:r.width*.75,ph:ph*.75}))}}}
  finally{host.remove()}return out}
-async function padd(fs){fs=[...fs].filter(Boolean);if(!fs.length||busy)return;busy=true;paint();let bad=0;
+async function padd(fs){fs=[...fs].filter(f=>f&&f.size);if(!fs.length||busy)return;busy=true;paint();let bad=0,pass=0;
  try{for(let i=0;i<fs.length;i++){const f=fs[i];busyMsg(`Adding ${i+1} of ${fs.length}…`);
-   if(isDocx(f)){try{P.push(...await docxPages(f))}catch(e){bad++}}
-   else if(/^image\//.test(f.type||'image/')&&!/\.docx?$/i.test(f.name||'')){const c=await readImgP(f);if(c){const p=await page(c,{});p.src=p.jpg;P.push(p)}}
-   else bad++}}
+   if(isDocx(f)||(!isImgF(f)&&fext(f)!='pdf'&&await sniffDocx(f))){try{P.push(...await docxPages(f))}catch(e){PX.push(f);pass++}}   /* a .docx that won't convert is still sent */
+   else if(isImgF(f)){const c=await new Promise(ok=>readImg(f,ok,1));if(c){const p=await page(c,{});p.src=p.jpg;P.push(p)}else{PX.push(f);pass++}}
+   else if(f.size<=50e6){PX.push(f);pass++}else bad++}}
  finally{busy=false;busyMsg('');plist();paint()}
- if(bad)toast(bad==1?'1 file could not be added (only photos and .docx).':bad+' files could not be added (only photos and .docx).')}
+ if(pass)toast(pass==1?'1 file will be sent to Synly as it is.':pass+' files will be sent to Synly as they are.');
+ if(bad)toast(bad==1?'1 file is too large (over 50 MB).':bad+' files are too large (over 50 MB).')}
 function plist(){pl.innerHTML='';P.forEach((p,i)=>{const d=document.createElement('div');d.className='pv';
  d.innerHTML=`<img alt="Page ${i+1}" src="${p.th}"><b>${i+1}</b><div class="ctl"><button data-a="u" data-i="${i}" aria-label="Move earlier" ${i?'':'disabled'}>&#8593;</button><button data-a="d" data-i="${i}" aria-label="Move later" ${i<P.length-1?'':'disabled'}>&#8595;</button>${p.doc?'':`<button data-a="e" data-i="${i}" aria-label="Crop">&#9986;</button>`}<button data-a="x" data-i="${i}" aria-label="Remove">&#10005;</button></div>`;pl.append(d)});
- $('#pcr').hidden=!P.length;pbtn()}
-function pbtn(){['#pw','#ps','#pp'].forEach(b=>$(b).disabled=!P.length||busy)}
+ pxlist()}
+function pbtn(){['#pw','#ps','#pp'].forEach(b=>$(b).disabled=!(P.length||PX.length)||busy)}
+function pxlist(){const l=$('#pxl');l.innerHTML='';PX.forEach((f,i)=>{const d=document.createElement('div');d.className='af';
+ d.innerHTML=`<div class="pdf">${(fext(f)||'FILE').toUpperCase().slice(0,4)}</div><span></span><button data-i="${i}" aria-label="Remove">&#10005;</button>`;
+ const sp=d.querySelector('span');sp.textContent=f.name||'file';const sm=document.createElement('small');sm.textContent=kb(f.size)+' · sent as it is';sp.append(sm);l.append(d)});
+ $('#pcr').hidden=!(P.length||PX.length);pbtn()}
+$('#pxl').onclick=e=>{const b=e.target.closest('button[data-i]');if(b&&!busy){PX.splice(+b.dataset.i,1);pxlist()}};
 pl.onclick=async e=>{const a=e.target.closest('[data-a]');if(!a||busy)return;const i=+a.dataset.i,t=a.dataset.a;
  if(t=='u')[P[i-1],P[i]]=[P[i],P[i-1]];else if(t=='d')[P[i+1],P[i]]=[P[i],P[i+1]];else if(t=='x')P.splice(i,1);
  else if(t=='e'){pi=i;return openCrop('p',await toCanvas(P[i].src),P[i].st)}plist()};
 async function pcrop(c,st){const p=P[pi];if(!p)return;Object.assign(p,await page(c,{}),{st:{...st}});plist()}
-$('#pc').onclick=()=>{if(confirm('Remove all pages?')){P.length=0;plist()}};
-pin.onchange=()=>{const f=[...pin.files];pin.value='';padd(f)};
-pslot.onclick=()=>pin.click();pslot.onkeydown=e=>{if(e.key=='Enter'||e.key==' '){e.preventDefault();pin.click()}};
+$('#pc').onclick=()=>{if(confirm('Remove all pages and files?')){P.length=0;PX.length=0;plist()}};
+const pinI=$('#pinI'),pinF=$('#pinF');
+pinI.onchange=()=>{const f=[...pinI.files];pinI.value='';padd(f)};pinF.onchange=()=>{const f=[...pinF.files];pinF.value='';padd(f)};
+$('#pph').onclick=()=>pinI.click();$('#pfl').onclick=()=>pinF.click();      /* Photos opens the gallery; Word / files accepts anything */
+pslot.onclick=()=>pinF.click();pslot.onkeydown=e=>{if(e.key=='Enter'||e.key==' '){e.preventDefault();pinF.click()}};
 pslot.ondragover=e=>{e.preventDefault();pslot.classList.add('drag')};pslot.ondragleave=()=>pslot.classList.remove('drag');
 pslot.ondrop=e=>{e.preventDefault();e.stopPropagation();pslot.classList.remove('drag');padd([...e.dataTransfer.files])};
 try{$('#pm').checked=localStorage.pm!=='0';$('#pb').checked=localStorage.pb==='1'}catch(e){}
@@ -792,13 +808,13 @@ async function ppdf(){const out=[],mg=$('#pm').checked?28.35:0,bw=$('#pb').check
   out.push({jpg,w:p.w,h:p.h,pw,ph,x:(pw-dw)/2,y:(ph-dh)/2,dw,dh})}
  const n=($('#pn').value.trim().replace(/[\\/:*?"<>|]+/g,' ').replace(/\s+/g,' ')||'Synly '+new Date().toISOString().slice(0,10));
  return new File([buildPdf(out)],n+'.pdf',{type:'application/pdf'})}
-const pjob=fn=>job(async()=>{try{await fn(await ppdf())}finally{busyMsg('')}});
-const canShare=f=>navigator.canShare&&navigator.canShare({files:[f]});
-$('#pw').onclick=pjob(async f=>{const txt='Print request for Synly Printing Services'+($('#pn').value.trim()?' from '+$('#pn').value.trim():'');
- if(canShare(f)){try{await navigator.share({files:[f],text:txt})}catch(e){}}
- else{save(f,f.name);toast('PDF saved. Attach it in the WhatsApp chat.');open('https://wa.me/'+WA+'?text='+encodeURIComponent(txt),'_blank','noopener')}});
-$('#ps').onclick=pjob(async f=>{if(canShare(f))try{await navigator.share({files:[f]})}catch(e){}else save(f,f.name)});
-$('#pp').onclick=pjob(async f=>{save(f,f.name);toast('PDF saved to Downloads')});
+const pjob=fn=>job(async()=>{try{await fn([...(P.length?[await ppdf()]:[]),...PX])}finally{busyMsg('')}});
+const canShare=fs=>navigator.canShare&&navigator.canShare({files:fs});
+$('#pw').onclick=pjob(async fs=>{const txt='Print request for Synly Printing Services'+($('#pn').value.trim()?' from '+$('#pn').value.trim():'');
+ if(canShare(fs)){try{await navigator.share({files:fs,text:txt})}catch(e){if(e&&e.name!='AbortError')try{await navigator.share({files:fs})}catch(x){}}}
+ else{fs.forEach((f,i)=>setTimeout(()=>save(f,f.name),i*400));toast((fs.length>1?'Files':'PDF')+' saved. Attach in the WhatsApp chat.');open('https://wa.me/'+WA+'?text='+encodeURIComponent(txt),'_blank','noopener')}});
+$('#ps').onclick=pjob(async fs=>{if(canShare(fs))try{await navigator.share({files:fs})}catch(e){}else fs.forEach((f,i)=>setTimeout(()=>save(f,f.name),i*400))});
+$('#pp').onclick=pjob(async fs=>{fs.forEach((f,i)=>setTimeout(()=>save(f,f.name),i*400));toast(fs.length>1?fs.length+' files saved to Downloads':'PDF saved to Downloads')});
 qpaint();
 
 /* ---------- opening hours: live status in Bintulu time (UTC+8) ---------- */
