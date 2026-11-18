@@ -285,6 +285,9 @@ header{background:color-mix(in srgb,var(--bg) 72%,transparent)!important;-webkit
 .so button{padding:6px 10px;font-size:.8rem;border-radius:9px;box-shadow:none;flex:none}
 .fn textarea{font:inherit;color:var(--fg);background:var(--card);border:var(--bw) solid var(--ink);border-radius:12px;padding:10px 12px;resize:vertical;min-height:70px}
 .fn textarea:focus{border-color:var(--ac2);box-shadow:3px 3px 0 var(--ac);outline:0}
+.seg3s{grid-template-columns:repeat(3,1fr)}.seg3s .pick{padding:12px 10px}.seg3s .pick small{font-size:.72rem}
+.shp.combo{width:56px;height:24px;border:0;display:flex;gap:4px;align-items:center;opacity:.75}.shp.combo i{width:22px;height:22px;border:2.5px solid currentColor;border-radius:50%}.shp.combo em{flex:1;height:14px;border-top:2.5px solid currentColor;border-bottom:2.5px solid currentColor}
+#sCombo{border:2px dashed var(--ink);border-radius:12px;padding:10px;margin:12px 0 4px;font-size:.84rem;background:var(--bg)}
 #pi{display:none}
 @page{size:A4;margin:0}
 @media print{body{background:#fff;padding:0}body>*{display:none!important}#pi{display:block!important;width:210mm;height:297mm}}
@@ -362,9 +365,10 @@ header{background:color-mix(in srgb,var(--bg) 72%,transparent)!important;-webkit
 <div class="view" id="vStamp" hidden>
 <p class="lead">Design your stamp and see a preview. Our cashier will confirm the model and print your order.</p>
 <section id="sos" hidden><h2>Your order <span class="st ok" id="soc"></span></h2><div class="sol" id="sol"></div><p class="hint">Designing stamp <b id="son"></b> below. Tap Edit to change a stamp already added.</p></section>
-<section><h2><i>1</i>Shape</h2><div class="seg" role="radiogroup" aria-label="Stamp shape">
+<section><h2><i>1</i>Shape</h2><div class="seg seg3s" role="radiogroup" aria-label="Stamp shape">
 <label class="pick"><input type="radio" name="ss" value="rect" checked><span class="shp rect"></span><b>Rectangle</b><small>Up to 8 lines · max 7 × 2.5 cm</small></label>
 <label class="pick"><input type="radio" name="ss" value="round"><span class="shp round"></span><b>Round</b><small>Max 6 cm across · inner circle optional</small></label>
+<label class="pick"><input type="radio" name="ss" value="combo"><span class="shp combo"><i></i><em></em></span><b>Combination</b><small>Round seal + text lines · about 8 × 3 cm</small></label>
 </div></section>
 <section><h2><i>2</i>Stamp type &amp; ink</h2><div class="seg" role="radiogroup" aria-label="Stamp type">
 <label class="pick sm"><input type="radio" name="sk" value="Regular" checked><b>Regular</b><small>Use with an ink pad</small></label>
@@ -378,7 +382,8 @@ header{background:color-mix(in srgb,var(--bg) 72%,transparent)!important;-webkit
 <div id="stR"><div class="tx">
 <input id="r1" maxlength="60" placeholder="Line 1 (e.g. company name)"><input id="r2" maxlength="60" placeholder="Line 2 (optional)"><input id="r3" maxlength="60" placeholder="Line 3 (optional)"><input id="r4" maxlength="60" placeholder="Line 4 (optional)"><input id="r5" maxlength="60" placeholder="Line 5 (optional)"><input id="r6" maxlength="60" placeholder="Line 6 (optional)"><input id="r7" maxlength="60" placeholder="Line 7 (optional)"><input id="r8" maxlength="60" placeholder="Line 8 (optional)"></div>
 <div class="opt" style="margin-top:12px"><label class="chip">Align <select id="ra"><option value="left">Left</option><option value="center">Centre</option></select></label><label class="chip">Bold <select id="rb"><option value="all">All lines</option><option value="first">First line</option><option value="none">None</option></select></label><label class="chip"><input type="checkbox" id="rx">Border</label></div></div>
-<div id="stC" hidden><div class="tx">
+<div id="sCombo" hidden><b>Combination:</b> fill in the <b>text lines</b> and the <b>round seal</b> below. <label class="chip" style="display:inline-flex;margin-top:8px">Seal on <select id="cside"><option value="left">Left</option><option value="right">Right</option></select></label></div>
+<div id="stC" hidden><p class="sub2" id="stCh" hidden>Round seal</p><div class="tx">
 <input id="c1" maxlength="60" placeholder="Around the edge (e.g. SYNLY TRADING &amp; BOOKSTORE SDN BHD)"><input id="c2" maxlength="60" placeholder="Around the bottom (optional)">
 <input id="c3" maxlength="30" placeholder="Centre line 1 (e.g. 821682-H)"><input id="c4" maxlength="30" placeholder="Centre line 2 (optional)"><input id="c5" maxlength="30" placeholder="Centre line 3 (optional)"></div>
 <div class="opt" style="margin-top:12px"><label class="chip"><input type="checkbox" id="ci" checked>Inner circle</label><label class="chip"><input type="checkbox" id="cd" checked>Double outer ring</label><label class="chip"><input type="checkbox" id="cs" checked>Star</label></div></div>
@@ -805,22 +810,22 @@ hours();setInterval(hours,6e4);
 
 /* ---------- Stamp booking: design + preview, cashier submits a B&W PDF (STMP + last 4 digits of phone) ---------- */
 // All stamp geometry in mm. Rectangle 70 × 25 with 5 mm kept clear on every side; round drawn at its 60 mm maximum.
-const SB={rect:{w:70,h:25,m:5},round:{d:60}},sp=$('#sp'),spx=sp.getContext('2d'),sv=id=>$('#'+id).value.trim(),sck=id=>$('#'+id).checked;
+const SB={rect:{w:70,h:25,m:5},round:{d:60},combo:{w:80,h:30,g:3}},sDims=()=>{const s2=sShape();return s2=='rect'?{w:70,h:25}:s2=='round'?{w:60,h:60}:{w:80,h:30}},sp=$('#sp'),spx=sp.getContext('2d'),sv=id=>$('#'+id).value.trim(),sck=id=>$('#'+id).checked;
 const sInk=()=>document.querySelector('input[name=sc2]:checked').value,INK={Blue:'#1f3fa8',Black:'#000'};
 const sShape=()=>document.querySelector('input[name=ss]:checked').value,sKind=()=>document.querySelector('input[name=sk]:checked').value;
 const sFam=()=>({serif:'"Times New Roman",Times,"Liberation Serif","Noto Serif",serif',sans:'Arial,Helvetica,"Liberation Sans",Roboto,sans-serif',cond:'Arial,Helvetica,"Liberation Sans",Roboto,sans-serif'})[$('#sf').value],
  sCond=()=>$('#sf').value=='cond'?.74:1;     // "narrow bold": Arial squeezed horizontally, same on every phone
 // draw the stamp with its centre at (cx,cy); k = pixels per mm
-function drawStamp(x,cx,cy,k,ink='#000'){const fam=sFam(),cq=sCond(),
+function drawStamp(x,cx,cy,k,ink='#000'){let fam=sFam(),cq=sCond();const FAM={serif:['"Times New Roman",Times,"Liberation Serif","Noto Serif",serif',1],cond:['Arial,Helvetica,"Liberation Sans",Roboto,sans-serif',.74]},useF=n=>{[fam,cq]=FAM[n]},
   wid=(t,wt,f)=>{x.font=`${wt} ${f}px ${fam}`;return x.measureText(t).width*cq},
   put=(t,px,py,wt,f,al,rot=0)=>{x.save();x.translate(px,py);if(rot)x.rotate(rot);x.scale(cq,1);x.font=`${wt} ${f}px ${fam}`;x.textAlign=al;x.fillText(t,0,0);x.restore()};
  x.save();x.fillStyle=x.strokeStyle=ink;x.textBaseline='middle';
- if(sShape()=='rect'){const{w,h,m}=SB.rect,L=['r1','r2','r3','r4','r5','r6','r7','r8'].map(sv).filter(Boolean),n=Math.max(1,L.length),aw=(w-2*m)*k,ah=(h-2*m)*k,lh=ah/n,al=$('#ra').value,bm=$('#rb').value;
-  if(sck('rx')){x.lineWidth=.5*k;x.strokeRect(cx-w*k/2+.25*k,cy-h*k/2+.25*k,w*k-.5*k,h*k-.5*k)}
+ const rectAt=(cx,cy,w,h,m)=>{const L=['r1','r2','r3','r4','r5','r6','r7','r8'].map(sv).filter(Boolean),n=Math.max(1,L.length),aw=(w-2*m)*k,ah=(h-2*m)*k,lh=ah/n,al=$('#ra').value,bm=$('#rb').value;
+  if(sck('rx')&&sShape()=='rect'){x.lineWidth=.5*k;x.strokeRect(cx-w*k/2+.25*k,cy-h*k/2+.25*k,w*k-.5*k,h*k-.5*k)}
   const WT=i=>bm=='all'||bm=='first'&&!i?'700':'400',F0=lh*.84,fu=Math.min(F0,...L.map((t,i)=>F0*Math.min(1,aw/wid(t,WT(i),F0))));   // one letter size for every line, like a real stamp
   L.forEach((t,i)=>{const wt=WT(i),f=fu;
-   put(t,al=='left'?cx-aw/2:cx,cy-ah/2+lh*(i+.5),wt,f,al=='left'?'left':'center')})}
- else{const R=SB.round.d/2*k,inner=sck('ci'),dbl=sck('cd'),star=sck('cs'),top=sv('c1'),bot=sv('c2'),C=['c3','c4','c5'].map(sv).filter(Boolean);
+   put(t,al=='left'?cx-aw/2:cx,cy-ah/2+lh*(i+.5),wt,f,al=='left'?'left':'center')})};
+ const roundAt=(cx,cy,R)=>{const inner=sck('ci'),dbl=sck('cd'),star=sck('cs'),top=sv('c1'),bot=sv('c2'),C=['c3','c4','c5'].map(sv).filter(Boolean);
   x.lineWidth=.8*k;x.beginPath();x.arc(cx,cy,R-.4*k,0,7);x.stroke();
   if(dbl){x.lineWidth=.4*k;x.beginPath();x.arc(cx,cy,R-1.6*k,0,7);x.stroke()}
   const edge=dbl?R-1.8*k:R-.8*k,ri=inner?R*.58:0;
@@ -842,17 +847,23 @@ function drawStamp(x,cx,cy,k,ink='#000'){const fam=sFam(),cq=sCond(),
    const st=g=>x.fillText('★',cx+rm*Math.cos(g),cy+rm*Math.sin(g));
    if(both){const g=(sT-sB)/4;st(g);st(Math.PI-g)}else st(top?Math.PI/2:-Math.PI/2)}
   const rc=(inner?ri:zIn)-1.2*k,n=C.length;
-  if(n){const lh=Math.min(rc*.62,1.6*rc/n);C.forEach((t,i)=>{const dy=(i-(n-1)/2)*lh,hw=Math.sqrt(Math.max(0,rc*rc-(Math.abs(dy)+lh/2)**2))*1.85;let g=lh*.78;const tw=wid(t,'700',g);if(tw>hw)g*=hw/tw;put(t,cx,cy+dy,'700',g,'center')})}}
+  if(n){const lh=Math.min(rc*.62,1.6*rc/n);C.forEach((t,i)=>{const dy=(i-(n-1)/2)*lh,hw=Math.sqrt(Math.max(0,rc*rc-(Math.abs(dy)+lh/2)**2))*1.85;let g=lh*.78;const tw=wid(t,'700',g);if(tw>hw)g*=hw/tw;put(t,cx,cy+dy,'700',g,'center')})}};
+ const sh=sShape();
+ if(sh=='rect'){const{w,h,m}=SB.rect;rectAt(cx,cy,w,h,m)}
+ else if(sh=='round')roundAt(cx,cy,SB.round.d/2*k);
+ else{const{w,h,g}=SB.combo,left=$('#cside').value!='right',sx=left?cx-w*k/2+h*k/2:cx+w*k/2-h*k/2,tw=w-h-g,tx=left?cx-w*k/2+(h+g+tw/2)*k:cx-w*k/2+tw/2*k;   /* combination: round seal beside the text lines */
+  useF('cond');roundAt(sx,cy,h/2*k);useF('serif');
+  if(['r1','r2','r3','r4','r5','r6','r7','r8'].some(id=>sv(id)))rectAt(tx,cy,tw,h,2.5)}
  x.restore()}
-function sHasText(){return(sShape()=='rect'?['r1','r2','r3','r4','r5','r6','r7','r8']:['c1','c2','c3','c4','c5']).some(id=>$('#'+id).value.trim())}
+function sHasText(){const s2=sShape(),R8=['r1','r2','r3','r4','r5','r6','r7','r8'],C5=['c1','c2','c3','c4','c5'];return(s2=='rect'?R8:s2=='round'?C5:[...R8,...C5]).some(id=>$('#'+id).value.trim())}
 const sReady=()=>sHasText()||(typeof SA!='undefined'&&SA.length>0);   // a sample attachment is enough, text lines are then optional
-function sPreview(){const rect=sShape()=='rect';$('#sf').value=rect?'serif':'cond';/* lettering style follows the shape, like the shop's own stamps */$('#stR').hidden=!rect;$('#stC').hidden=rect;
- const W=1200,H=rect?560:1200;if(sp.height!=H)sp.height=H;spx.fillStyle='#fff';spx.fillRect(0,0,W,H);
- const k=rect?(W-80)/SB.rect.w:(H-80)/SB.round.d;
+function sPreview(){const rect=sShape()=='rect';$('#sf').value=rect?'serif':'cond';/* lettering style follows the shape, like the shop's own stamps */const cmb=sShape()=='combo';$('#stR').hidden=!(rect||cmb);$('#stC').hidden=rect;$('#sCombo').hidden=$('#stCh').hidden=!cmb;
+ const dm=sDims(),W=1200,H=Math.round((W-80)*dm.h/dm.w+80);if(sp.height!=H)sp.height=H;spx.fillStyle='#fff';spx.fillRect(0,0,W,H);
+ const k=Math.min((W-80)/dm.w,(H-80)/dm.h);
  if(!sHasText()&&typeof SA!='undefined'&&SA.length){spx.fillStyle='#5a6e62';spx.textAlign='center';spx.textBaseline='middle';spx.font=`600 ${rect?46:60}px "Plus Jakarta Sans",Arial,sans-serif`;spx.fillText('Sample attached',W/2,H/2-(rect?30:40));spx.font=`500 ${rect?34:44}px "Plus Jakarta Sans",Arial,sans-serif`;spx.fillText('No text needed: our staff will follow your sample',W/2,H/2+(rect?30:40))}
  else drawStamp(spx,W/2,H/2,k,INK[sInk()]);
  $('#sb').disabled=busy||!(sReady()||SO.length);
- $('#sph').textContent=rect?'Preview in your ink colour. Rectangle up to 7 × 2.5 cm; final size is chosen by our staff to suit your text.':'Preview in your ink colour at maximum size (6 cm across). Our staff choose the final size to suit your text.'}
+ $('#sph').textContent=rect?'Preview in your ink colour. Rectangle up to 7 × 2.5 cm; final size is chosen by our staff to suit your text.':cmb?'Preview in your ink colour. Combination about 8 × 3 cm (seal about 3 cm across); final size is chosen by our staff.':'Preview in your ink colour at maximum size (6 cm across). Our staff choose the final size to suit your text.'}
 document.querySelectorAll('#vStamp input,#vStamp select').forEach(e=>{if(!['sn','st','sm','so','srm'].includes(e.id))e.addEventListener('input',sPreview)});
 document.querySelectorAll('#vStamp input[type=radio],#vStamp input[type=checkbox],#vStamp select').forEach(e=>e.addEventListener('change',sPreview));
 /* order numbers: prefix + random 6 digits; numbers already issued on this device are never reused */
@@ -860,28 +871,28 @@ function newSer(pre){let u=[];try{u=JSON.parse(localStorage.serUsed||'[]')}catch
 function markSer(id){try{const u=JSON.parse(localStorage.serUsed||'[]');if(!u.includes(id))u.push(id);localStorage.serUsed=JSON.stringify(u.slice(-2000))}catch(e){}}
 let sId=newSer('STMP');const sDig=()=>$('#st').value.replace(/\D/g,''),sName=()=>sId,sShow=()=>$('#ssn').textContent=sId;sShow();
 // A4 order sheet: details + stamp at actual size + 2x enlargement for checking
-function sSheet(no,imgs=[],other=[],ttl){const np=imgs.length;const c=document.createElement('canvas');c.width=PW;c.height=PH;const x=c.getContext('2d'),F='"Plus Jakarta Sans",Arial,sans-serif',k=MM,L=20*k,rect=sShape()=='rect';
+function sSheet(no,imgs=[],other=[],ttl){const np=imgs.length;const c=document.createElement('canvas');c.width=PW;c.height=PH;const x=c.getContext('2d'),F='"Plus Jakarta Sans",Arial,sans-serif',k=MM,L=20*k,cmb=sShape()=='combo',rect=sShape()=='rect'||cmb;   /* combination is wide like a rectangle */
  x.fillStyle='#fff';x.fillRect(0,0,PW,PH);x.fillStyle='#000';x.textBaseline='alphabetic';
  x.font=`800 ${9*k}px ${F}`;x.fillText(ttl||'Stamp order',L,30*k);x.textAlign='right';x.fillText(no,PW-L,30*k);x.textAlign='left';
  x.font=`500 ${3.1*k}px ${F}`;x.fillText('Synly Trading & Bookstore Sdn Bhd · Lot 290-292, Parkcity Commerce Square, 97000 Bintulu · 086-337 891',L,38*k);
  x.fillRect(L,42*k,PW-2*L,.5*k);
  const d=new Date(Date.now()+8*36e5),dt=d.toISOString().slice(0,16).replace('T',' ');
- const rows=[['Series no.',no],['Date / time',dt],['Customer',sv('sn')||'-'],['Phone',sv('st')],['Shape',rect?'Rectangle (max 7 × 2.5 cm)':'Round (max 6 cm across)'+(sck('cd')?', double ring':'')+(sck('ci')?', inner circle':'')],...(rect?[['Alignment',$('#ra').value=='left'?'Left':'Centre']]:[]),['Stamp type',sKind()],['Ink colour',sInk()],['Model',sv('sm')||'-'],['Cashier',sv('scs')],['Sample',SA.length?((np?np+' photo'+(np>1?'s':'')+' (below)':'')+(np&&other.length?' + ':'')+(other.length?other.map(f=>f.name).join(', ').slice(0,60):'')):'-'],['Remark',$('#srm').value.trim().replace(/\s+/g,' ')||'-']];
+ const rows=[['Series no.',no],['Date / time',dt],['Customer',sv('sn')||'-'],['Phone',sv('st')],['Shape',cmb?'Combination: round seal + text (about 8 × 3 cm), seal on '+$('#cside').value+(sck('cd')?', double ring':'')+(sck('ci')?', inner circle':''):rect?'Rectangle (max 7 × 2.5 cm)':'Round (max 6 cm across)'+(sck('cd')?', double ring':'')+(sck('ci')?', inner circle':'')],...(rect?[['Alignment',$('#ra').value=='left'?'Left':'Centre']]:[]),['Stamp type',sKind()],['Ink colour',sInk()],['Model',sv('sm')||'-'],['Cashier',sv('scs')],['Sample',SA.length?((np?np+' photo'+(np>1?'s':'')+' (below)':'')+(np&&other.length?' + ':'')+(other.length?other.map(f=>f.name).join(', ').slice(0,60):'')):'-'],['Remark',$('#srm').value.trim().replace(/\s+/g,' ')||'-']];
  let y=52*k;rows.forEach(([a,b])=>{x.font=`500 ${4.2*k}px ${F}`;x.fillStyle='#555';x.fillText(a,L,y);x.fillStyle='#000';x.font=`700 ${4.6*k}px ${F}`;
   const mw=PW-L-(L+42*k),ws=String(b).split(' '),ln=[];let cur='';for(const w of ws){const t=cur?cur+' '+w:w;if(x.measureText(t).width>mw&&cur){ln.push(cur);cur=w}else cur=t}ln.push(cur);   /* long values (remark) wrap, max 3 lines */
   ln.slice(0,3).forEach((t,i)=>{x.fillText(i==2&&ln.length>3?t+'…':t,L+42*k,y);y+=(i<Math.min(3,ln.length)-1?5.6:7)*k})});
  y+=2*k;x.fillStyle='#555';x.font=`500 ${4.2*k}px ${F}`;x.fillText('Text',L,y);x.fillStyle='#000';x.font=`600 ${4.4*k}px ${F}`;
- const T=rect?['r1','r2','r3','r4','r5','r6','r7','r8'].map((id,i)=>sv(id)&&`Line ${i+1}: ${sv(id)}`):[sv('c1')&&'Around: '+sv('c1'),sv('c2')&&'Bottom: '+sv('c2'),...['c3','c4','c5'].map((id,i)=>sv(id)&&`Centre ${i+1}: ${sv(id)}`)];
+ const TL=['r1','r2','r3','r4','r5','r6','r7','r8'].map((id,i)=>sv(id)&&`Line ${i+1}: ${sv(id)}`),TC=[sv('c1')&&(cmb?'Seal around: ':'Around: ')+sv('c1'),sv('c2')&&(cmb?'Seal bottom: ':'Bottom: ')+sv('c2'),...['c3','c4','c5'].map((id,i)=>sv(id)&&`${cmb?'Seal centre':'Centre'} ${i+1}: ${sv(id)}`)],T=cmb?[...TL,...TC]:rect?TL:TC;
  if(!sHasText())T.splice(0,T.length,'As per attached sample');
  T.filter(Boolean).forEach(t=>{x.fillText(t,L+42*k,y);y+=6*k});
  y+=6*k;x.fillRect(L,y,PW-2*L,.3*k);y+=10*k;
  const yEnd=PH-48*k,UW=PW-2*L,lab=(t,X,Y)=>{x.fillStyle='#555';x.font=`600 ${4*k}px ${F}`;x.textAlign='left';x.fillText(t,X,Y)};
  // everything stays on this one page. With a sample: stamp on the left, sample on the right using all the height left.
- const hasS=np||other.length,ht=sHasText(),sh=rect?SB.rect.h:SB.round.d,sw=rect?SB.rect.w:SB.round.d,avail=(yEnd-y)/k-4;  // mm
+ const hasS=np||other.length,ht=sHasText(),sh=sDims().h,sw=sDims().w,avail=(yEnd-y)/k-4;  // mm
  let colW=UW/k;                                                       // mm width for the stamp drawings
  if(ht){if(hasS)colW=sw+4;
   const z1=Math.min(1,avail/sh),dx=L;                                   // actual size, scaled down only if the page is full
-  lab(rect?(z1<1?`Actual size (shown at ${Math.round(z1*100)}%)`:'Actual size'):(z1<1?`Maximum size (shown at ${Math.round(z1*100)}%)`:'Maximum size (final size per model)'),dx,y);
+  lab(cmb?(z1<1?`Approximate size (shown at ${Math.round(z1*100)}%)`:'Approximate size'):rect?(z1<1?`Actual size (shown at ${Math.round(z1*100)}%)`:'Actual size'):(z1<1?`Maximum size (shown at ${Math.round(z1*100)}%)`:'Maximum size (final size per model)'),dx,y);
   let yy=y+4*k;if(rect){x.strokeStyle='#bbb';x.setLineDash([2*k,1.5*k]);x.lineWidth=.3*k;x.strokeRect(dx,yy,sw*z1*k,sh*z1*k);x.setLineDash([])}
   drawStamp(x,dx+sw*z1*k/2,yy+sh*z1*k/2,z1*k);yy+=sh*z1*k+10*k;
   if(rect){const zb=Math.min(2,(colW-2)/sw,((yEnd-yy)/k-6)/sh),zs=Math.min(2,(UW/k-sw-8)/sw,avail/sh);
@@ -918,18 +929,18 @@ async function sampleImgs(){const imgs=[],other=[];
 let sFile=null,sOther=[];
 /* ---- several stamps in one order: each stamp is a snapshot of the designer ---- */
 const SF=['r1','r2','r3','r4','r5','r6','r7','r8','c1','c2','c3','c4','c5'],SC=['rx','ci','cd','cs'],SR=['ss','sk','sc2'],SO=[];let sEdit=-1;
-function sSnap(){const o={v:{},c:{},r:{},ra:$('#ra').value,rb:$('#rb').value,samples:[...SA],model:$('#sm').value};SF.forEach(k=>o.v[k]=$('#'+k).value);SC.forEach(k=>o.c[k]=$('#'+k).checked);SR.forEach(k=>o.r[k]=rv(k));return o}
+function sSnap(){const o={v:{},c:{},r:{},ra:$('#ra').value,rb:$('#rb').value,cs:$('#cside').value,samples:[...SA],model:$('#sm').value};SF.forEach(k=>o.v[k]=$('#'+k).value);SC.forEach(k=>o.c[k]=$('#'+k).checked);SR.forEach(k=>o.r[k]=rv(k));return o}
 function sLoad(o){SF.forEach(k=>$('#'+k).value=o.v[k]||'');SC.forEach(k=>$('#'+k).checked=!!o.c[k]);SR.forEach(k=>{const e=document.querySelector(`input[name=${k}][value="${o.r[k]}"]`);if(e)e.checked=true});
- $('#ra').value=o.ra;$('#rb').value=o.rb;SA.length=0;SA.push(...o.samples);$('#sm').value=o.model||'';$('#sf').value=o.r.ss=='rect'?'serif':'cond'}
+ $('#ra').value=o.ra;$('#rb').value=o.rb;$('#cside').value=o.cs||'left';SA.length=0;SA.push(...o.samples);$('#sm').value=o.model||'';$('#sf').value=o.r.ss=='rect'?'serif':'cond'}
 const sWith=(o,fn)=>{const cur=sSnap();sLoad(o);try{return fn()}finally{sLoad(cur)}};
-const sDesc=o=>{const t=SF.map(k=>o.v[k]).filter(Boolean);return(o.r.ss=='rect'?'Rectangle':'Round')+' · '+o.r.sk+' · '+o.r.sc2+' ink'+(t.length?'':' · sample only')};
-function sThumb(o){return sWith(o,()=>{const c=document.createElement('canvas'),rect=sShape()=='rect';c.width=420;c.height=rect?170:420;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);
- if(sHasText())drawStamp(x,c.width/2,c.height/2,rect?(c.width-30)/SB.rect.w:(c.height-30)/SB.round.d,INK[sInk()]);else{x.fillStyle='#5a6e62';x.font='600 30px Arial';x.textAlign='center';x.fillText('Sample attached',c.width/2,c.height/2)}return c.toDataURL('image/png')})}
+const sDesc=o=>{const t=SF.map(k=>o.v[k]).filter(Boolean);return({rect:'Rectangle',round:'Round',combo:'Combination'})[o.r.ss]+' · '+o.r.sk+' · '+o.r.sc2+' ink'+(t.length?'':' · sample only')};
+function sThumb(o){return sWith(o,()=>{const c=document.createElement('canvas'),dm=sDims();c.width=420;c.height=Math.round(390*dm.h/dm.w+30);const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);
+ if(sHasText())drawStamp(x,c.width/2,c.height/2,Math.min((c.width-30)/dm.w,(c.height-30)/dm.h),INK[sInk()]);else{x.fillStyle='#5a6e62';x.font='600 30px Arial';x.textAlign='center';x.fillText('Sample attached',c.width/2,c.height/2)}return c.toDataURL('image/png')})}
 function sOrder(){const n=SO.length;$('#sos').hidden=!n;$('#soc').textContent=n+' stamp'+(n>1?'s':'')+' added';$('#son').textContent=n+1;$('#sol').innerHTML='';
  SO.forEach((o,i)=>{const d=document.createElement('div');d.className='so';d.innerHTML=`<img alt="Stamp ${i+1}" src="${o.th}"><span><b>Stamp ${i+1}</b><small></small></span><button data-e="${i}">Edit</button><button data-x="${i}" aria-label="Remove stamp ${i+1}">&#10005;</button>`;
   d.querySelector('small').textContent=sDesc(o)+(SF.map(k=>o.v[k]).find(Boolean)?' · '+SF.map(k=>o.v[k]).find(Boolean):'');$('#sol').append(d)});
  // cashier: one model box per stamp
- $('#sml').innerHTML='';SO.forEach((o,i)=>{const l=document.createElement('label');l.className='fn';l.style.margin='0';l.innerHTML=`Model for stamp ${i+1} <small style="color:var(--mu)">(${o.r.ss=='rect'?'rectangle':'round'})</small><input data-m="${i}" maxlength="40" placeholder="e.g. Shiny S-844">`;l.querySelector('input').value=o.model||'';$('#sml').append(l)});
+ $('#sml').innerHTML='';SO.forEach((o,i)=>{const l=document.createElement('label');l.className='fn';l.style.margin='0';l.innerHTML=`Model for stamp ${i+1} <small style="color:var(--mu)">(${({rect:'rectangle',round:'round',combo:'combination'})[o.r.ss]})</small><input data-m="${i}" maxlength="40" placeholder="e.g. Shiny S-844">`;l.querySelector('input').value=o.model||'';$('#sml').append(l)});
  $('#sml0').textContent=n?`Model for stamp ${n+1} (the one being designed)`:'Model';$('#sadd').textContent=`+ Add another stamp to this order`}
 $('#sml').oninput=e=>{const t=e.target.closest('[data-m]');if(t)SO[+t.dataset.m].model=t.value};
 function sClearDesign(){SF.forEach(k=>$('#'+k).value='');SA.length=0;salist();$('#sm').value='';sPreview()}
