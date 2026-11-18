@@ -368,7 +368,7 @@ header{background:color-mix(in srgb,var(--bg) 72%,transparent)!important;-webkit
 <section><h2><i>1</i>Shape</h2><div class="seg seg3s" role="radiogroup" aria-label="Stamp shape">
 <label class="pick"><input type="radio" name="ss" value="rect" checked><span class="shp rect"></span><b>Rectangle</b><small>Up to 8 lines · max 7 × 2.5 cm</small></label>
 <label class="pick"><input type="radio" name="ss" value="round"><span class="shp round"></span><b>Round</b><small>Max 6 cm across · inner circle optional</small></label>
-<label class="pick"><input type="radio" name="ss" value="combo"><span class="shp combo"><i></i><em></em></span><b>Combination</b><small>Round seal + text lines · about 8 × 3 cm</small></label>
+<label class="pick"><input type="radio" name="ss" value="combo"><span class="shp combo"><i></i><em></em></span><b>Combination</b><small>Round seal + text lines · size per model</small></label>
 </div></section>
 <section><h2><i>2</i>Stamp type &amp; ink</h2><div class="seg" role="radiogroup" aria-label="Stamp type">
 <label class="pick sm"><input type="radio" name="sk" value="Regular" checked><b>Regular</b><small>Use with an ink pad</small></label>
@@ -863,7 +863,7 @@ function sPreview(){const rect=sShape()=='rect';$('#sf').value=rect?'serif':'con
  if(!sHasText()&&typeof SA!='undefined'&&SA.length){spx.fillStyle='#5a6e62';spx.textAlign='center';spx.textBaseline='middle';spx.font=`600 ${rect?46:60}px "Plus Jakarta Sans",Arial,sans-serif`;spx.fillText('Sample attached',W/2,H/2-(rect?30:40));spx.font=`500 ${rect?34:44}px "Plus Jakarta Sans",Arial,sans-serif`;spx.fillText('No text needed: our staff will follow your sample',W/2,H/2+(rect?30:40))}
  else drawStamp(spx,W/2,H/2,k,INK[sInk()]);
  $('#sb').disabled=busy||!(sReady()||SO.length);
- $('#sph').textContent=rect?'Preview in your ink colour. Rectangle up to 7 × 2.5 cm; final size is chosen by our staff to suit your text.':cmb?'Preview in your ink colour. Combination about 8 × 3 cm (seal about 3 cm across); final size is chosen by our staff.':'Preview in your ink colour at maximum size (6 cm across). Our staff choose the final size to suit your text.'}
+ $('#sph').textContent=rect?'Preview in your ink colour. Rectangle up to 7 × 2.5 cm; final size is chosen by our staff to suit your text.':cmb?'Preview in your ink colour. Combination stamp: our staff choose the model and size to suit your text.':'Preview in your ink colour at maximum size (6 cm across). Our staff choose the final size to suit your text.'}
 document.querySelectorAll('#vStamp input,#vStamp select').forEach(e=>{if(!['sn','st','sm','so','srm'].includes(e.id))e.addEventListener('input',sPreview)});
 document.querySelectorAll('#vStamp input[type=radio],#vStamp input[type=checkbox],#vStamp select').forEach(e=>e.addEventListener('change',sPreview));
 /* order numbers: prefix + random 6 digits; numbers already issued on this device are never reused */
@@ -877,7 +877,7 @@ function sSheet(no,imgs=[],other=[],ttl){const np=imgs.length;const c=document.c
  x.font=`500 ${3.1*k}px ${F}`;x.fillText('Synly Trading & Bookstore Sdn Bhd · Lot 290-292, Parkcity Commerce Square, 97000 Bintulu · 086-337 891',L,38*k);
  x.fillRect(L,42*k,PW-2*L,.5*k);
  const d=new Date(Date.now()+8*36e5),dt=d.toISOString().slice(0,16).replace('T',' ');
- const rows=[['Series no.',no],['Date / time',dt],['Customer',sv('sn')||'-'],['Phone',sv('st')],['Shape',cmb?'Combination: round seal + text (about 8 × 3 cm), seal on '+$('#cside').value+(sck('cd')?', double ring':'')+(sck('ci')?', inner circle':''):rect?'Rectangle (max 7 × 2.5 cm)':'Round (max 6 cm across)'+(sck('cd')?', double ring':'')+(sck('ci')?', inner circle':'')],...(rect?[['Alignment',$('#ra').value=='left'?'Left':'Centre']]:[]),['Stamp type',sKind()],['Ink colour',sInk()],['Model',sv('sm')||'-'],['Cashier',sv('scs')],['Sample',SA.length?((np?np+' photo'+(np>1?'s':'')+' (below)':'')+(np&&other.length?' + ':'')+(other.length?other.map(f=>f.name).join(', ').slice(0,60):'')):'-'],['Remark',$('#srm').value.trim().replace(/\s+/g,' ')||'-']];
+ const rows=[['Series no.',no],['Date / time',dt],['Customer',sv('sn')||'-'],['Phone',sv('st')],['Shape',cmb?'Combination: round seal + text (size per model), seal on '+$('#cside').value+(sck('cd')?', double ring':'')+(sck('ci')?', inner circle':''):rect?'Rectangle (max 7 × 2.5 cm)':'Round (max 6 cm across)'+(sck('cd')?', double ring':'')+(sck('ci')?', inner circle':'')],...(rect?[['Alignment',$('#ra').value=='left'?'Left':'Centre']]:[]),['Stamp type',sKind()],['Ink colour',sInk()],['Model',sv('sm')||'-'],['Cashier',sv('scs')],['Sample',SA.length?((np?np+' photo'+(np>1?'s':'')+' (below)':'')+(np&&other.length?' + ':'')+(other.length?other.map(f=>f.name).join(', ').slice(0,60):'')):'-'],['Remark',$('#srm').value.trim().replace(/\s+/g,' ')||'-']];
  let y=52*k;rows.forEach(([a,b])=>{x.font=`500 ${4.2*k}px ${F}`;x.fillStyle='#555';x.fillText(a,L,y);x.fillStyle='#000';x.font=`700 ${4.6*k}px ${F}`;
   const mw=PW-L-(L+42*k),ws=String(b).split(' '),ln=[];let cur='';for(const w of ws){const t=cur?cur+' '+w:w;if(x.measureText(t).width>mw&&cur){ln.push(cur);cur=w}else cur=t}ln.push(cur);   /* long values (remark) wrap, max 3 lines */
   ln.slice(0,3).forEach((t,i)=>{x.fillText(i==2&&ln.length>3?t+'…':t,L+42*k,y);y+=(i<Math.min(3,ln.length)-1?5.6:7)*k})});
@@ -892,7 +892,7 @@ function sSheet(no,imgs=[],other=[],ttl){const np=imgs.length;const c=document.c
  let colW=UW/k;                                                       // mm width for the stamp drawings
  if(ht){if(hasS)colW=sw+4;
   const z1=Math.min(1,avail/sh),dx=L;                                   // actual size, scaled down only if the page is full
-  lab(cmb?(z1<1?`Approximate size (shown at ${Math.round(z1*100)}%)`:'Approximate size'):rect?(z1<1?`Actual size (shown at ${Math.round(z1*100)}%)`:'Actual size'):(z1<1?`Maximum size (shown at ${Math.round(z1*100)}%)`:'Maximum size (final size per model)'),dx,y);
+  lab(cmb?'Layout preview (final size per model)':rect?(z1<1?`Actual size (shown at ${Math.round(z1*100)}%)`:'Actual size'):(z1<1?`Maximum size (shown at ${Math.round(z1*100)}%)`:'Maximum size (final size per model)'),dx,y);
   let yy=y+4*k;if(rect){x.strokeStyle='#bbb';x.setLineDash([2*k,1.5*k]);x.lineWidth=.3*k;x.strokeRect(dx,yy,sw*z1*k,sh*z1*k);x.setLineDash([])}
   drawStamp(x,dx+sw*z1*k/2,yy+sh*z1*k/2,z1*k);yy+=sh*z1*k+10*k;
   if(rect){const zb=Math.min(2,(colW-2)/sw,((yEnd-yy)/k-6)/sh),zs=Math.min(2,(UW/k-sw-8)/sw,avail/sh);
