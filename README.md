@@ -10,7 +10,7 @@ Customers send IC or driving licence screenshots to the shop phone. Printing the
 
 ## Features
 
-- Home screen with one button per service: **IC Copy**, **A5 QR Poster**, **To PDF**, **Stamp Booking**, **Name Tag**, **Unlock PDF**, **Collage**, plus small **About us** and **Contact us** buttons at the top right (Contact us has opening hours with live open status, address with Google Maps, phone and WhatsApp). Synly green gradient theme, light and dark mode, smooth slide transitions and a softly animated neon-line background (respects reduced-motion, pauses when hidden). Phone back button returns home; links ending in `#ic`, `#qr`, `#pdf`, `#stamp` or `#about` open that screen directly
+- Home screen with one button per service: **IC Copy**, **A5 QR Poster**, **To PDF**, **Stamp Booking**, **Name Tag**, **Unlock PDF**, **Collage**, plus small **About us** and **Contact us** buttons at the top right (Contact us has opening hours with live open status, address with Google Maps, phone and WhatsApp). Synly green gradient theme, light and dark mode, smooth slide transitions. Phone back button returns home; links ending in `#ic`, `#qr`, `#pdf`, `#stamp` or `#about` open that screen directly
 
 - Pick Depan and Belakang screenshots (PNG, JPG, WebP; HEIC only where the browser supports it)
 - Free crop box for both IC and A5 QR: drag corners or edges to resize, drag inside to move, pinch or slide to zoom. Optional "Lock card shape" for IC (the cropped IC area is fitted to the 85.6 × 54 mm card)
@@ -39,8 +39,8 @@ Customers send IC or driving licence screenshots to the shop phone. Printing the
 | `sw.js` | Service worker (offline support, network-first updates) |
 | `lib/` | docx-preview (Apache-2.0), JSZip (MIT), html2canvas (MIT) for .docx conversion; qpdf 11 WebAssembly (`qpdf.js` + `qpdf.wasm`, Apache-2.0, build by @neslinesli93/qpdf-wasm, ISC) for Unlock PDF. Each loads only when its section is used |
 | `donate-qr.png` | DuitNow QR for the Easter egg (tap the header logo 15 times) |
-| `doodle-body.webp`, `doodle-arm.webp` | Doodle for the second Easter egg (tap the "&" in the home heading 10 times); the arm is a separate layer so it can wave |
-| `fonts/` | Plus Jakarta Sans and Fredoka (SIL Open Font License), self-hosted so they work offline |
+| `doodle-body.webp`, `doodle-arm.webp` | Doodle for the second Easter egg (tap the "&" in "Synly Trading & Bookstore" 10 times); the arm is a separate layer so it can wave |
+| `fonts/` | IBM Plex Sans (SIL Open Font License), self-hosted so it works offline |
 | `logo.png` | Synly logo shown in the header |
 | `icon-192.png`, `icon-512.png` | Home-screen icons |
 

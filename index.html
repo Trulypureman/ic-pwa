@@ -1,25 +1,23 @@
 <!doctype html>
-<html lang="en" class="dark"><head><meta charset="utf-8">
+<html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Synly Printing Services</title>
 <meta name="description" content="Crop the front and back of an IC and print them on one A4 page, print merchant QR posters at A5, and turn photos or Word files into a PDF to send on WhatsApp.">
-<link rel="preload" href="fonts/plus-jakarta-sans.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="fonts/fredoka.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#1d3b2b">
-<script>try{if(localStorage.theme==="light")document.documentElement.classList.remove("dark")}catch(e){}</script>
+<link rel="preload" href="fonts/ibm-plex-sans.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#eef5f0">
+<script>try{if(localStorage.theme==="dark")document.documentElement.classList.add("dark")}catch(e){}</script>
 <meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Synly PS">
 <link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
 <style>
-@font-face{font-family:"Fredoka";src:url(fonts/fredoka.woff2) format("woff2");font-weight:300 700;font-style:normal;font-display:swap}
-@font-face{font-family:"Plus Jakarta Sans";src:url(fonts/plus-jakarta-sans.woff2) format("woff2");font-weight:200 800;font-style:normal;font-display:swap}
+@font-face{font-family:"IBM Plex Sans";src:url(fonts/ibm-plex-sans.woff2) format("woff2");font-weight:100 700;font-style:normal;font-display:swap}
 :root{--bg:#f2f7f4;--fg:#0f2418;--card:#fff;--ac:#0b7a43;--ac2:#075c32;--ln:#dce8e0;--mu:#5a6e62;--mint:#e6f4ec;
  --grad:linear-gradient(135deg,#064d2a 0%,#0b7a43 48%,#17a862 100%);--soft:linear-gradient(135deg,#e9f7ef,#d5f0e1);
  --sh:0 1px 2px rgba(6,77,42,.06),0 6px 20px rgba(6,77,42,.07);--ease:cubic-bezier(.2,.8,.2,1);color-scheme:light}
 html.dark{--bg:#0a120d;--fg:#e5f1e9;--card:#121c16;--ac:#3ccf85;--ac2:#2bb06b;--ln:#22322a;--mu:#92a79a;--mint:#173023;
  --soft:linear-gradient(135deg,#143022,#0f261a);--sh:0 1px 2px #0006,0 6px 20px #0005;color-scheme:dark}
 *{box-sizing:border-box}html,body{margin:0}[hidden]{display:none!important}
-body{font:15.5px/1.5 "Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--fg);padding-bottom:calc(env(safe-area-inset-bottom) + 16px);-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased}
+body{font:15.5px/1.5 "IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--fg);padding-bottom:calc(env(safe-area-inset-bottom) + 16px);-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased}
 /* header: big hero on home, compact app bar inside a service */
 header{position:sticky;top:0;z-index:5;background:var(--grad);color:#fff;overflow:hidden;view-transition-name:hd;border-radius:0 0 26px 26px;box-shadow:0 8px 24px rgba(6,77,42,.25)}
 header::before,header::after{content:"";position:absolute;border-radius:50%;border:2px solid rgba(255,255,255,.12);pointer-events:none}
@@ -170,7 +168,7 @@ footer{text-align:center;font-size:.76rem;color:var(--mu);padding:10px 16px 0}
 /* ===== v3 look: thick ink outlines, solid offset shadows, chunky buttons, greens only ===== */
 :root{--ink:#17301f;--bg:#f3faf1;--card:#fff;--fg:#17301f;--mu:#4f6b58;--ln:#17301f;--ac:#22c55e;--ac2:#0b7a43;
  --mint:#c9f2d7;--lime:#dcf7b0;--sage:#d7ebdc;--teal:#bfeee4;--grad:linear-gradient(#22c55e,#22c55e);
- --bw:2.5px;--sh:4px 4px 0 var(--ink);--shs:3px 3px 0 var(--ink);--disp:"Fredoka","Plus Jakarta Sans",system-ui,sans-serif}
+ --bw:2.5px;--sh:4px 4px 0 var(--ink);--shs:3px 3px 0 var(--ink);--disp:"IBM Plex Sans",system-ui,sans-serif}
 html.dark{color-scheme:dark;--ink:#0c2116;--bg:#1d3b2b;--card:#264c38;--fg:#eef9f1;--mu:#b9d6c3;--ln:#0c2116;--ac:#34d474;--ac2:#5fe39a;--mint:#2f6e4b;--lime:#4f7a2a;--sage:#355c45;--teal:#2a6a62;--grad:linear-gradient(#34d474,#34d474)}
 body{background:var(--bg)}
 h1,h2,h3,.tile b,.pick b,button,a.btn,.lbl{font-family:var(--disp)}
@@ -274,8 +272,6 @@ html.dark .st.bad{background:#5a2420;color:#ffd9d6}html.dark .st.err{background:
 @keyframes egBub{from{opacity:0;transform:scale(.5)}}
 #kgv{width:100%;height:auto;display:block;background:#fff;border-radius:4px;border:2px solid var(--ink)}
 /* animated background: flowing neon lines, behind everything */
-#fx{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;opacity:.9;transition:opacity .6s}
-body.sub #fx{opacity:.45}
 header{background:color-mix(in srgb,var(--bg) 72%,transparent)!important;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}body.sub header{background:var(--card)!important}
 .sol{display:grid;gap:8px}
 .so{display:flex;gap:10px;align-items:center;border:var(--bw) solid var(--ink);border-radius:14px;padding:8px;background:var(--bg)}
@@ -295,15 +291,89 @@ html.dark .lnk{color:var(--ac)}.lnk:active{transform:none!important}
 .sty[open]{padding-bottom:12px}.sty .opt+.opt,.sty #optK{margin-top:8px}
 .rng{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;align-items:center;margin-top:10px;font-size:.88rem}
 .rng output{justify-self:end;font-weight:700}.rng input{grid-column:1/-1;width:100%;accent-color:var(--ac2);height:28px}
+/* ===== v5 "Mint Glass": soft green, frosted glass, iOS-style glassy buttons, one sober typeface ===== */
+:root{--bg:#eef5f0;--fg:#13271c;--mu:#5b7265;--card:rgba(255,255,255,.62);--ln:rgba(19,60,37,.10);--ink:rgba(19,60,37,.10);--ac:#1f9d55;--ac2:#0d7a44;
+ --mint:#dcefe3;--lime:#dcefe3;--sage:#dcefe3;--teal:#dcefe3;--grad:linear-gradient(#1f9d55,#1f9d55);--bw:1px;--hair:rgba(255,255,255,.7);
+ --sh:0 1px 1px rgba(16,58,36,.04),0 10px 30px rgba(16,58,36,.08);--shs:0 1px 2px rgba(16,58,36,.05),0 4px 14px rgba(16,58,36,.06);
+ --blur:saturate(170%) blur(22px);--disp:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;color-scheme:light}
+html.dark{--bg:#0e1913;--fg:#e9f4ed;--mu:#9bb4a5;--card:rgba(34,58,45,.55);--ln:rgba(255,255,255,.08);--ink:rgba(255,255,255,.08);--ac:#3dcc82;--ac2:#62dea0;
+ --mint:rgba(61,204,130,.16);--lime:rgba(61,204,130,.16);--sage:rgba(61,204,130,.16);--teal:rgba(61,204,130,.16);--grad:linear-gradient(#3dcc82,#3dcc82);--hair:rgba(255,255,255,.09);
+ --sh:0 1px 1px rgba(0,0,0,.2),0 10px 30px rgba(0,0,0,.28);--shs:0 1px 2px rgba(0,0,0,.2),0 4px 14px rgba(0,0,0,.2);color-scheme:dark}
+body{font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:15.5px;letter-spacing:0;background:var(--bg)}
+body::before{content:"";position:fixed;inset:-10vmax;z-index:-1;pointer-events:none;
+ background:radial-gradient(38vmax 30vmax at 12% 8%,rgba(64,190,120,.20),transparent 70%),radial-gradient(34vmax 30vmax at 92% 30%,rgba(120,210,165,.18),transparent 70%),radial-gradient(40vmax 34vmax at 40% 95%,rgba(40,160,100,.12),transparent 70%)}
+html.dark body::before{background:radial-gradient(38vmax 30vmax at 12% 8%,rgba(40,160,100,.18),transparent 70%),radial-gradient(34vmax 30vmax at 92% 30%,rgba(30,120,80,.16),transparent 70%)}
+h1,h2,h3,.tile b,.pick b,button,a.btn,.lbl{font-family:var(--disp);letter-spacing:-.005em}
+/* glass surfaces */
+.tile,.li,section,.pick,.chip,.af,.uf,.so,.hstat,#cofd,#bz div,.bub,.sty{background:var(--card)!important;-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);border:1px solid var(--hair)!important;box-shadow:var(--sh)!important}
+section{border-radius:22px;padding:18px}
+/* header */
+header{background:color-mix(in srgb,var(--bg) 70%,transparent)!important;-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);box-shadow:none;border-bottom:1px solid transparent!important;border-radius:0}
+body.sub header{background:color-mix(in srgb,var(--bg) 78%,transparent)!important;border-bottom-color:var(--ln)!important}
+.hbar{padding-bottom:12px}
+.lg{background:#fff;border:1px solid var(--ln)!important;box-shadow:var(--shs)!important}
+.ht h1{font-weight:600;font-size:1.06rem}.ht p{color:var(--mu);font-size:.78rem}
+.amp{cursor:default}
+/* iOS-like glassy buttons */
+button,a.btn{border-radius:14px;border:1px solid var(--hair)!important;color:var(--fg);font-weight:600;
+ background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(255,255,255,.58));-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 1px 2px rgba(16,58,36,.06),0 6px 16px rgba(16,58,36,.07)!important;transition:transform .15s var(--ease),filter .2s,opacity .2s}
+html.dark button,html.dark a.btn{background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.05));box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 6px 16px rgba(0,0,0,.25)!important}
+button.p,a.btn.p,button.wa{color:#fff!important;border:1px solid rgba(255,255,255,.35)!important;
+ background:linear-gradient(180deg,#34b56d,#1a8a4f);box-shadow:inset 0 1px 0 rgba(255,255,255,.42),0 8px 20px rgba(26,138,79,.28)!important}
+html.dark button.p,html.dark a.btn.p,html.dark button.wa{background:linear-gradient(180deg,#3fca80,#1f9a5a);color:#04150b!important}
+button:active:not(:disabled),a.btn:active,.tile:active,.li:active,.pick:active{transform:scale(.97)!important;filter:brightness(.97)}
+button:disabled{opacity:.42;box-shadow:none!important}
+.hb,.ib{background:linear-gradient(180deg,rgba(255,255,255,.85),rgba(255,255,255,.5));color:var(--fg)!important;border:1px solid var(--hair)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 2px 8px rgba(16,58,36,.08)!important;border-radius:999px;font-weight:600}
+.ib{border-radius:12px}html.dark .hb,html.dark .ib{background:rgba(255,255,255,.08)}
+.hb:active,.ib:active{transform:scale(.96)!important}
+.lnk{background:none!important;box-shadow:none!important;border:0!important;color:var(--ac2)!important;-webkit-backdrop-filter:none;backdrop-filter:none}
+/* home: status pill, plain section label, service list */
+.hstat{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;font-size:.84rem;font-weight:500;color:var(--fg);margin:2px 0 18px;background:var(--card)}
+.hstat .dot{width:8px;height:8px;border-radius:50%;background:#22a861;box-shadow:0 0 0 4px rgba(34,168,97,.16)}.hstat.off .dot{background:#c2410c;box-shadow:0 0 0 4px rgba(194,65,12,.14)}
+.lbl{display:block!important;background:none!important;border:0!important;box-shadow:none!important;padding:0!important;margin:0 4px 10px!important;font-size:.72rem!important;font-weight:600!important;letter-spacing:.09em!important;text-transform:uppercase;color:var(--mu)!important}
+.tiles{grid-template-columns:1fr;gap:10px}
+.tile{display:grid;grid-template-columns:44px 1fr 14px;column-gap:14px;align-items:center;min-height:0;padding:14px 16px;border-radius:18px}
+.tile .ico{grid-row:1/3;margin:0}.tile b{grid-column:2;margin:0;font-size:1rem;font-weight:600;align-self:end}
+.tile small{grid-column:2;align-self:start;font-size:.8rem}
+.tile::after{content:"";grid-column:3;grid-row:1/3;width:8px;height:8px;border-right:2px solid var(--mu);border-top:2px solid var(--mu);transform:rotate(45deg);opacity:.6}
+.tile:hover{transform:none}.tiles .tile:last-child:nth-child(odd){grid-column:auto}
+.ico,.tiles .tile:nth-child(n) .ico{background:var(--mint)!important;color:var(--ac2)!important;border:0!important;box-shadow:none!important;border-radius:12px}
+/* steps, chips, choices, inputs */
+section h2{font-size:.95rem;font-weight:600;letter-spacing:0;text-transform:none;color:var(--fg)}
+section h2 i{width:24px;height:24px;background:var(--mint);color:var(--ac2);border:0;box-shadow:none;font-weight:600;font-family:var(--disp)}
+.chip{border-radius:999px;box-shadow:none!important}.chip:has(input:checked){background:var(--mint)!important;border-color:transparent!important}
+.pick{border-radius:16px}.pick:has(input:checked){background:var(--mint)!important;border-color:var(--ac)!important;box-shadow:0 0 0 1px var(--ac),var(--shs)!important}
+.pick:has(input:checked)::after{background:var(--ac) center/12px no-repeat;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5 9-10'/%3E%3C/svg%3E")}
+.shp,.plate.eng{opacity:.7}
+.tx input,.fn input,.fn textarea,.chip select,.ono,.pw input,.uf .rp input{background:rgba(255,255,255,.72)!important;border:1px solid var(--ln)!important;border-radius:12px;color:var(--fg)}
+html.dark .tx input,html.dark .fn input,html.dark .fn textarea,html.dark .chip select,html.dark .ono,html.dark .pw input,html.dark .uf .rp input{background:rgba(255,255,255,.06)!important}
+.tx input:focus,.fn input:focus,.fn textarea:focus,.pw input:focus{border-color:var(--ac)!important;box-shadow:0 0 0 3px rgba(31,157,85,.18)!important;outline:0}
+.slot{border:1.5px dashed rgba(19,60,37,.22)!important;background:rgba(255,255,255,.4)!important;border-radius:16px}html.dark .slot{border-color:rgba(255,255,255,.18)!important;background:rgba(255,255,255,.04)!important}
+.slot b,.pv b{background:var(--ac);color:#fff;border:0}
+.paper{background:rgba(255,255,255,.45);border:1px solid var(--ln);border-radius:16px}html.dark .paper{background:rgba(255,255,255,.04)}
+#pg,#qg,#sp,#tp,#kgv{border:1px solid var(--ln)!important;box-shadow:0 4px 16px rgba(16,58,36,.08)!important}
+.cash{border-style:dashed!important}
+.note{background:var(--mint)!important;border:1px solid var(--ln)!important;border-radius:14px}
+.sty{border-radius:14px}.st{border:1px solid var(--ln)!important}
+.open.on{background:var(--mint);color:var(--ac2);border:0}.open.off{border:0}
+.pv{border:1px solid var(--ln)!important;border-radius:12px}
+/* toast, dialogs, floating buttons */
+#tst{background:rgba(19,39,28,.86);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);border:1px solid rgba(255,255,255,.1);box-shadow:0 10px 30px rgba(0,0,0,.2)}
+#tst button{background:var(--ac);color:#fff;border:0!important;box-shadow:none!important}
+#cofd{border-radius:22px}#cofd::backdrop,#eg2{background:rgba(12,30,20,.45)}
+.th{background:linear-gradient(180deg,rgba(255,255,255,.88),rgba(255,255,255,.55));color:var(--fg);border:1px solid var(--hair)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 6px 18px rgba(16,58,36,.12)!important}
+html.dark .th{background:rgba(255,255,255,.1)}
+footer{color:var(--mu);font-size:.74rem}
 #pi{display:none}
 @page{size:A4;margin:0}
 @media print{body{background:#fff;padding:0}body>*{display:none!important}#pi{display:block!important;width:210mm;height:297mm}}
 </style></head><body>
-<canvas id="fx" aria-hidden="true"></canvas>
-<header><div class="hbar"><button class="ib" id="back" aria-label="Back to home" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><div class="lg" id="egg"><img src="logo.png" alt="Synly" draggable="false"></div><div class="ht"><h1 id="ttl">Synly Printing Services</h1><p id="stl">Synly Trading &amp; Bookstore S/B</p></div><nav class="hnav" aria-label="Shop"><button class="hb" data-go="about">About us</button><button class="hb" data-go="contact">Contact us</button></nav></div>
-<div class="hero"><h2>Print, copy <span id="egg2" class="amp">&amp;</span> <em>convert</em>.</h2><p>Quick, tidy prints, ready from your phone.</p></div></header>
+<header><div class="hbar"><button class="ib" id="back" aria-label="Back to home" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><div class="lg" id="egg"><img src="logo.png" alt="Synly" draggable="false"></div><div class="ht"><h1 id="ttl">Synly Printing Services</h1><p id="stl">Synly Trading <span id="egg2" class="amp">&amp;</span> Bookstore S/B</p></div><nav class="hnav" aria-label="Shop"><button class="hb" data-go="about">About us</button><button class="hb" data-go="contact">Contact us</button></nav></div>
+</header>
 <main>
 <div class="view" id="vHome">
+<button class="hstat" data-go="contact"><span class="dot"></span><span id="hst">Opening hours</span></button>
 <p class="lbl">Services</p>
 <div class="tiles">
 <button class="tile" data-go="ic"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><circle cx="8.5" cy="11" r="2.2"/><path d="M5.5 16c.6-1.6 1.7-2.4 3-2.4s2.4.8 3 2.4M14 10h4.5M14 13.5h3"/></svg></span><b>IC Copy</b><small>Front &amp; back on one A4</small></button>
@@ -319,8 +389,8 @@ html.dark .lnk{color:var(--ac)}.lnk:active{transform:none!important}
 <div class="view" id="mIC" hidden>
 <p class="lead">Front and back of an IC or driving licence, real size on one A4 page.</p>
 <section><h2><i>1</i>Choose screenshots</h2><div class="row">
-<div class="slot" id="s0" tabindex="0" role="button" aria-label="Choose front (Depan) image"><b>Depan</b><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Tap to choose<img alt="Front of IC"><div class="act"><button data-a="e">Crop</button><button data-a="x" aria-label="Remove">&#10005;</button></div><input type="file" accept="image/*" hidden></div>
-<div class="slot" id="s1" tabindex="0" role="button" aria-label="Choose back (Belakang) image"><b>Belakang</b><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Tap to choose<img alt="Back of IC"><div class="act"><button data-a="e">Crop</button><button data-a="x" aria-label="Remove">&#10005;</button></div><input type="file" accept="image/*" hidden></div>
+<div class="slot" id="s0" tabindex="0" role="button" aria-label="Choose front image"><b>Front</b><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Tap to choose<img alt="Front of IC"><div class="act"><button data-a="e">Crop</button><button data-a="x" aria-label="Remove">&#10005;</button></div><input type="file" accept="image/*" hidden></div>
+<div class="slot" id="s1" tabindex="0" role="button" aria-label="Choose back image"><b>Back</b><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Tap to choose<img alt="Back of IC"><div class="act"><button data-a="e">Crop</button><button data-a="x" aria-label="Remove">&#10005;</button></div><input type="file" accept="image/*" hidden></div>
 </div>
 <div class="row" style="margin-top:10px"><button id="bw" disabled>&#8645; Swap</button><button id="br" disabled>Clear all</button></div>
 <p class="hint">Tip: share both photos straight from WhatsApp or Gallery to <b>Synly PS</b>, or paste / drop images here.</p></section>
@@ -466,7 +536,7 @@ html.dark .lnk{color:var(--ac)}.lnk:active{transform:none!important}
 <div class="ul" id="ul"></div>
 <p class="hint">Use the arrows to set the page order for the merged PDF.</p></section>
 <section><h2><i>2</i>Password</h2>
-<div class="note" role="note"><b>&#128274; Your password and documents stay on this phone.</b> Unlocking happens inside this app, even offline. Your password is never saved, sent or stored, and is cleared when you leave this page.</div>
+<div class="note" role="note"><b>Your password and documents stay on this phone.</b> Unlocking happens inside this app, even offline. Your password is never saved, sent or stored, and is cleared when you leave this page.</div>
 <div class="pw"><input id="upw" type="text" class="mask" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true" data-1p-ignore placeholder="PDF password (e.g. IC number)" aria-label="PDF password"><button id="ueye" aria-label="Show password">&#128065;</button></div>
 <button class="p" id="ub" style="width:100%;margin-top:12px" disabled>Unlock all</button>
 <p class="hint" id="uh">Files with a different password will be marked; type that file's own password next to it and tap Retry.</p></section>
@@ -531,7 +601,7 @@ html.dark .lnk{color:var(--ac)}.lnk:active{transform:none!important}
 <div id="tst" role="status" aria-live="polite"><span></span><button hidden></button></div>
 <img id="pi" alt="">
 <script>
-const $=s=>document.querySelector(s),MM=300/25.4,CW=1011,CH=638,PW=2480,PH=3508,R=1.586,MAX=4096,NM=['Depan','Belakang'];
+const $=s=>document.querySelector(s),MM=300/25.4,CW=1011,CH=638,PW=2480,PH=3508,R=1.586,MAX=4096,NM=['Front','Back'];
 const pg=$('#pg'),pc=pg.getContext('2d'),cards=[null,null],src=[null,null],Q=[];
 let pi=0,cur=0,img,s=1,s0=1,ox=0,oy=0,F={},ptrs=new Map(),lastTap=0,box,drag=null,qimg=null,qsrc=null;
 const cv=$('#cv'),cx=cv.getContext('2d'),zm=$('#zm'),cr=$('#cr');
@@ -656,8 +726,8 @@ function rr(x,y,w,h,r){pc.beginPath();pc.moveTo(x+r,y);pc.arcTo(x+w,y,x+w,y+h,r)
 // JPN-style watermark: a slanted band across the card, two thin lines with the purpose written between them
 function palang(x,y,w,h,t){const L=w*.46,bh=h*.095,lw=Math.max(2,h*.009);pc.save();pc.translate(x+w*.055,y+h*.085);pc.rotate(-45*Math.PI/180);   /* short band across the top-left corner, like JPN's sample */
  pc.strokeStyle=pc.fillStyle='#000';pc.lineWidth=lw;pc.beginPath();pc.moveTo(-L/2,-bh/2);pc.lineTo(L/2,-bh/2);pc.moveTo(-L/2,bh/2);pc.lineTo(L/2,bh/2);pc.stroke();
- let f=bh*.66;pc.font=`700 ${f}px Arial,"Plus Jakarta Sans",sans-serif`;const tw=pc.measureText(t).width;if(tw>L*.86)f*=L*.86/tw;
- pc.font=`700 ${f}px Arial,"Plus Jakarta Sans",sans-serif`;pc.textAlign='center';pc.textBaseline='middle';pc.fillText(t,0,f*.04);pc.restore()}
+ let f=bh*.66;pc.font=`700 ${f}px Arial,"IBM Plex Sans",sans-serif`;const tw=pc.measureText(t).width;if(tw>L*.86)f*=L*.86/tw;
+ pc.font=`700 ${f}px Arial,"IBM Plex Sans",sans-serif`;pc.textAlign='center';pc.textBaseline='middle';pc.fillText(t,0,f*.04);pc.restore()}
 let raf=0;function render(){if(!raf)raf=requestAnimationFrame(paint)}
 function paint(){raf=0;const v=Math.max(70,Math.min(130,+$('#sc').value||100)),k=v/100;saveOpt();
  pc.fillStyle='#fff';pc.fillRect(0,0,PW,PH);
@@ -733,7 +803,7 @@ function show(v){if(view==='unlock'&&v!=='unlock'&&typeof uWipe=='function')uWip
  for(const k in VIEWS){const el=$('#'+VIEWS[k]);el.hidden=k!=v;el.classList.remove('in')}
  const el=$('#'+VIEWS[v]);void el.offsetWidth;el.classList.add('in');
  document.body.classList.toggle('sub',v!='home');$('#back').hidden=v=='home';
- $('#ttl').textContent=TTL[v]||'Synly Printing Services';$('#stl').textContent=v=='home'?'Synly Trading & Bookstore S/B':'Synly Printing Services';
+ $('#ttl').textContent=TTL[v]||'Synly Printing Services';$('#stl').innerHTML=v=='home'?'Synly Trading <span id="egg2" class="amp">&amp;</span> Bookstore S/B':'Synly Printing Services';
  document.title=TTL[v]?TTL[v]+' · Synly PS':'Synly Printing Services';scrollTo(0,0)}
 function nav(v,anim=true){if(v==view)return;const dir=v=='home'?'back':'fwd';
  if(anim&&document.startViewTransition&&!still.matches){document.documentElement.dataset.dir=dir;document.startViewTransition(()=>show(v))}else show(v)}
@@ -832,7 +902,7 @@ qpaint();
 const HRS={0:[510,1020],1:[495,1170],2:[495,1170],3:[495,1170],4:[495,1170],5:[495,1170],6:[495,1110]};  // minutes after midnight
 function hours(){const n=new Date(Date.now()+8*36e5),d=n.getUTCDay(),m=n.getUTCHours()*60+n.getUTCMinutes(),[o,c]=HRS[d],e=$('#opn'),t=x=>{const h=Math.floor(x/60),mm=x%60;return (h%12||12)+(mm?':'+String(mm).padStart(2,'0'):'')+(h<12?' am':' pm')};
  $('#hrs').querySelectorAll('tr').forEach(r=>r.classList.toggle('today',r.dataset.d.split(',').includes(''+d)));
- const on=m>=o&&m<c;e.className='open '+(on?'on':'off');e.textContent=on?'Open now · until '+t(c):m<o?'Closed · opens '+t(o):'Closed · opens '+t(HRS[(d+1)%7][0])+' tomorrow'}
+ const on=m>=o&&m<c;e.className='open '+(on?'on':'off');const hs=$('#hst');if(hs){hs.parentNode.classList.toggle('off',!on)}e.textContent=on?'Open now · until '+t(c):m<o?'Closed · opens '+t(o):'Closed · opens '+t(HRS[(d+1)%7][0])+' tomorrow';if($('#hst'))$('#hst').textContent=e.textContent}
 hours();setInterval(hours,6e4);
 
 /* ---------- Stamp booking: design + preview, cashier submits a B&W PDF (STMP + last 4 digits of phone) ---------- */
@@ -893,7 +963,7 @@ $('#cmore').onclick=()=>{cMore=true;sFields();$('#c2').focus()};
 function sPreview(){const rect=sShape()=='rect';$('#sf').value=rect?'serif':'cond';/* lettering style follows the shape, like the shop's own stamps */const cmb=sShape()=='combo';$('#stR').hidden=!(rect||cmb);$('#stC').hidden=rect;$('#stCh').hidden=$('#stRh').hidden=!cmb;$('#optR').hidden=!(rect||cmb);$('#rxw').hidden=cmb;$('#optC').hidden=rect;$('#optK').hidden=!cmb;$('#czv').textContent=$('#cz').value+'%';sFields();
  const dm=sDims(),W=1200,H=Math.round((W-80)*dm.h/dm.w+80);if(sp.height!=H)sp.height=H;spx.fillStyle='#fff';spx.fillRect(0,0,W,H);
  const k=Math.min((W-80)/dm.w,(H-80)/dm.h);
- if(!sHasText()&&typeof SA!='undefined'&&SA.length){spx.fillStyle='#5a6e62';spx.textAlign='center';spx.textBaseline='middle';spx.font=`600 ${rect?46:60}px "Plus Jakarta Sans",Arial,sans-serif`;spx.fillText('Sample attached',W/2,H/2-(rect?30:40));spx.font=`500 ${rect?34:44}px "Plus Jakarta Sans",Arial,sans-serif`;spx.fillText('No text needed: our staff will follow your sample',W/2,H/2+(rect?30:40))}
+ if(!sHasText()&&typeof SA!='undefined'&&SA.length){spx.fillStyle='#5a6e62';spx.textAlign='center';spx.textBaseline='middle';spx.font=`600 ${rect?46:60}px "IBM Plex Sans",Arial,sans-serif`;spx.fillText('Sample attached',W/2,H/2-(rect?30:40));spx.font=`500 ${rect?34:44}px "IBM Plex Sans",Arial,sans-serif`;spx.fillText('No text needed: our staff will follow your sample',W/2,H/2+(rect?30:40))}
  else drawStamp(spx,W/2,H/2,k,INK[sInk()]);
  $('#sb').disabled=busy||!(sReady()||SO.length);
  $('#sph').textContent=rect?'Preview in your ink colour. Rectangle up to 7 × 2.5 cm; final size is chosen by our staff to suit your text.':cmb?'Preview in your ink colour. Combination stamp: our staff choose the model and size to suit your text.':'Preview in your ink colour at maximum size (6 cm across). Our staff choose the final size to suit your text.'}
@@ -905,7 +975,7 @@ function newSer(pre){let u=[];try{u=JSON.parse(localStorage.serUsed||'[]')}catch
 function markSer(id){try{const u=JSON.parse(localStorage.serUsed||'[]');if(!u.includes(id))u.push(id);localStorage.serUsed=JSON.stringify(u.slice(-2000))}catch(e){}}
 let sId=newSer('STMP');const sDig=()=>$('#st').value.replace(/\D/g,''),sName=()=>sId,sShow=()=>$('#ssn').textContent=sId;sShow();
 // A4 order sheet: details + stamp at actual size + 2x enlargement for checking
-function sSheet(no,imgs=[],other=[],ttl){const np=imgs.length;const c=document.createElement('canvas');c.width=PW;c.height=PH;const x=c.getContext('2d'),F='"Plus Jakarta Sans",Arial,sans-serif',k=MM,L=20*k,cmb=sShape()=='combo',rect=sShape()=='rect'||cmb;   /* combination is wide like a rectangle */
+function sSheet(no,imgs=[],other=[],ttl){const np=imgs.length;const c=document.createElement('canvas');c.width=PW;c.height=PH;const x=c.getContext('2d'),F='"IBM Plex Sans",Arial,sans-serif',k=MM,L=20*k,cmb=sShape()=='combo',rect=sShape()=='rect'||cmb;   /* combination is wide like a rectangle */
  x.fillStyle='#fff';x.fillRect(0,0,PW,PH);x.fillStyle='#000';x.textBaseline='alphabetic';
  x.font=`800 ${9*k}px ${F}`;x.fillText(ttl||'Stamp order',L,30*k);x.textAlign='right';x.fillText(no,PW-L,30*k);x.textAlign='left';
  x.font=`500 ${3.1*k}px ${F}`;x.fillText('Synly Trading & Bookstore Sdn Bhd · Lot 290-292, Parkcity Commerce Square, 97000 Bintulu · 086-337 891',L,38*k);
@@ -1044,7 +1114,7 @@ function tPreview(){const e=tEng();$('#tgE').hidden=!e;$('#tgP').hidden=e;$('#tf
  $('#tph').textContent=e?`Engraved, ${{E1:'Option 1',E2:'Option 2',E3:'Option 3'}[rv('tz')]}. Colours are a guide only.`:`Epoxy with ${rv('te')} emblem. Colours are a guide only.`;
  $('#tsn').textContent=tId;$('#tb').disabled=busy}
 document.querySelectorAll('#vTag input[type=radio],#vTag input[type=checkbox],#vTag select').forEach(e=>e.addEventListener('change',tPreview));$('#tct').addEventListener('input',tPreview);
-function tSheet(no){const c=document.createElement('canvas');c.width=PW;c.height=PH;const x=c.getContext('2d'),F='"Plus Jakarta Sans",Arial,sans-serif',k=MM,L=20*k,e=tEng(),d=tDim();
+function tSheet(no){const c=document.createElement('canvas');c.width=PW;c.height=PH;const x=c.getContext('2d'),F='"IBM Plex Sans",Arial,sans-serif',k=MM,L=20*k,e=tEng(),d=tDim();
  x.fillStyle='#fff';x.fillRect(0,0,PW,PH);x.fillStyle='#000';x.textBaseline='alphabetic';
  x.font=`800 ${9*k}px ${F}`;x.fillText('Name tag order',L,30*k);x.textAlign='right';x.fillText(no,PW-L,30*k);x.textAlign='left';
  x.font=`500 ${3.1*k}px ${F}`;x.fillText('Synly Trading & Bookstore Sdn Bhd · Lot 290-292, Parkcity Commerce Square, 97000 Bintulu · 086-337 891',L,38*k);x.fillRect(L,42*k,PW-2*L,.5*k);
@@ -1176,32 +1246,16 @@ k0.ondrop=e=>{e.preventDefault();e.stopPropagation();k0.classList.remove('drag')
 outs(kgv,'Collage-',['#kp','#ks','#kj','#kt']);
 kpaint();
 
-/* ---------- background animation: slow neon lines in Synly greens ----------
-   Light on battery: ~30 fps, smaller canvas, stops when the app is hidden or the phone asks for reduced motion. */
-(()=>{const cv2=$('#fx'),x=cv2.getContext('2d'),still=matchMedia('(prefers-reduced-motion: reduce)');let W=0,H=0,t=0,last=0,id=0;
- const LN=[{y:.16,a:.07,f:1.3,s:.11,w:2.2,c:'52,212,116'},{y:.3,a:.05,f:2.1,s:-.08,w:1.4,c:'95,227,154'},{y:.52,a:.08,f:1.1,s:.06,w:2.6,c:'34,197,94'},
-  {y:.68,a:.06,f:1.8,s:-.1,w:1.6,c:'140,240,170'},{y:.84,a:.07,f:1.5,s:.09,w:2,c:'52,212,116'},{y:.95,a:.04,f:2.6,s:-.05,w:1.2,c:'95,227,154'}];
- function size(){const d=Math.min(1.5,devicePixelRatio||1);W=innerWidth;H=innerHeight;cv2.width=W*d;cv2.height=H*d;x.setTransform(d,0,0,d,0,0)}
- function draw(now){id=requestAnimationFrame(draw);if(now-last<33)return;last=now;t+=.016;
-  const dark=document.documentElement.classList.contains('dark');x.clearRect(0,0,W,H);x.lineCap='round';
-  LN.forEach((l,i)=>{const al=dark?.72:.38;x.beginPath();
-   for(let px=-20;px<=W+20;px+=14){const k=px/W,yy=H*(l.y+l.a*Math.sin(k*Math.PI*l.f*2+t*l.s*6+i)+.025*Math.sin(k*9+t*.7+i*2));px<0?x.moveTo(px,yy):x.lineTo(px,yy)}
-   x.strokeStyle=`rgba(${l.c},${al*.35})`;x.lineWidth=l.w*5;x.stroke();          // soft glow
-   x.strokeStyle=`rgba(${l.c},${al})`;x.lineWidth=l.w;x.stroke();                 // bright core
-   const k=((t*l.s*.35+i*.17)%1+1)%1,px=k*W,py=H*(l.y+l.a*Math.sin(k*Math.PI*l.f*2+t*l.s*6+i)+.025*Math.sin(k*9+t*.7+i*2));   // a light pulse running along the line
-   const g=x.createRadialGradient(px,py,0,px,py,18);g.addColorStop(0,`rgba(${l.c},${dark?.9:.7})`);g.addColorStop(1,`rgba(${l.c},0)`);x.fillStyle=g;x.fillRect(px-18,py-18,36,36)})}
- function run(){cancelAnimationFrame(id);if(still.matches||document.hidden){x.clearRect(0,0,W,H);if(still.matches){t=3;last=0;draw(1e9);cancelAnimationFrame(id)}return}id=requestAnimationFrame(draw)}
- addEventListener('resize',()=>{size();run()});document.addEventListener('visibilitychange',run);still.addEventListener&&still.addEventListener('change',run);
- size();run()})();
+/* background: soft static green light (CSS only) */
 
 /* ---------- theme: dark by default, light on request (remembered) ---------- */
 $('#thm').onclick=()=>{const d=document.documentElement.classList.toggle('dark');try{localStorage.theme=d?'dark':'light'}catch(e){}
- document.querySelector('meta[name=theme-color]').content=d?'#1d3b2b':'#f3faf1'};
-if(!document.documentElement.classList.contains('dark'))document.querySelector('meta[name=theme-color]').content='#f3faf1';
+ document.querySelector('meta[name=theme-color]').content=d?'#0e1913':'#eef5f0'};
+if(document.documentElement.classList.contains('dark'))document.querySelector('meta[name=theme-color]').content='#0e1913';
 
 /* ---------- 2nd Easter egg: tap the "&" in the home heading 10 times ---------- */
 const eg2=$('#eg2'),eg2b=eg2.querySelector('.bd'),eg2a=eg2.querySelector('.arm');let e2N=0,e2T=0;
-$('#egg2').addEventListener('click',()=>{const t=Date.now();e2N=t-e2T>2000?1:e2N+1;e2T=t;const g=$('#egg2');g.classList.remove('pop');void g.offsetWidth;if(e2N>=6)g.classList.add('pop');
+document.addEventListener('click',e=>{if(!e.target.closest('#egg2'))return;const t=Date.now();e2N=t-e2T>2000?1:e2N+1;e2T=t;const g=$('#egg2');g.classList.remove('pop');void g.offsetWidth;if(e2N>=6)g.classList.add('pop');
  if(e2N>=10){e2N=0;if(!eg2b.src){eg2b.src='doodle-body.webp';eg2a.src='doodle-arm.webp'}eg2.hidden=false}});   // 10 taps; a pause of over 2 s starts again
 eg2.addEventListener('click',()=>eg2.hidden=true);addEventListener('keydown',e=>{if(e.key=='Escape'&&!eg2.hidden)eg2.hidden=true});
 
