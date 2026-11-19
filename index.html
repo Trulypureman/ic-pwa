@@ -287,7 +287,14 @@ header{background:color-mix(in srgb,var(--bg) 72%,transparent)!important;-webkit
 .fn textarea:focus{border-color:var(--ac2);box-shadow:3px 3px 0 var(--ac);outline:0}
 .seg3s{grid-template-columns:repeat(3,1fr)}.seg3s .pick{padding:12px 10px}.seg3s .pick small{font-size:.72rem}
 .shp.combo{width:56px;height:24px;border:0;display:flex;gap:4px;align-items:center;opacity:.75}.shp.combo i{width:22px;height:22px;border:2.5px solid currentColor;border-radius:50%}.shp.combo em{flex:1;height:14px;border-top:2.5px solid currentColor;border-bottom:2.5px solid currentColor}
-#sCombo{border:2px dashed var(--ink);border-radius:12px;padding:10px;margin:12px 0 4px;font-size:.84rem;background:var(--bg)}
+.lnk{background:none!important;border:0!important;box-shadow:none!important;padding:8px 2px;color:var(--ac2);font-size:.88rem;font-weight:600;text-align:left}
+html.dark .lnk{color:var(--ac)}.lnk:active{transform:none!important}
+.sty{margin-top:12px;border:2px dashed var(--ink);border-radius:14px;padding:0 12px;background:var(--bg)}
+.sty summary{cursor:pointer;padding:11px 0;font-family:var(--disp);font-weight:600;list-style:none;display:flex;justify-content:space-between}
+.sty summary::-webkit-details-marker{display:none}.sty summary::after{content:"+";font-size:1.2rem;line-height:1}.sty[open] summary::after{content:"−"}
+.sty[open]{padding-bottom:12px}.sty .opt+.opt,.sty #optK{margin-top:8px}
+.rng{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;align-items:center;margin-top:10px;font-size:.88rem}
+.rng output{justify-self:end;font-weight:700}.rng input{grid-column:1/-1;width:100%;accent-color:var(--ac2);height:28px}
 #pi{display:none}
 @page{size:A4;margin:0}
 @media print{body{background:#fff;padding:0}body>*{display:none!important}#pi{display:block!important;width:210mm;height:297mm}}
@@ -382,14 +389,18 @@ header{background:color-mix(in srgb,var(--bg) 72%,transparent)!important;-webkit
 <label class="pick sm ink"><input type="radio" name="sc2" value="Black"><span class="dot" style="background:#111"></span><b>Black</b></label>
 </div></section>
 <section><h2><i>3</i>Your text</h2>
-<div id="stR"><div class="tx">
-<input id="r1" maxlength="60" placeholder="Line 1 (e.g. company name)"><input id="r2" maxlength="60" placeholder="Line 2 (optional)"><input id="r3" maxlength="60" placeholder="Line 3 (optional)"><input id="r4" maxlength="60" placeholder="Line 4 (optional)"><input id="r5" maxlength="60" placeholder="Line 5 (optional)"><input id="r6" maxlength="60" placeholder="Line 6 (optional)"><input id="r7" maxlength="60" placeholder="Line 7 (optional)"><input id="r8" maxlength="60" placeholder="Line 8 (optional)"></div>
-<div class="opt" style="margin-top:12px"><label class="chip">Align <select id="ra"><option value="left">Left</option><option value="center">Centre</option></select></label><label class="chip">Bold <select id="rb"><option value="all">All lines</option><option value="first">First line</option><option value="none">None</option></select></label><label class="chip"><input type="checkbox" id="rx">Border</label></div></div>
-<div id="sCombo" hidden><b>Combination:</b> fill in the <b>text lines</b> and the <b>round seal</b> below. <label class="chip" style="display:inline-flex;margin-top:8px">Seal on <select id="cside"><option value="left">Left</option><option value="right">Right</option></select></label></div>
+<div id="stR"><p class="sub2" id="stRh" hidden>Text lines</p><div class="tx"><input id="r1" maxlength="60" placeholder="Line 1 (e.g. company name)"><input id="r2" maxlength="60" placeholder="Line 2"><input id="r3" maxlength="60" placeholder="Line 3"><input id="r4" maxlength="60" placeholder="Line 4" hidden><input id="r5" maxlength="60" placeholder="Line 5" hidden><input id="r6" maxlength="60" placeholder="Line 6" hidden><input id="r7" maxlength="60" placeholder="Line 7" hidden><input id="r8" maxlength="60" placeholder="Line 8" hidden></div>
+<button class="lnk" id="radd" type="button">+ Add line</button></div>
 <div id="stC" hidden><p class="sub2" id="stCh" hidden>Round seal</p><div class="tx">
-<input id="c1" maxlength="60" placeholder="Around the edge (e.g. SYNLY TRADING &amp; BOOKSTORE SDN BHD)"><input id="c2" maxlength="60" placeholder="Around the bottom (optional)">
-<input id="c3" maxlength="30" placeholder="Centre line 1 (e.g. 821682-H)"><input id="c4" maxlength="30" placeholder="Centre line 2 (optional)"><input id="c5" maxlength="30" placeholder="Centre line 3 (optional)"></div>
-<div class="opt" style="margin-top:12px"><label class="chip"><input type="checkbox" id="ci" checked>Inner circle</label><label class="chip"><input type="checkbox" id="cd" checked>Double outer ring</label><label class="chip"><input type="checkbox" id="cs" checked>Star</label></div></div>
+<input id="c1" maxlength="60" placeholder="Around the edge (e.g. SYNLY TRADING &amp; BOOKSTORE SDN BHD)"><input id="c3" maxlength="30" placeholder="Centre text (e.g. 821682-H)">
+<input id="c2" maxlength="60" placeholder="Around the bottom" hidden><input id="c4" maxlength="30" placeholder="Centre line 2" hidden><input id="c5" maxlength="30" placeholder="Centre line 3" hidden></div>
+<button class="lnk" id="cmore" type="button">+ More seal text</button></div>
+<details class="sty" id="sty"><summary>Style options</summary>
+<div class="opt" id="optR"><label class="chip">Align <select id="ra"><option value="left">Left</option><option value="center">Centre</option></select></label><label class="chip">Bold <select id="rb"><option value="all">All lines</option><option value="first">First line</option><option value="none">None</option></select></label><span id="rxw"><label class="chip"><input type="checkbox" id="rx">Border</label></span></div>
+<div class="opt" id="optC"><label class="chip"><input type="checkbox" id="ci" checked>Inner circle</label><label class="chip"><input type="checkbox" id="cd" checked>Double outer ring</label><label class="chip"><input type="checkbox" id="cs" checked>Star</label></div>
+<div id="optK"><div class="opt"><label class="chip">Seal on <select id="cside"><option value="left">Left</option><option value="right">Right</option></select></label></div>
+<label class="rng">Seal size <output id="czv">100%</output><input type="range" id="cz" min="80" max="130" step="5" value="100" aria-label="Round seal size"></label></div>
+</details>
 <select id="sf" hidden aria-hidden="true" tabindex="-1"><option value="serif">Serif (Times)</option><option value="cond">Narrow bold</option></select>
 </section>
 <section><h2><i>4</i>Sample (optional)</h2>
@@ -826,7 +837,7 @@ hours();setInterval(hours,6e4);
 
 /* ---------- Stamp booking: design + preview, cashier submits a B&W PDF (STMP + last 4 digits of phone) ---------- */
 // All stamp geometry in mm. Rectangle 70 × 25 with 5 mm kept clear on every side; round drawn at its 60 mm maximum.
-const SB={rect:{w:70,h:25,m:5},round:{d:60},combo:{w:80,h:30,g:3}},sDims=()=>{const s2=sShape();return s2=='rect'?{w:70,h:25}:s2=='round'?{w:60,h:60}:{w:80,h:30}},sp=$('#sp'),spx=sp.getContext('2d'),sv=id=>$('#'+id).value.trim(),sck=id=>$('#'+id).checked;
+const SB={rect:{w:70,h:25,m:5},round:{d:60},combo:{w:80,h:30,g:3}},sDims=()=>{const s2=sShape();return s2=='rect'?{w:70,h:25}:s2=='round'?{w:60,h:60}:{w:80,h:Math.max(30,30*(+$('#cz').value||100)/100)}},sp=$('#sp'),spx=sp.getContext('2d'),sv=id=>$('#'+id).value.trim(),sck=id=>$('#'+id).checked;
 const sInk=()=>document.querySelector('input[name=sc2]:checked').value,INK={Blue:'#1f3fa8',Black:'#000'};
 const sShape=()=>document.querySelector('input[name=ss]:checked').value,sKind=()=>document.querySelector('input[name=sk]:checked').value;
 const sFam=()=>({serif:'"Times New Roman",Times,"Liberation Serif","Noto Serif",serif',sans:'Arial,Helvetica,"Liberation Sans",Roboto,sans-serif',cond:'Arial,Helvetica,"Liberation Sans",Roboto,sans-serif'})[$('#sf').value],
@@ -867,13 +878,19 @@ function drawStamp(x,cx,cy,k,ink='#000'){let fam=sFam(),cq=sCond();const FAM={se
  const sh=sShape();
  if(sh=='rect'){const{w,h,m}=SB.rect;rectAt(cx,cy,w,h,m)}
  else if(sh=='round')roundAt(cx,cy,SB.round.d/2*k);
- else{const{w,h,g}=SB.combo,left=$('#cside').value!='right',sx=left?cx-w*k/2+h*k/2:cx+w*k/2-h*k/2,tw=w-h-g,tx=left?cx-w*k/2+(h+g+tw/2)*k:cx-w*k/2+tw/2*k;   /* combination: round seal beside the text lines */
-  useF('cond');roundAt(sx,cy,h/2*k);useF('serif');
+ else{const{w,h,g}=SB.combo,D=h*(+$('#cz').value||100)/100,left=$('#cside').value!='right',sx=left?cx-w*k/2+D*k/2:cx+w*k/2-D*k/2,tw=w-D-g,tx=left?cx-w*k/2+(D+g+tw/2)*k:cx-w*k/2+tw/2*k;   /* seal size follows the slider; the text gets the rest */   /* combination: round seal beside the text lines */
+  useF('cond');roundAt(sx,cy,D/2*k);useF('serif');
   if(['r1','r2','r3','r4','r5','r6','r7','r8'].some(id=>sv(id)))rectAt(tx,cy,tw,h,2.5)}
  x.restore()}
 function sHasText(){const s2=sShape(),R8=['r1','r2','r3','r4','r5','r6','r7','r8'],C5=['c1','c2','c3','c4','c5'];return(s2=='rect'?R8:s2=='round'?C5:[...R8,...C5]).some(id=>$('#'+id).value.trim())}
 const sReady=()=>sHasText()||(typeof SA!='undefined'&&SA.length>0);   // a sample attachment is enough, text lines are then optional
-function sPreview(){const rect=sShape()=='rect';$('#sf').value=rect?'serif':'cond';/* lettering style follows the shape, like the shop's own stamps */const cmb=sShape()=='combo';$('#stR').hidden=!(rect||cmb);$('#stC').hidden=rect;$('#sCombo').hidden=$('#stCh').hidden=!cmb;
+// show text lines one at a time (at least 3, plus one empty after the last filled); extra seal text only when asked or filled
+let cMore=false;function sFields(){const R=['r1','r2','r3','r4','r5','r6','r7','r8'];let last=0;R.forEach((id,i)=>{if($('#'+id).value.trim())last=i+1});
+ const show=Math.min(8,Math.max(3,last+1,sFields.n||0));R.forEach((id,i)=>$('#'+id).hidden=i>=show);$('#radd').hidden=show>=8;sFields.n=show;
+ const ex=cMore||['c2','c4','c5'].some(id=>$('#'+id).value.trim());['c2','c4','c5'].forEach(id=>$('#'+id).hidden=!ex);$('#cmore').hidden=ex}
+$('#radd').onclick=()=>{sFields.n=Math.min(8,(sFields.n||3)+1);sFields();const n=sFields.n;$('#r'+n).focus()};
+$('#cmore').onclick=()=>{cMore=true;sFields();$('#c2').focus()};
+function sPreview(){const rect=sShape()=='rect';$('#sf').value=rect?'serif':'cond';/* lettering style follows the shape, like the shop's own stamps */const cmb=sShape()=='combo';$('#stR').hidden=!(rect||cmb);$('#stC').hidden=rect;$('#stCh').hidden=$('#stRh').hidden=!cmb;$('#optR').hidden=!(rect||cmb);$('#rxw').hidden=cmb;$('#optC').hidden=rect;$('#optK').hidden=!cmb;$('#czv').textContent=$('#cz').value+'%';sFields();
  const dm=sDims(),W=1200,H=Math.round((W-80)*dm.h/dm.w+80);if(sp.height!=H)sp.height=H;spx.fillStyle='#fff';spx.fillRect(0,0,W,H);
  const k=Math.min((W-80)/dm.w,(H-80)/dm.h);
  if(!sHasText()&&typeof SA!='undefined'&&SA.length){spx.fillStyle='#5a6e62';spx.textAlign='center';spx.textBaseline='middle';spx.font=`600 ${rect?46:60}px "Plus Jakarta Sans",Arial,sans-serif`;spx.fillText('Sample attached',W/2,H/2-(rect?30:40));spx.font=`500 ${rect?34:44}px "Plus Jakarta Sans",Arial,sans-serif`;spx.fillText('No text needed: our staff will follow your sample',W/2,H/2+(rect?30:40))}
@@ -881,6 +898,7 @@ function sPreview(){const rect=sShape()=='rect';$('#sf').value=rect?'serif':'con
  $('#sb').disabled=busy||!(sReady()||SO.length);
  $('#sph').textContent=rect?'Preview in your ink colour. Rectangle up to 7 × 2.5 cm; final size is chosen by our staff to suit your text.':cmb?'Preview in your ink colour. Combination stamp: our staff choose the model and size to suit your text.':'Preview in your ink colour at maximum size (6 cm across). Our staff choose the final size to suit your text.'}
 document.querySelectorAll('#vStamp input,#vStamp select').forEach(e=>{if(!['sn','st','sm','so','srm'].includes(e.id))e.addEventListener('input',sPreview)});
+$('#cz').addEventListener('input',sPreview);
 document.querySelectorAll('#vStamp input[type=radio],#vStamp input[type=checkbox],#vStamp select').forEach(e=>e.addEventListener('change',sPreview));
 /* order numbers: prefix + random 6 digits; numbers already issued on this device are never reused */
 function newSer(pre){let u=[];try{u=JSON.parse(localStorage.serUsed||'[]')}catch(e){}let id;do{id=pre+(100000+crypto.getRandomValues(new Uint32Array(1))[0]%900000)}while(u.includes(id));return id}
@@ -893,7 +911,7 @@ function sSheet(no,imgs=[],other=[],ttl){const np=imgs.length;const c=document.c
  x.font=`500 ${3.1*k}px ${F}`;x.fillText('Synly Trading & Bookstore Sdn Bhd · Lot 290-292, Parkcity Commerce Square, 97000 Bintulu · 086-337 891',L,38*k);
  x.fillRect(L,42*k,PW-2*L,.5*k);
  const d=new Date(Date.now()+8*36e5),dt=d.toISOString().slice(0,16).replace('T',' ');
- const rows=[['Series no.',no],['Date / time',dt],['Customer',sv('sn')||'-'],['Phone',sv('st')],['Shape',cmb?'Combination: round seal + text (size per model), seal on '+$('#cside').value+(sck('cd')?', double ring':'')+(sck('ci')?', inner circle':''):rect?'Rectangle (max 7 × 2.5 cm)':'Round (max 6 cm across)'+(sck('cd')?', double ring':'')+(sck('ci')?', inner circle':'')],...(rect?[['Alignment',$('#ra').value=='left'?'Left':'Centre']]:[]),['Stamp type',sKind()],['Ink colour',sInk()],['Model',sv('sm')||'-'],['Cashier',sv('scs')],['Sample',SA.length?((np?np+' photo'+(np>1?'s':'')+' (below)':'')+(np&&other.length?' + ':'')+(other.length?other.map(f=>f.name).join(', ').slice(0,60):'')):'-'],['Remark',$('#srm').value.trim().replace(/\s+/g,' ')||'-']];
+ const rows=[['Series no.',no],['Date / time',dt],['Customer',sv('sn')||'-'],['Phone',sv('st')],['Shape',cmb?'Combination: round seal + text (size per model), seal on '+$('#cside').value+', seal size '+$('#cz').value+'%'+(sck('cd')?', double ring':'')+(sck('ci')?', inner circle':''):rect?'Rectangle (max 7 × 2.5 cm)':'Round (max 6 cm across)'+(sck('cd')?', double ring':'')+(sck('ci')?', inner circle':'')],...(rect?[['Alignment',$('#ra').value=='left'?'Left':'Centre']]:[]),['Stamp type',sKind()],['Ink colour',sInk()],['Model',sv('sm')||'-'],['Cashier',sv('scs')],['Sample',SA.length?((np?np+' photo'+(np>1?'s':'')+' (below)':'')+(np&&other.length?' + ':'')+(other.length?other.map(f=>f.name).join(', ').slice(0,60):'')):'-'],['Remark',$('#srm').value.trim().replace(/\s+/g,' ')||'-']];
  let y=52*k;rows.forEach(([a,b])=>{x.font=`500 ${4.2*k}px ${F}`;x.fillStyle='#555';x.fillText(a,L,y);x.fillStyle='#000';x.font=`700 ${4.6*k}px ${F}`;
   const mw=PW-L-(L+42*k),ws=String(b).split(' '),ln=[];let cur='';for(const w of ws){const t=cur?cur+' '+w:w;if(x.measureText(t).width>mw&&cur){ln.push(cur);cur=w}else cur=t}ln.push(cur);   /* long values (remark) wrap, max 3 lines */
   ln.slice(0,3).forEach((t,i)=>{x.fillText(i==2&&ln.length>3?t+'…':t,L+42*k,y);y+=(i<Math.min(3,ln.length)-1?5.6:7)*k})});
@@ -945,9 +963,9 @@ async function sampleImgs(){const imgs=[],other=[];
 let sFile=null,sOther=[];
 /* ---- several stamps in one order: each stamp is a snapshot of the designer ---- */
 const SF=['r1','r2','r3','r4','r5','r6','r7','r8','c1','c2','c3','c4','c5'],SC=['rx','ci','cd','cs'],SR=['ss','sk','sc2'],SO=[];let sEdit=-1;
-function sSnap(){const o={v:{},c:{},r:{},ra:$('#ra').value,rb:$('#rb').value,cs:$('#cside').value,samples:[...SA],model:$('#sm').value};SF.forEach(k=>o.v[k]=$('#'+k).value);SC.forEach(k=>o.c[k]=$('#'+k).checked);SR.forEach(k=>o.r[k]=rv(k));return o}
+function sSnap(){const o={v:{},c:{},r:{},ra:$('#ra').value,rb:$('#rb').value,cs:$('#cside').value,cz:$('#cz').value,samples:[...SA],model:$('#sm').value};SF.forEach(k=>o.v[k]=$('#'+k).value);SC.forEach(k=>o.c[k]=$('#'+k).checked);SR.forEach(k=>o.r[k]=rv(k));return o}
 function sLoad(o){SF.forEach(k=>$('#'+k).value=o.v[k]||'');SC.forEach(k=>$('#'+k).checked=!!o.c[k]);SR.forEach(k=>{const e=document.querySelector(`input[name=${k}][value="${o.r[k]}"]`);if(e)e.checked=true});
- $('#ra').value=o.ra;$('#rb').value=o.rb;$('#cside').value=o.cs||'left';SA.length=0;SA.push(...o.samples);$('#sm').value=o.model||'';$('#sf').value=o.r.ss=='rect'?'serif':'cond'}
+ $('#ra').value=o.ra;$('#rb').value=o.rb;$('#cside').value=o.cs||'left';$('#cz').value=o.cz||100;cMore=false;sFields.n=0;SA.length=0;SA.push(...o.samples);$('#sm').value=o.model||'';$('#sf').value=o.r.ss=='rect'?'serif':'cond'}
 const sWith=(o,fn)=>{const cur=sSnap();sLoad(o);try{return fn()}finally{sLoad(cur)}};
 const sDesc=o=>{const t=SF.map(k=>o.v[k]).filter(Boolean);return({rect:'Rectangle',round:'Round',combo:'Combination'})[o.r.ss]+' · '+o.r.sk+' · '+o.r.sc2+' ink'+(t.length?'':' · sample only')};
 function sThumb(o){return sWith(o,()=>{const c=document.createElement('canvas'),dm=sDims();c.width=420;c.height=Math.round(390*dm.h/dm.w+30);const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);
@@ -959,7 +977,7 @@ function sOrder(){const n=SO.length;$('#sos').hidden=!n;$('#soc').textContent=n+
  $('#sml').innerHTML='';SO.forEach((o,i)=>{const l=document.createElement('label');l.className='fn';l.style.margin='0';l.innerHTML=`Model for stamp ${i+1} <small style="color:var(--mu)">(${({rect:'rectangle',round:'round',combo:'combination'})[o.r.ss]})</small><input data-m="${i}" maxlength="40" placeholder="e.g. Shiny S-844">`;l.querySelector('input').value=o.model||'';$('#sml').append(l)});
  $('#sml0').textContent=n?`Model for stamp ${n+1} (the one being designed)`:'Model';$('#sadd').textContent=`+ Add another stamp to this order`}
 $('#sml').oninput=e=>{const t=e.target.closest('[data-m]');if(t)SO[+t.dataset.m].model=t.value};
-function sClearDesign(){SF.forEach(k=>$('#'+k).value='');SA.length=0;salist();$('#sm').value='';sPreview()}
+function sClearDesign(){cMore=false;sFields.n=0;SF.forEach(k=>$('#'+k).value='');SA.length=0;salist();$('#sm').value='';sPreview()}
 $('#sadd').onclick=()=>{if(!sReady()){toast('Type the stamp text or attach a sample first.');$('#r1').focus();return}
  const o=sSnap();o.th=sThumb(o);if(sEdit>=0&&sEdit<=SO.length){SO.splice(sEdit,0,o)}else SO.push(o);const at=sEdit>=0?sEdit+1:SO.length;sEdit=-1;sClearDesign();sOrder();$('#sr').hidden=true;sFile=null;toast(`Stamp ${at} saved. Design stamp ${SO.length+1}, or submit the order.`);$('#sos').scrollIntoView({behavior:'smooth',block:'start'})};
 $('#sol').onclick=e=>{const ed=e.target.closest('[data-e]'),rm=e.target.closest('[data-x]');
@@ -988,7 +1006,7 @@ let nxT=0;function nextOrder(reset,how){clearTimeout(nxT);if(how=='send'){reset(
 const saveAll=fs=>{fs.forEach((f,i)=>setTimeout(()=>save(f,f.name),i*400));toast(fs.length>1?fs.length+' files saved to Downloads':fs[0].name+' saved to Downloads')};
 $('#sshare').onclick=job(async()=>{if(!sFile)return;const k2=SO.length+(sReady()?1:0),r2=await waSend([sFile,...sOther],'Synly stamp order '+sFile.name.replace('.pdf','')+(k2>1?` (${k2} stamps)`:'')+(sv('sn')?' – '+sv('sn'):''));if(r2!='cancel')nextOrder(sReset,'send')});
 $('#ssave').onclick=()=>{if(!sFile)return;saveAll([sFile,...sOther]);nextOrder(sReset,'save')};
-function sReset(){clearTimeout(nxT);sId=newSer('STMP');SO.length=0;sEdit=-1;sOrder();['r1','r2','r3','r4','r5','r6','r7','r8','c1','c2','c3','c4','c5','sn','st','sm','srm'].forEach(id=>$('#'+id).value='');SA.length=0;salist();sOther=[];$('#sr').hidden=true;sFile=null;sPreview();sShow();scrollTo({top:0,behavior:'smooth'})}
+function sReset(){clearTimeout(nxT);sId=newSer('STMP');SO.length=0;sEdit=-1;cMore=false;sFields.n=0;sOrder();['r1','r2','r3','r4','r5','r6','r7','r8','c1','c2','c3','c4','c5','sn','st','sm','srm'].forEach(id=>$('#'+id).value='');SA.length=0;salist();sOther=[];$('#sr').hidden=true;sFile=null;sPreview();sShow();scrollTo({top:0,behavior:'smooth'})}
 $('#snew').onclick=sReset;;
 sPreview();
 
