@@ -365,6 +365,16 @@ html.dark .tx input,html.dark .fn input,html.dark .fn textarea,html.dark .chip s
 .th{background:linear-gradient(180deg,rgba(255,255,255,.88),rgba(255,255,255,.55));color:var(--fg);border:1px solid var(--hair)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 6px 18px rgba(16,58,36,.12)!important}
 html.dark .th{background:rgba(255,255,255,.1)}
 footer{color:var(--mu);font-size:.74rem}
+.phv{display:flex;gap:14px;align-items:flex-start;margin-top:12px}.phv img{width:96px;border-radius:8px;border:1px solid var(--ln);background:#fff;flex:none}.phv>div{flex:1}
+#phcv{width:100%;height:auto;display:block;background:#fff;border-radius:4px;border:1px solid var(--ln)}
+.rs{display:flex;gap:10px;align-items:center;padding:8px;border-radius:14px;font-size:.85rem}.rs img{width:52px;height:52px;object-fit:cover;border-radius:10px;flex:none;background:#fff}
+.rs span{flex:1;min-width:0}.rs b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rs small{color:var(--mu)}.rs small.ok{color:var(--ac2)}.rs small.bad{color:#b4231a}
+.rs button{padding:6px 10px;font-size:.8rem;border-radius:9px;flex:none}
+#scn{position:fixed;inset:0;background:#0b0f0d;z-index:9;display:flex;flex-direction:column;align-items:center;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}#scn[hidden]{display:none}
+#scn h3{margin:8px 0 0;color:#fff;font-size:.95rem;font-weight:600}#scv{touch-action:none;margin-top:8px}
+#scn .bar{width:100%;max-width:520px;padding:12px 14px;color:#fff;display:grid;gap:10px}#scn p{margin:0;font-size:.8rem;opacity:.75;text-align:center}
+#scn .chip{background:rgba(255,255,255,.1)!important;color:#fff;border-color:rgba(255,255,255,.15)!important;justify-content:center}#scn .chip:has(input:checked){background:rgba(52,212,116,.3)!important}
+#scn button{background:rgba(255,255,255,.12);color:#fff}#scn button.p{color:#fff}
 #pi{display:none}
 @page{size:A4;margin:0}
 @media print{body{background:#fff;padding:0}body>*{display:none!important}#pi{display:block!important;width:210mm;height:297mm}}
@@ -378,11 +388,14 @@ footer{color:var(--mu);font-size:.74rem}
 <div class="tiles">
 <button class="tile" data-go="ic"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><circle cx="8.5" cy="11" r="2.2"/><path d="M5.5 16c.6-1.6 1.7-2.4 3-2.4s2.4.8 3 2.4M14 10h4.5M14 13.5h3"/></svg></span><b>IC Copy</b><small>Front &amp; back on one A4</small></button>
 <button class="tile" data-go="qr"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M14 14h3v3h-3zM20 14v.01M20 20h-3M14 20v.01M20 17v.01"/></svg></span><b>A5 QR Poster</b><small>Merchant DuitNow QR</small></button>
-<button class="tile" data-go="pdf"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg></span><b>To PDF</b><small>Photos &amp; Word, send on WhatsApp</small></button>
+<button class="tile" data-go="pdf"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg></span><b>To PDF</b><small>Photos, Word &amp; scans, send on WhatsApp</small></button>
 <button class="tile" data-go="stamp"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 12V9.5a2.5 2.5 0 1 1 5 0V12"/><path d="M5 12h14a1 1 0 0 1 1 1v3H4v-3a1 1 0 0 1 1-1zM6 20h12"/></svg></span><b>Stamp Booking</b><small>Rectangle or round, preview first</small></button>
 <button class="tile" data-go="tag"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="7" width="19" height="10" rx="2"/><path d="M6.5 12h7M16.5 10.5v3"/></svg></span><b>Name Tag</b><small>Engraved or epoxy with emblem</small></button>
 <button class="tile" data-go="unlock"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 7.6-1.8"/><circle cx="12" cy="15.5" r="1.4"/></svg></span><b>Unlock PDF</b><small>Remove password, merge to print</small></button>
 <button class="tile" data-go="collage"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="10" rx="1.5"/><rect x="13" y="3" width="8" height="6" rx="1.5"/><rect x="13" y="11" width="8" height="10" rx="1.5"/><rect x="3" y="15" width="8" height="6" rx="1.5"/></svg></span><b>Collage</b><small>2 or more photos on one A4</small></button>
+<button class="tile" data-go="photo"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2.5"/><circle cx="12" cy="10" r="3.2"/><path d="M7 18c.9-2.4 2.8-3.6 5-3.6s4.1 1.2 5 3.6"/></svg></span><b>Passport Photo</b><small>Passport &amp; ID sizes on 4R or A4</small></button>
+<button class="tile" data-go="resize"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2.5"/><path d="M14 10l4-4M18 6h-3.5M18 6v3.5M10 14l-4 4M6 18h3.5M6 18v-3.5"/></svg></span><b>Resize Photo</b><small>Shrink to 100 KB, 200 KB and more</small></button>
+<button class="tile" data-go="pdft"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/><circle cx="18" cy="18" r="0.01"/></svg></span><b>PDF Tools</b><small>Merge, pick pages, rotate, split, compress</small></button>
 </div>
 <footer>Created by AhChai for Synly Trading &amp; Bookstore S/B<br>Your files stay on this phone.</footer>
 </div>
@@ -426,8 +439,8 @@ footer{color:var(--mu);font-size:.74rem}
 <div class="view" id="mPDF" hidden>
 <p class="lead">Turn photos and Word files into one PDF, then send it to Synly on WhatsApp.</p>
 <section><h2><i>1</i>Add photos or Word files</h2>
-<div class="row"><button class="p" id="pph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;vertical-align:-4px;margin-right:6px"><rect x="3" y="5" width="18" height="14" rx="2.5"/><circle cx="9" cy="10" r="1.8"/><path d="M21 16l-5-5-8 8"/></svg>Photos</button><button id="pfl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;vertical-align:-4px;margin-right:6px"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>Word / files</button></div>
-<input type="file" id="pinI" multiple accept="image/*" hidden><input type="file" id="pinF" multiple hidden>
+<div class="row"><button id="psc">Scan</button><button class="p" id="pph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;vertical-align:-4px;margin-right:6px"><rect x="3" y="5" width="18" height="14" rx="2.5"/><circle cx="9" cy="10" r="1.8"/><path d="M21 16l-5-5-8 8"/></svg>Photos</button><button id="pfl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;vertical-align:-4px;margin-right:6px"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>Word / files</button></div>
+<input type="file" id="pinI" multiple accept="image/*" hidden><input type="file" id="pinS" accept="image/*" capture="environment" hidden><input type="file" id="pinF" multiple hidden>
 <div class="slot qs add" id="p0" tabindex="0" role="button" aria-label="Drop files here" style="height:64px;margin-top:10px">or drop files here</div>
 <div class="pl" id="pl"></div>
 <div class="att" id="pxl"></div>
@@ -568,6 +581,46 @@ footer{color:var(--mu);font-size:.74rem}
 <div class="row" style="margin-bottom:10px"><button class="p" id="kp" disabled>Save PDF</button><button id="ks" disabled>Share</button></div>
 <div class="row"><button id="kj" disabled>Save JPEG</button><button id="kt" disabled>Print</button></div></section>
 </div>
+<div class="view" id="vPh" hidden>
+<p class="lead">Passport and ID photos at the exact size, ready to print and cut.</p>
+<section><h2><i>1</i>Photo</h2><div class="row"><button class="p" id="phc">Camera</button><button id="phg">Gallery</button></div>
+<input type="file" id="phiC" accept="image/*" capture="user" hidden><input type="file" id="phiG" accept="image/*" hidden>
+<div class="phv" id="phv" hidden><img id="phimg" alt="Cropped photo"><div><p class="hint" id="phbg" style="margin-top:0"></p><button id="phe" style="margin-top:8px">Adjust crop</button></div></div>
+<p class="hint">Plain white or light background, face straight to the camera, no shadows or glasses glare.</p></section>
+<section><h2><i>2</i>Size</h2><div class="seg"><label class="pick sm"><input type="radio" name="phs" value="MY" checked><b>Passport</b><small>35 × 50 mm (Malaysia)</small></label><label class="pick sm"><input type="radio" name="phs" value="P45"><b>Visa / general</b><small>35 × 45 mm</small></label><label class="pick sm"><input type="radio" name="phs" value="ID"><b>Small ID</b><small>25 × 32 mm</small></label><label class="pick sm"><input type="radio" name="phs" value="US"><b>2 × 2 inch</b><small>51 × 51 mm</small></label></div></section>
+<section><h2><i>3</i>Sheet</h2><div class="seg"><label class="pick sm"><input type="radio" name="phk" value="4R" checked><b>4R photo paper</b><small>102 × 152 mm</small></label><label class="pick sm"><input type="radio" name="phk" value="A4"><b>A4 paper</b><small>210 × 297 mm</small></label></div>
+<div class="opt" style="margin-top:12px"><label class="chip"><input type="checkbox" id="phcut" checked>Cut lines</label><label class="chip">Copies <select id="phn"><option value="0">Fill sheet</option><option>1</option><option>2</option><option>4</option><option>6</option><option>8</option></select></label></div></section>
+<section><h2><i>4</i>Preview</h2><div class="paper"><canvas id="phcv" width="1200" height="1800" role="img" aria-label="Photo sheet preview"></canvas></div><p class="hint" id="phh"></p></section>
+<section><h2><i>5</i>Print or save</h2><div class="row" style="margin-bottom:10px"><button class="p" id="php" disabled>Save PDF</button><button id="phsh" disabled>Share</button></div>
+<div class="row"><button id="phj" disabled>Save JPEG</button><button id="pht" disabled>Print</button></div>
+<p class="hint">Print at 100% / actual size so each photo comes out at the exact size.</p></section>
+</div>
+<div class="view" id="vRs" hidden>
+<p class="lead">Make photos small enough for online forms and portals, such as "under 200 KB".</p>
+<section><h2><i>1</i>Add photos</h2><button class="p" id="rsa" style="width:100%">Choose photos</button><input type="file" id="rsi" multiple accept="image/*" hidden>
+<div class="att" id="rsl"></div></section>
+<section><h2><i>2</i>Size limit</h2><div class="opt" role="radiogroup" aria-label="Size limit">
+<label class="chip"><input type="radio" name="rst" value="100">100 KB</label><label class="chip"><input type="radio" name="rst" value="200" checked>200 KB</label><label class="chip"><input type="radio" name="rst" value="500">500 KB</label><label class="chip"><input type="radio" name="rst" value="1000">1 MB</label>
+<label class="chip"><input type="radio" name="rst" value="c">Other <input id="rsc" type="number" min="20" max="20000" step="10" value="300" inputmode="numeric" style="width:64px"> KB</label></div>
+<label class="chip" style="display:inline-flex;margin-top:10px">Max width <select id="rsw"><option value="0">Keep</option><option value="2000">2000 px</option><option value="1600">1600 px</option><option value="1200" selected>1200 px</option><option value="800">800 px</option></select></label></section>
+<section><h2><i>3</i>Save</h2><div class="row"><button class="p" id="rss" disabled>Save all</button><button id="rsh" disabled>Share</button></div>
+<button id="rsz" style="width:100%;margin-top:10px" disabled>Save all as ZIP</button>
+<p class="hint" id="rsh2">Photos are saved as JPEG. Very small limits make photos less sharp.</p></section>
+</div>
+<div class="view" id="vPt" hidden>
+<p class="lead">Merge PDFs, keep or reorder pages, delete or rotate pages, split, or make a PDF smaller.</p>
+<section><h2><i>1</i>Add PDFs</h2><button class="p" id="pta" style="width:100%">Choose PDFs</button><input type="file" id="pti" multiple accept="application/pdf,.pdf" hidden>
+<div class="ul" id="ptl"></div><p class="hint" id="pth">Several files are joined in this order first; page numbers count across all of them.</p></section>
+<section><h2><i>2</i>What to do</h2><div class="seg seg3"><label class="pick sm"><input type="radio" name="pto" value="merge" checked><b>Merge</b><small>join files</small></label><label class="pick sm"><input type="radio" name="pto" value="pages"><b>Pick pages</b><small>keep / reorder</small></label><label class="pick sm"><input type="radio" name="pto" value="del"><b>Delete</b><small>remove pages</small></label><label class="pick sm"><input type="radio" name="pto" value="rot"><b>Rotate</b><small>turn pages</small></label><label class="pick sm"><input type="radio" name="pto" value="split"><b>Split</b><small>one file per page</small></label><label class="pick sm"><input type="radio" name="pto" value="comp"><b>Compress</b><small>smaller file</small></label></div>
+<div id="ptx" class="tx" style="margin-top:12px">
+<label class="fn" id="ptpw" style="margin:0" hidden>Pages to keep, in order<input id="ptp" placeholder="e.g. 1-3, 5, 2" autocomplete="off"></label>
+<label class="fn" id="ptdw" style="margin:0" hidden>Pages to delete<input id="ptd" placeholder="e.g. 2, 4-6" autocomplete="off"></label>
+<div id="ptrw" hidden><label class="fn" style="margin:0">Pages to rotate (empty = all)<input id="ptr" placeholder="e.g. 1, 3-4" autocomplete="off"></label>
+<div class="opt" style="margin-top:10px"><label class="chip"><input type="radio" name="pta2" value="+90" checked>Right 90°</label><label class="chip"><input type="radio" name="pta2" value="+180">180°</label><label class="chip"><input type="radio" name="pta2" value="-90">Left 90°</label></div></div></div>
+<button class="p" id="ptgo" style="width:100%;margin-top:12px" disabled>Apply</button></section>
+<section id="ptres" hidden><h2><i>3</i>Result</h2><p class="hint" id="ptrt" style="margin-top:0"></p>
+<div class="row" style="margin-top:10px"><button class="p" id="ptsv">Save</button><button id="ptsh">Share</button></div></section>
+</div>
 <div class="view" id="vContact" hidden>
 <section><h2>Opening hours <span class="open" id="opn"></span></h2>
 <table class="hrs" id="hrs"><tr data-d="1,2,3,4,5"><th>Monday – Friday</th><td>8:15 am – 7:30 pm</td></tr><tr data-d="6"><th>Saturday</th><td>8:15 am – 6:30 pm</td></tr><tr data-d="0"><th>Sunday</th><td>8:30 am – 5:00 pm</td></tr></table></section>
@@ -589,6 +642,10 @@ footer{color:var(--mu);font-size:.74rem}
 <div class="bar"><input type="range" id="zm" min=".5" max="12" step=".01" value="1" aria-label="Zoom"><p>Drag the corners or edges to crop, drag inside the box to move it. Pinch or slide to zoom, double-tap outside to fit.</p>
 <label class="lk" id="lkw"><input type="checkbox" id="lk">Lock card shape</label>
 <div class="row"><button id="rotL">&#8634; Left</button><button id="fitB">Fit</button><button id="rotR">&#8635; Right</button></div><div class="row"><button id="cx">Cancel</button><button class="p" id="ok">Use crop</button></div></div></div>
+<div id="scn" hidden role="dialog" aria-modal="true" aria-labelledby="sct"><h3 id="sct">Scan document</h3><canvas id="scv"></canvas>
+<div class="bar"><p>Drag the 4 corners to the edges of the paper.</p>
+<div class="row scm"><label class="chip"><input type="radio" name="scm" value="color">Colour</label><label class="chip"><input type="radio" name="scm" value="gray" checked>Grey</label><label class="chip"><input type="radio" name="scm" value="bw">Black &amp; white</label></div>
+<div class="row"><button id="scr">Rotate</button><button id="scx">Cancel</button><button class="p" id="scok">Add page</button></div></div></div>
 <div id="bz" hidden role="alert" aria-live="assertive"><div><i></i><span>Converting…</span></div></div>
 <dialog id="cofd" aria-labelledby="cdt"><h3 id="cdt">&#129370; Hey, you found an Easter egg!<br>Belanja sikit boleh? Hehe</h3>
 <img src="donate-qr.png" alt="DuitNow QR" width="625" height="679">
@@ -639,26 +696,26 @@ function readImg(f,cb,quiet){const u=URL.createObjectURL(f),im=new Image();
  im.onerror=()=>{URL.revokeObjectURL(u);if(!quiet)alert('This image format is not supported. Ask the customer to resend as PNG or JPG.');cb(null)};im.src=u}
 function load(f,i){readImg(f,c=>c?openCrop(i,c):next())}
 const isPdfF=f=>/pdf/.test(f.type||'')||/\.pdf$/i.test(f.name||'');
-const take=fs=>{if(mode=='home')go(fs.some(isPdfF)?'unlock':fs.some(f=>/\.docx$/i.test(f.name||''))?'pdf':lastSvc());mode=='unlock'?uadd(fs):mode=='collage'?kadd(fs):mode=='qr'?qload(fs):mode=='pdf'?padd(fs):enqueue(fs)};
+const take=fs=>{if(mode=='home')go(fs.some(isPdfF)?'unlock':fs.some(f=>/\.docx$/i.test(f.name||''))?'pdf':lastSvc());mode=='unlock'?uadd(fs):mode=='collage'?kadd(fs):mode=='photo'?phAdd(fs):mode=='resize'?rsAdd(fs):mode=='pdft'?ptAdd(fs):mode=='qr'?qload(fs):mode=='pdf'?padd(fs):enqueue(fs)};
 document.addEventListener('paste',e=>{if(e.clipboardData)take([...e.clipboardData.files])});
 document.addEventListener('dragover',e=>e.preventDefault());
 document.addEventListener('drop',e=>{e.preventDefault();take([...e.dataTransfer.files])});
 async function takeShared(){if(!/[?&]shared=/.test(location.search))return;history.replaceState(null,'',location.pathname);
  try{const c=await caches.open('ic-share'),fs=[];for(const k of await c.keys()){const r=await c.match(k);if(r)fs.push(await r.blob());await c.delete(k)}
-  if(fs.length){if(mode=='home')go(fs.some(f=>/pdf/.test(f.type||''))?'unlock':fs.some(f=>/wordprocessingml/.test(f.type||''))?'pdf':lastSvc());if(mode=='unlock')uadd(fs);else if(mode=='collage')kadd(fs);else if(mode=='qr')qload(fs);else if(mode=='pdf')padd(fs);else{cards.fill(null);src.fill(null);thumbs();render();enqueue(fs)}}}catch(e){}}
+  if(fs.length){if(mode=='home')go(fs.some(f=>/pdf/.test(f.type||''))?'unlock':fs.some(f=>/wordprocessingml/.test(f.type||''))?'pdf':lastSvc());if(mode=='unlock')uadd(fs);else if(mode=='collage')kadd(fs);else if(mode=='photo')phAdd(fs);else if(mode=='resize')rsAdd(fs);else if(mode=='pdft')ptAdd(fs);else if(mode=='qr')qload(fs);else if(mode=='pdf')padd(fs);else{cards.fill(null);src.fill(null);thumbs();render();enqueue(fs)}}}catch(e){}}
 
 /* ---------- crop: free, resizable box (image coordinates) ---------- */
 // cur = 0/1 for the IC cards, 'q' for the A5 QR image. box = {x,y,w,h} in image pixels.
 const HS=[[-1,-1],[1,-1],[1,1],[-1,1],[0,-1],[1,0],[0,1],[-1,0]],PAD=24;
 function layout(){const W=Math.min(innerWidth,520),H=Math.max(180,Math.round(Math.min(cr.clientHeight-$('#cr .bar').offsetHeight-$('#ct').offsetHeight-30,680))),d=devicePixelRatio||1;
  cv.style.width=W+'px';cv.style.height=H+'px';cv.width=W*d;cv.height=H*d;cx.setTransform(d,0,0,d,0,0);F={W,H}}
-const lock=()=>(cur===0||cur===1)&&$('#lk').checked;
+const lock=()=>cur==='h'||(cur===0||cur===1)&&$('#lk').checked,cR=()=>cur==='h'?phRatio():R;   /* passport photos keep their exact shape */
 try{$('#lk').checked=!!localStorage.lk}catch(e){}
-function ratioBox(){let{x,y,w,h}=box;if(w/h>R){const n=h*R;x+=(w-n)/2;w=n}else{const n=w/R;y+=(h-n)/2;h=n}box={x,y,w,h}}
+function ratioBox(){const R=cR();let{x,y,w,h}=box;if(w/h>R){const n=h*R;x+=(w-n)/2;w=n}else{const n=w/R;y+=(h-n)/2;h=n}box={x,y,w,h}}
 $('#lk').onchange=()=>{try{localStorage.lk=$('#lk').checked?1:''}catch(e){}if(lock())ratioBox();draw()};
-function openCrop(i,im,st){cur=i;img=im;$('#ct').textContent='Crop '+(i==='q'?'QR':i==='p'?'page '+(pi+1):i==='a'?'sample':i==='k'?'photo '+(ki+1):NM[i]);$('#lkw').hidden=!(i===0||i===1);
+function openCrop(i,im,st){cur=i;img=im;$('#ct').textContent='Crop '+(i==='q'?'QR':i==='p'?'page '+(pi+1):i==='a'?'sample':i==='k'?'photo '+(ki+1):i==='h'?'passport photo':NM[i]);$('#lkw').hidden=!(i===0||i===1);
  if(cr.hidden){cr.hidden=false;history.pushState({crop:1},'')}layout();
- box=st?{...st}:{x:0,y:0,w:img.width,h:img.height};if(!st&&lock())ratioBox();fit();$('#ok').focus()}
+ box=st?{...st}:{x:0,y:0,w:img.width,h:img.height};if(lock())ratioBox();fit();$('#ok').focus()}
 function hideCrop(){if(cr.hidden)return;cr.hidden=true;ptrs.clear();drag=null;next()}
 function closeCrop(){if(history.state&&history.state.crop)history.back();else hideCrop()}
 addEventListener('popstate',hideCrop);
@@ -678,6 +735,8 @@ function draw(){const{W,H}=F,b=sb();cx.fillStyle='#111';cx.fillRect(0,0,W,H);
  cx.strokeStyle='rgba(255,255,255,.35)';cx.lineWidth=1;cx.beginPath();
  for(let k=1;k<3;k++){cx.moveTo(b.x+b.w*k/3,b.y);cx.lineTo(b.x+b.w*k/3,b.y+b.h);cx.moveTo(b.x,b.y+b.h*k/3);cx.lineTo(b.x+b.w,b.y+b.h*k/3)}cx.stroke();
  cx.strokeStyle='#fff';cx.lineWidth=1.5;cx.strokeRect(b.x,b.y,b.w,b.h);
+ if(cur==='h'){cx.save();cx.setLineDash([6,5]);cx.strokeStyle='rgba(120,255,180,.9)';cx.lineWidth=2;cx.beginPath();cx.ellipse(b.x+b.w/2,b.y+b.h*.46,b.w*.31,b.h*.34,0,0,7);cx.stroke();
+  cx.setLineDash([]);cx.fillStyle='rgba(120,255,180,.95)';cx.font='600 12px system-ui';cx.textAlign='center';cx.fillText('Fit the head inside the oval',b.x+b.w/2,b.y+b.h-8);cx.restore()}
  cx.fillStyle='#fff';cx.strokeStyle='#000';cx.lineWidth=1;
  HS.forEach(([hx,hy],j)=>{const z=j<4?14:10,px=b.x+b.w*(hx+1)/2-z/2,py=b.y+b.h*(hy+1)/2-z/2;cx.fillRect(px,py,z,z);cx.strokeRect(px,py,z,z)})}
 
@@ -686,7 +745,7 @@ function hit(px,py){const b=sb(),t=22;
  for(const[hx,hy]of HS){const x=b.x+b.w*(hx+1)/2,y=b.y+b.h*(hy+1)/2;if(Math.abs(px-x)<t&&Math.abs(py-y)<t)return{k:'h',hx,hy,dx:x-px,dy:y-py}}
  if(px>b.x&&px<b.x+b.w&&py>b.y&&py<b.y+b.h)return{k:'m',dx:b.x-px,dy:b.y-py};return{k:'p'}}
 const cl=(v,a,b)=>Math.max(a,Math.min(b,v));
-function resize(d,px,py){const iw=img.width,ih=img.height,mn=Math.max(8,30/s),X=(px+d.dx-ox)/s,Y=(py+d.dy-oy)/s;
+function resize(d,px,py){const R=cR(),iw=img.width,ih=img.height,mn=Math.max(8,30/s),X=(px+d.dx-ox)/s,Y=(py+d.dy-oy)/s;
  let L=box.x,T=box.y,Rt=box.x+box.w,B=box.y+box.h;
  if(d.hx<0)L=cl(X,0,Rt-mn);if(d.hx>0)Rt=cl(X,L+mn,iw);if(d.hy<0)T=cl(Y,0,B-mn);if(d.hy>0)B=cl(Y,T+mn,ih);
  if(lock()){
@@ -710,11 +769,11 @@ cv.onpointermove=e=>{const p=ptrs.get(e.pointerId);if(!p||!drag)return;const o=[
 cv.onpointerup=cv.onpointercancel=e=>{ptrs.delete(e.pointerId);if(!ptrs.size)drag=null};
 
 $('#cx').onclick=closeCrop;
-$('#ok').onclick=()=>{const{x,y,w,h}=box,q=cur==='q'||cur==='p'||cur==='a'||cur==='k',k=q?Math.min(1,MAX/Math.max(w,h)):0,c=document.createElement('canvas');
+$('#ok').onclick=()=>{const{x,y,w,h}=box,q=cur==='q'||cur==='p'||cur==='a'||cur==='k'||cur==='h',k=q?Math.min(1,MAX/Math.max(w,h)):0,c=document.createElement('canvas');
  c.width=q?Math.round(w*k):CW;c.height=q?Math.round(h*k):CH;
  const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);g.imageSmoothingQuality='high';
  g.drawImage(img,x,y,w,h,0,0,c.width,c.height);
- if(cur==='p')pcrop(c,box);else if(cur==='a')acrop(c,box);else if(cur==='k')kcrop(c,box);else if(q){qimg=c;qsrc={img,st:{...box}};qpaint()}else{cards[cur]=c;src[cur]={img,st:{...box}};thumbs();render()}closeCrop()};
+ if(cur==='p')pcrop(c,box);else if(cur==='a')acrop(c,box);else if(cur==='k')kcrop(c,box);else if(cur==='h')phCrop(c,box);else if(q){qimg=c;qsrc={img,st:{...box}};qpaint()}else{cards[cur]=c;src[cur]={img,st:{...box}};thumbs();render()}closeCrop()};
 
 /* ---------- A4 page ---------- */
 const gc=new WeakMap();
@@ -736,7 +795,7 @@ function paint(){raf=0;const v=Math.max(70,Math.min(130,+$('#sc').value||100)),k
   pc.save();if($('#rd').checked){rr(x,y,w,h,r);pc.clip()}pc.drawImage($('#gr').checked?gray(c):c,x,y,w,h);pc.restore();
   if($('#bd').checked){pc.strokeStyle='#777';pc.lineWidth=3;if($('#rd').checked){rr(x,y,w,h,r);pc.stroke()}else pc.strokeRect(x,y,w,h)}
   if($('#wm').checked&&$('#wt').value.trim())palang(x,y,w,h,$('#wt').value.trim().toUpperCase())});
- ['#bp','#bs','#bj','#bt','#br'].forEach(b=>$(b).disabled=!n||busy);$('#bw').disabled=!n;qbtn();pbtn();if(typeof sReady=='function')$('#sb').disabled=busy||!(sReady()||SO.length);if($('#tb'))$('#tb').disabled=busy;if(typeof ubtn=='function')ubtn();if(typeof kbtn=='function')kbtn()}
+ ['#bp','#bs','#bj','#bt','#br'].forEach(b=>$(b).disabled=!n||busy);$('#bw').disabled=!n;qbtn();pbtn();if(typeof sReady=='function')$('#sb').disabled=busy||!(sReady()||SO.length);if($('#tb'))$('#tb').disabled=busy;if(typeof ubtn=='function')ubtn();if(typeof kbtn=='function')kbtn();if(typeof phBtn=='function')phBtn();if(typeof rsBtn=='function')rsBtn();if(typeof ptBtn=='function')ptBtn()}
 ['#rd','#bd','#gr','#wm'].forEach(q=>$(q).onchange=render);$('#wt').oninput=render;
 $('#sc').oninput=render;$('#sc').onchange=()=>{const e=$('#sc');e.value=Math.max(70,Math.min(130,+e.value||100));render()};
 
@@ -795,11 +854,11 @@ qslot.ondragover=e=>{e.preventDefault();qslot.classList.add('drag')};qslot.ondra
 qslot.ondrop=e=>{e.preventDefault();e.stopPropagation();qslot.classList.remove('drag');qload([...e.dataTransfer.files])};
 outs(qg,1,['#qp','#qs','#qj','#qt']);
 /* ---------- navigation: home + one view per service, with smooth transitions ---------- */
-const VIEWS={home:'vHome',ic:'mIC',qr:'mQR',pdf:'mPDF',stamp:'vStamp',tag:'vTag',unlock:'vUnl',collage:'vCol',about:'vAbout',contact:'vContact'},
- TTL={ic:'IC Copy',qr:'A5 QR Poster',pdf:'To PDF',stamp:'Stamp Booking',tag:'Name Tag',unlock:'Unlock PDF',collage:'Collage',about:'About us',contact:'Contact us'};
+const VIEWS={home:'vHome',ic:'mIC',qr:'mQR',pdf:'mPDF',stamp:'vStamp',tag:'vTag',unlock:'vUnl',collage:'vCol',photo:'vPh',resize:'vRs',pdft:'vPt',about:'vAbout',contact:'vContact'},
+ TTL={ic:'IC Copy',qr:'A5 QR Poster',pdf:'To PDF',stamp:'Stamp Booking',tag:'Name Tag',unlock:'Unlock PDF',collage:'Collage',photo:'Passport Photo',resize:'Resize Photo',pdft:'PDF Tools',about:'About us',contact:'Contact us'};
 let view='',depth=0;const still=matchMedia('(prefers-reduced-motion: reduce)');
 const lastSvc=()=>{try{const m=localStorage.mode;return /^(ic|qr|pdf)$/.test(m)?m:'ic'}catch(e){return 'ic'}};
-function show(v){if(view==='unlock'&&v!=='unlock'&&typeof uWipe=='function')uWipe();view=v;mode=/^(ic|qr|pdf|unlock|collage)$/.test(v)?v:'home';if(mode!='home')try{localStorage.mode=v}catch(e){}
+function show(v){if(view==='unlock'&&v!=='unlock'&&typeof uWipe=='function')uWipe();view=v;mode=/^(ic|qr|pdf|unlock|collage|photo|resize|pdft)$/.test(v)?v:'home';if(mode!='home')try{localStorage.mode=v}catch(e){}
  for(const k in VIEWS){const el=$('#'+VIEWS[k]);el.hidden=k!=v;el.classList.remove('in')}
  const el=$('#'+VIEWS[v]);void el.offsetWidth;el.classList.add('in');
  document.body.classList.toggle('sub',v!='home');$('#back').hidden=v=='home';
@@ -1247,6 +1306,157 @@ outs(kgv,'Collage-',['#kp','#ks','#kj','#kt']);
 kpaint();
 
 /* background: soft static green light (CSS only) */
+
+/* ---------- shared: PDF / print for any paper size (mm) ---------- */
+async function pdfOf(c,wmm,hmm,q=.95){const pw=wmm*72/25.4,ph=hmm*72/25.4;return buildPdf([{jpg:new Uint8Array(await(await toBlob(c,q)).arrayBuffer()),w:c.width,h:c.height,pw,ph,x:0,y:0,dw:pw,dh:ph}])}
+async function printAt(c,wmm,hmm){const st=document.createElement('style');st.textContent=`@page{size:${wmm}mm ${hmm}mm;margin:0}@media print{#pi{width:${wmm}mm!important;height:${hmm}mm!important}}`;document.head.append(st);
+ const pi=$('#pi'),u=URL.createObjectURL(await toBlob(c,.95));await new Promise(r=>{pi.onload=r;pi.src=u});print();setTimeout(()=>{URL.revokeObjectURL(u);pi.removeAttribute('src');st.remove()},6e4)}
+const shareOrSave=async fs=>{if(navigator.canShare&&navigator.canShare({files:fs}))try{await navigator.share({files:fs})}catch(e){}else fs.forEach((f,i)=>setTimeout(()=>save(f,f.name),i*400))};
+const day=()=>new Date().toISOString().slice(0,10);
+
+/* ---------- 1. Passport / ID photo ---------- */
+const PHS={MY:[35,50],P45:[35,45],ID:[25,32],US:[51,51]},PHK={'4R':[101.6,152.4],A4:[210,297]};
+const phSz=()=>PHS[rv('phs')],phRatio=()=>phSz()[0]/phSz()[1];let phSrc=null,phSt=null,phImg=null;
+const phcv=$('#phcv'),phx=phcv.getContext('2d');
+function phAdd(fs){const f=[...fs].find(f=>f&&/^image\//.test(f.type||'image/'));if(!f)return;readImg(f,c=>{if(!c)return toast('This photo could not be opened (try JPG or PNG).');phSrc=c;phSt=null;openCrop('h',c,null)},1)}
+function phCrop(c,st){phSt={...st};const[w,h]=phSz();const o=document.createElement('canvas');o.width=Math.round(w*MM);o.height=Math.round(h*MM);
+ const g=o.getContext('2d');g.imageSmoothingQuality='high';g.drawImage(c,0,0,o.width,o.height);phImg=o;$('#phimg').src=o.toDataURL('image/jpeg',.85);$('#phv').hidden=false;phCheck();phPaint()}
+// background check: the top corners of a passport photo should be plain and light
+function phCheck(){const c=phImg,g=c.getContext('2d'),W=c.width,H=c.height,a=[];[[0,0],[W*.82,0]].forEach(([x0,y0])=>{const d=g.getImageData(x0,y0,W*.18,H*.22).data;for(let i=0;i<d.length;i+=16)a.push(.299*d[i]+.587*d[i+1]+.114*d[i+2])});
+ const m=a.reduce((s,v)=>s+v,0)/a.length,sd=Math.sqrt(a.reduce((s,v)=>s+(v-m)**2,0)/a.length),ok=m>185&&sd<22,e=$('#phbg');
+ e.textContent=ok?'Background looks plain and light.':'Background is not plain and light. For passports, retake against a white wall.';e.style.color=ok?'var(--ac2)':'#b4231a'}
+// re-fit an existing crop when the size changes (keeps the centre)
+function phRefit(){if(!phSrc||!phSt)return;const R2=phRatio(),cxm=phSt.x+phSt.w/2,cym=phSt.y+phSt.h/2;let h=phSt.h,w=h*R2;if(w>phSrc.width){w=phSrc.width;h=w/R2}if(h>phSrc.height){h=phSrc.height;w=h*R2}
+ const x=Math.max(0,Math.min(phSrc.width-w,cxm-w/2)),y=Math.max(0,Math.min(phSrc.height-h,cym-h/2)),c=document.createElement('canvas');c.width=Math.round(w);c.height=Math.round(h);c.getContext('2d').drawImage(phSrc,x,y,w,h,0,0,c.width,c.height);phCrop(c,{x,y,w,h})}
+function phLayout(){const[pw,ph]=PHK[rv('phk')],[w,h]=phSz(),m=rv('phk')=='4R'?4:8,g=2,cols=Math.max(1,Math.floor((pw-2*m+g)/(w+g))),rows=Math.max(1,Math.floor((ph-2*m+g)/(h+g))),max=cols*rows,want=+$('#phn').value||max,n=Math.min(max,want);return{pw,ph,w,h,g,cols,rows,max,n}}
+function phPaint(){const L=phLayout(),W=Math.round(L.pw*MM),H=Math.round(L.ph*MM);if(phcv.width!=W){phcv.width=W;phcv.height=H}phx.fillStyle='#fff';phx.fillRect(0,0,W,H);
+ const gw=L.cols*L.w+(L.cols-1)*L.g,gh=L.rows*L.h+(L.rows-1)*L.g,x0=(L.pw-gw)/2,y0=(L.ph-gh)/2;
+ for(let i=0;i<L.n;i++){const X=(x0+(i%L.cols)*(L.w+L.g))*MM,Y=(y0+Math.floor(i/L.cols)*(L.h+L.g))*MM;
+  if(phImg)phx.drawImage(phImg,X,Y,L.w*MM,L.h*MM);else{phx.fillStyle='#eef3ef';phx.fillRect(X,Y,L.w*MM,L.h*MM)}
+  if($('#phcut').checked){phx.strokeStyle='#9a9a9a';phx.lineWidth=2;phx.strokeRect(X,Y,L.w*MM,L.h*MM)}}
+ $('#phh').textContent=`${L.n} photo${L.n>1?'s':''} of ${L.w} × ${L.h} mm on ${rv('phk')=='4R'?'4R photo paper':'A4'} (fits up to ${L.max}).`;phBtn()}
+function phBtn(){['#php','#phsh','#phj','#pht'].forEach(b=>$(b).disabled=!phImg||busy)}
+document.querySelectorAll('input[name=phs]').forEach(e=>e.addEventListener('change',()=>{phRefit();phPaint()}));
+document.querySelectorAll('input[name=phk]').forEach(e=>e.addEventListener('change',phPaint));['#phcut','#phn'].forEach(q=>$(q).addEventListener('change',phPaint));
+$('#phc').onclick=()=>$('#phiC').click();$('#phg').onclick=()=>$('#phiG').click();
+['#phiC','#phiG'].forEach(q=>$(q).onchange=e=>{const f=[...e.target.files];e.target.value='';phAdd(f)});
+$('#phe').onclick=()=>phSrc&&openCrop('h',phSrc,phSt);
+const phName=e=>`Photo-${phSz()[0]}x${phSz()[1]}-${day()}.${e}`;
+$('#php').onclick=job(async()=>{const L=phLayout();save(new File([await pdfOf(phcv,L.pw,L.ph)],phName('pdf'),{type:'application/pdf'}),phName('pdf'));toast('PDF saved to Downloads')});
+$('#phsh').onclick=job(async()=>{const L=phLayout();await shareOrSave([new File([await pdfOf(phcv,L.pw,L.ph)],phName('pdf'),{type:'application/pdf'})])});
+$('#phj').onclick=job(async()=>{save(await toBlob(phcv,.95),phName('jpg'));toast('JPEG saved to Downloads')});
+$('#pht').onclick=job(async()=>{const L=phLayout();await printAt(phcv,L.pw,L.ph)});
+phPaint();
+
+/* ---------- 2. Resize photo to a size limit ---------- */
+const RS=[],rsl=$('#rsl');let rsRun=0;
+const rsTarget=()=>{const v=rv('rst');return(v=='c'?Math.max(20,+$('#rsc').value||300):+v)*1000};   /* 1 KB = 1000 bytes: the stricter reading, so portals never reject the file */
+// shrink: best JPEG quality under the limit; if even low quality is too big, reduce the pixel size and try again
+async function rsShrink(src,limit,maxW){let z=Math.min(1,maxW?maxW/Math.max(src.width,src.height):1);
+ for(let round=0;round<10;round++){const c=document.createElement('canvas');c.width=Math.max(1,Math.round(src.width*z));c.height=Math.max(1,Math.round(src.height*z));
+  const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);g.imageSmoothingQuality='high';g.drawImage(src,0,0,c.width,c.height);
+  let lo=.35,hi=.92,best=null;const top=await toBlob(c,hi);if(top.size<=limit)return{b:top,w:c.width,h:c.height,q:hi};
+  for(let k=0;k<7;k++){const q=(lo+hi)/2,b=await toBlob(c,q);if(b.size<=limit){best={b,w:c.width,h:c.height,q};lo=q}else hi=q}
+  if(best)return best;const b2=await toBlob(c,lo);if(b2.size<=limit)return{b:b2,w:c.width,h:c.height,q:lo};z*=.8;if(c.width<120)break}
+ return null}
+async function rsAll(){const run=++rsRun,limit=rsTarget(),mw=+$('#rsw').value;busy=true;paint();
+ try{for(let i=0;i<RS.length;i++){if(run!=rsRun)return;busyMsg(`Resizing ${i+1} of ${RS.length}…`);RS[i].out=await rsShrink(RS[i].src,limit,mw)}}
+ finally{if(run==rsRun){busy=false;busyMsg('');rsList();paint()}}}
+async function rsAdd(fs){fs=[...fs].filter(f=>f&&/^image\//.test(f.type||'image/'));if(!fs.length||busy)return;let bad=0;
+ for(const f of fs){const c=await new Promise(ok=>readImg(f,ok,1));if(c)RS.push({f,src:c,th:thumb(c),out:null});else bad++}
+ if(bad)toast(bad+' photo'+(bad>1?'s':'')+' could not be opened.');rsAll()}
+const rsName=(it)=>(it.f.name||'photo').replace(/\.[^.]+$/,'')+'-'+Math.round(rsTarget()/1000)+'KB.jpg',kb10=n=>n>=1e6?(n/1e6).toFixed(1)+' MB':Math.max(1,Math.round(n/1000))+' KB';
+function rsList(){rsl.innerHTML='';RS.forEach((it,i)=>{const d=document.createElement('div');d.className='rs af';const o=it.out;
+ d.innerHTML=`<img alt="" src="${it.th}"><span><b></b><small class="${o?'ok':'bad'}"></small></span><button data-s="${i}" ${o?'':'disabled'}>Save</button><button data-x="${i}" aria-label="Remove">&#10005;</button>`;
+ d.querySelector('b').textContent=it.f.name||'photo';d.querySelector('small').textContent=o?`${kb10(it.f.size)} → ${kb10(o.b.size)} · ${o.w}×${o.h}`:'Could not reach this size; try a bigger limit';rsl.append(d)});rsBtn()}
+function rsBtn(){['#rss','#rsh','#rsz'].forEach(b=>$(b).disabled=busy||!RS.some(x=>x.out))}
+const rsFiles=()=>RS.filter(x=>x.out).map(x=>new File([x.out.b],rsName(x),{type:'image/jpeg'}));
+rsl.onclick=e=>{const sv=e.target.closest('[data-s]'),x=e.target.closest('[data-x]');if(sv){const it=RS[+sv.dataset.s];save(it.out.b,rsName(it))}else if(x){RS.splice(+x.dataset.x,1);rsList()}};
+$('#rsa').onclick=()=>$('#rsi').click();$('#rsi').onchange=e=>{const f=[...e.target.files];e.target.value='';rsAdd(f)};
+document.querySelectorAll('input[name=rst]').forEach(e=>e.addEventListener('change',()=>RS.length&&rsAll()));$('#rsw').addEventListener('change',()=>RS.length&&rsAll());
+$('#rsc').addEventListener('change',()=>{document.querySelector('input[name=rst][value=c]').checked=true;RS.length&&rsAll()});
+$('#rss').onclick=()=>{const fs=rsFiles();fs.forEach((f,i)=>setTimeout(()=>save(f,f.name),i*400));toast(fs.length+' photo'+(fs.length>1?'s':'')+' saved to Downloads')};
+$('#rsh').onclick=job(async()=>shareOrSave(rsFiles()));
+$('#rsz').onclick=job(async()=>{busyMsg('Making ZIP…');await new Promise((ok,no)=>{if(window.JSZip)return ok();const e=document.createElement('script');e.src='lib/jszip.min.js';e.onload=ok;e.onerror=no;document.head.append(e)});
+ const z=new JSZip(),seen={};rsFiles().forEach(f=>{let n=f.name,k=1;while(seen[n])n=f.name.replace(/\.jpg$/,'')+`-${++k}.jpg`;seen[n]=1;z.file(n,f)});save(await z.generateAsync({type:'blob'}),`Resized-${day()}.zip`);busyMsg('')});
+
+/* ---------- 3. PDF tools (qpdf, on the phone) ---------- */
+const PT=[],ptl=$('#ptl');let ptOut=[];
+async function ptAdd(fs){fs=[...fs].filter(f=>f&&isPdfF(f));if(!fs.length||busy)return;busy=true;paint();let locked=0;
+ try{for(let i=0;i<fs.length;i++){busyMsg(`Reading ${i+1} of ${fs.length}…`);const d=new Uint8Array(await fs[i].arrayBuffer());
+  if(isEnc(d)){const r0=await qrun({'i.pdf':d},['--decrypt','i.pdf','o.pdf'],'o.pdf');if(r0.out&&(r0.code==0||r0.code==3))PT.push({f:fs[i],d:r0.out,n:await uPages(r0.out)});else locked++}
+  else PT.push({f:fs[i],d,n:await uPages(d)})}}
+ catch(e){toast('The PDF engine could not start. Please check your connection once, then try again.')}
+ finally{busy=false;busyMsg('');ptList();paint()}
+ if(locked)toast(locked+' PDF'+(locked>1?'s are':' is')+' password-locked: unlock '+(locked>1?'them':'it')+' first in Unlock PDF.')}
+function ptList(){ptl.innerHTML='';PT.forEach((it,i)=>{const d=document.createElement('div');d.className='uf';
+ d.innerHTML=`<span class="n"></span><div class="t"><span class="st ok">${it.n||'?'} page${it.n==1?'':'s'}</span><span class="m"><button data-a="u" data-i="${i}" aria-label="Move up" ${i?'':'disabled'}>&#8593;</button><button data-a="d" data-i="${i}" aria-label="Move down" ${i<PT.length-1?'':'disabled'}>&#8595;</button><button data-a="x" data-i="${i}" aria-label="Remove">&#10005;</button></span></div>`;
+ d.querySelector('.n').textContent=it.f.name;ptl.append(d)});const tot=PT.reduce((s,x)=>s+(x.n||0),0);$('#pth').textContent=PT.length>1?`${PT.length} files, ${tot} pages in total. Files are joined in this order; page numbers count across all of them.`:PT.length?`${tot} pages.`:'Several files are joined in this order first; page numbers count across all of them.';$('#ptres').hidden=true;ptBtn()}
+ptl.onclick=e=>{const b=e.target.closest('button[data-a]');if(!b||busy)return;const i=+b.dataset.i,a=b.dataset.a;if(a=='u')[PT[i-1],PT[i]]=[PT[i],PT[i-1]];else if(a=='d')[PT[i+1],PT[i]]=[PT[i],PT[i+1]];else PT.splice(i,1);ptList()};
+function ptBtn(){$('#ptgo').disabled=busy||!PT.length;const o=rv('pto');$('#ptpw').hidden=o!='pages';$('#ptdw').hidden=o!='del';$('#ptrw').hidden=o!='rot'}
+document.querySelectorAll('input[name=pto]').forEach(e=>e.addEventListener('change',()=>{ptBtn();$('#ptres').hidden=true}));
+// "1-3, 5, 8-" → [1,2,3,5,8,...N] (keeps the order typed)
+function ptParse(t,N){const out=[];for(const part of t.split(/[,\s]+/).filter(Boolean)){const m=part.match(/^(\d+)?(?:-(\d+)?)?$/);if(!m)throw new Error(`"${part}" is not a page or range`);
+ const a=m[1]?+m[1]:1,b=part.includes('-')?(m[2]?+m[2]:N):a;if(a<1||b<1||a>N||b>N)throw new Error(`Page ${Math.max(a,b)} does not exist (this PDF has ${N} pages)`);for(let k=a;a<=b?k<=b:k>=b;k+=a<=b?1:-1)out.push(k)}return out}
+const ptRange=l=>l.join(',');
+$('#pti').onchange=e=>{const f=[...e.target.files];e.target.value='';ptAdd(f)};$('#pta').onclick=()=>$('#pti').click();
+$('#ptgo').onclick=job(async()=>{try{const o=rv('pto');busyMsg('Working…');let doc,N;
+ if(PT.length==1){doc=PT[0].d;N=PT[0].n}else{const files={};PT.forEach((x,i)=>files['p'+i+'.pdf']=x.d);const r=await qrun(files,['--empty','--pages',...PT.flatMap((x,i)=>['p'+i+'.pdf','1-z']),'--','m.pdf'],'m.pdf');if(!r.out)throw new Error('Could not join the files');doc=r.out;N=PT.reduce((s,x)=>s+x.n,0)}
+ const base=PT.length==1?PT[0].f.name.replace(/\.pdf$/i,''):'Merged-'+day(),one=async(args,name)=>{const r=await qrun({'c.pdf':doc},args,'o.pdf');if(!r.out||!(r.code==0||r.code==3))throw new Error('The PDF could not be processed');return new File([r.out],name,{type:'application/pdf'})};
+ if(o=='merge'){if(PT.length<2)throw new Error('Add 2 or more PDFs to merge');ptOut=[new File([doc],base+'.pdf',{type:'application/pdf'})]}
+ else if(o=='pages'){const l=ptParse($('#ptp').value,N);if(!l.length)throw new Error('Type the pages to keep, e.g. 1-3, 5');ptOut=[await one(['--empty','--pages','c.pdf',ptRange(l),'--','o.pdf'],base+'-pages.pdf')]}
+ else if(o=='del'){const del=new Set(ptParse($('#ptd').value,N)),keep=[...Array(N)].map((_,i)=>i+1).filter(k=>!del.has(k));if(!del.size)throw new Error('Type the pages to delete, e.g. 2, 4-6');if(!keep.length)throw new Error('That would delete every page');ptOut=[await one(['--empty','--pages','c.pdf',ptRange(keep),'--','o.pdf'],base+'-edited.pdf')]}
+ else if(o=='rot'){const t=$('#ptr').value.trim(),l=t?ptParse(t,N):null;ptOut=[await one(['c.pdf','o.pdf','--rotate='+rv('pta2')+(l?':'+ptRange(l):'')],base+'-rotated.pdf')]}
+ else if(o=='split'){ptOut=[];for(let k=1;k<=N;k++){busyMsg(`Splitting page ${k} of ${N}…`);ptOut.push(await one(['--empty','--pages','c.pdf',String(k),'--','o.pdf'],`${base}-page-${String(k).padStart(2,'0')}.pdf`))}}
+ else if(o=='comp'){const f=await one(['c.pdf','o.pdf','--object-streams=generate','--recompress-flate','--compression-level=9','--optimize-images'],base+'-smaller.pdf');ptOut=[f.size<doc.length?f:new File([doc],base+'.pdf',{type:'application/pdf'})]
+  if(f.size>=doc.length*.98)toast('This PDF is already compact; it could not be made noticeably smaller.')}
+ const tot=ptOut.reduce((s,f)=>s+f.size,0);$('#ptres').hidden=false;$('#ptrt').textContent=ptOut.length>1?`${ptOut.length} PDFs ready (one per page), ${kb(tot)} in total.`:`${ptOut[0].name} is ready · ${kb(tot)}${o=='comp'?` (was ${kb(doc.length)})`:''}.`;
+ $('#ptsv').textContent=ptOut.length>1?'Save all (ZIP)':'Save';$('#ptres').scrollIntoView({behavior:'smooth',block:'center'})}
+ catch(e){toast(e.message||'Something went wrong.')}finally{busyMsg('')}});
+$('#ptsv').onclick=job(async()=>{if(ptOut.length==1){save(ptOut[0],ptOut[0].name);return toast('Saved to Downloads')}
+ await new Promise((ok,no)=>{if(window.JSZip)return ok();const e=document.createElement('script');e.src='lib/jszip.min.js';e.onload=ok;e.onerror=no;document.head.append(e)});
+ const z=new JSZip();ptOut.forEach(f=>z.file(f.name,f));save(await z.generateAsync({type:'blob'}),'Split-'+day()+'.zip');toast('ZIP saved to Downloads')});
+$('#ptsh').onclick=job(async()=>shareOrSave(ptOut));
+ptBtn();
+
+/* ---------- 4. Document scanner (inside To PDF) ---------- */
+const scn=$('#scn'),scv=$('#scv'),scx2=scv.getContext('2d');let scImg=null,scQ=[],scS=1,scO=[0,0],scDrag=-1;
+function scOpen(c){scImg=c;const w=c.width,h=c.height,m=.06;scQ=[[w*m,h*m],[w*(1-m),h*m],[w*(1-m),h*(1-m)],[w*m,h*(1-m)]];scn.hidden=false;scLayout()}
+function scLayout(){const W=Math.min(innerWidth,520),H=Math.max(220,innerHeight-230),d=devicePixelRatio||1;scv.style.width=W+'px';scv.style.height=H+'px';scv.width=W*d;scv.height=H*d;scx2.setTransform(d,0,0,d,0,0);
+ scS=Math.min((W-36)/scImg.width,(H-36)/scImg.height);scO=[(W-scImg.width*scS)/2,(H-scImg.height*scS)/2];scDraw()}
+const scP=([x,y])=>[scO[0]+x*scS,scO[1]+y*scS];
+function scDraw(){const W=parseFloat(scv.style.width),H=parseFloat(scv.style.height),x=scx2;x.fillStyle='#0b0f0d';x.fillRect(0,0,W,H);x.drawImage(scImg,scO[0],scO[1],scImg.width*scS,scImg.height*scS);
+ const P=scQ.map(scP);x.save();x.beginPath();x.rect(0,0,W,H);P.forEach((p,i)=>i?x.lineTo(...p):x.moveTo(...p));x.closePath();x.fillStyle='rgba(0,0,0,.5)';x.fill('evenodd');x.restore();
+ x.strokeStyle='#4ade80';x.lineWidth=2;x.beginPath();P.forEach((p,i)=>i?x.lineTo(...p):x.moveTo(...p));x.closePath();x.stroke();
+ P.forEach(p=>{x.beginPath();x.arc(p[0],p[1],11,0,7);x.fillStyle='rgba(74,222,128,.35)';x.fill();x.lineWidth=2;x.strokeStyle='#fff';x.stroke()})}
+scv.onpointerdown=e=>{const P=scQ.map(scP);let best=-1,bd=34;P.forEach((p,i)=>{const d=Math.hypot(p[0]-e.offsetX,p[1]-e.offsetY);if(d<bd){bd=d;best=i}});scDrag=best;if(best>=0)scv.setPointerCapture(e.pointerId)};
+scv.onpointermove=e=>{if(scDrag<0)return;scQ[scDrag]=[Math.max(0,Math.min(scImg.width,(e.offsetX-scO[0])/scS)),Math.max(0,Math.min(scImg.height,(e.offsetY-scO[1])/scS))];scDraw()};
+scv.onpointerup=scv.onpointercancel=()=>scDrag=-1;
+$('#scr').onclick=()=>{const c=document.createElement('canvas');c.width=scImg.height;c.height=scImg.width;const g=c.getContext('2d');g.translate(c.width,0);g.rotate(Math.PI/2);g.drawImage(scImg,0,0);scOpen(c)};
+$('#scx').onclick=()=>{scn.hidden=true;scImg=null};
+// homography from the output rectangle to the 4 picked corners (solve 8 equations)
+function homog(src,dst){const A=[],b=[];for(let i=0;i<4;i++){const[x,y]=src[i],[u,v]=dst[i];A.push([x,y,1,0,0,0,-u*x,-u*y]);b.push(u);A.push([0,0,0,x,y,1,-v*x,-v*y]);b.push(v)}
+ for(let c=0;c<8;c++){let p=c;for(let r=c+1;r<8;r++)if(Math.abs(A[r][c])>Math.abs(A[p][c]))p=r;[A[c],A[p]]=[A[p],A[c]];[b[c],b[p]]=[b[p],b[c]];
+  for(let r=0;r<8;r++)if(r!=c){const f=A[r][c]/A[c][c];for(let k=c;k<8;k++)A[r][k]-=f*A[c][k];b[r]-=f*b[c]}}return b.map((v,i)=>v/A[i][i])}
+function scWarp(){const[a,b2,c2,d2]=scQ,dist=(p,q)=>Math.hypot(p[0]-q[0],p[1]-q[1]);let W=Math.max(dist(a,b2),dist(d2,c2)),H=Math.max(dist(a,d2),dist(b2,c2));{const r=W/H,A4r=W<H?210/297:297/210;if(Math.abs(r-A4r)/A4r<.12)W=H*A4r}   /* close to A4: use exact A4 proportions */
+ const z=Math.min(1,2400/Math.max(W,H));W=Math.round(W*z);H=Math.round(H*z);
+ const h=homog([[0,0],[W,0],[W,H],[0,H]],scQ),sw=scImg.width,sh=scImg.height,sd=scImg.getContext('2d').getImageData(0,0,sw,sh).data,o=document.createElement('canvas');o.width=W;o.height=H;
+ const og=o.getContext('2d'),od=og.createImageData(W,H),D=od.data;
+ for(let y=0;y<H;y++)for(let x=0;x<W;x++){const den=h[6]*x+h[7]*y+1,u=(h[0]*x+h[1]*y+h[2])/den,v=(h[3]*x+h[4]*y+h[5])/den,i=(y*W+x)*4;
+  const x0=Math.max(0,Math.min(sw-2,u|0)),y0=Math.max(0,Math.min(sh-2,v|0)),fx=Math.min(1,Math.max(0,u-x0)),fy=Math.min(1,Math.max(0,v-y0)),p=(y0*sw+x0)*4,q=p+sw*4;
+  for(let k=0;k<3;k++)D[i+k]=(sd[p+k]*(1-fx)+sd[p+4+k]*fx)*(1-fy)+(sd[q+k]*(1-fx)+sd[q+4+k]*fx)*fy;D[i+3]=255}
+ og.putImageData(od,0,0);return o}
+// clean-up: divide by a blurred copy of the page to remove shadows and make the paper white
+function scClean(c,mode){const W=c.width,H=c.height,s2=document.createElement('canvas');s2.width=Math.max(8,W>>4);s2.height=Math.max(8,H>>4);const g2=s2.getContext('2d');g2.filter='blur(3px)';g2.drawImage(c,0,0,s2.width,s2.height);
+ const b=document.createElement('canvas');b.width=W;b.height=H;const bg=b.getContext('2d');bg.imageSmoothingQuality='high';bg.drawImage(s2,0,0,W,H);
+ const g=c.getContext('2d'),im=g.getImageData(0,0,W,H),d=im.data,bd=bg.getImageData(0,0,W,H).data;
+ for(let i=0;i<d.length;i+=4){const L=.299*bd[i]+.587*bd[i+1]+.114*bd[i+2]||1,k=245/L;
+  if(mode=='color'){for(let j=0;j<3;j++)d[i+j]=Math.min(255,d[i+j]*k)}
+  else{let v=Math.min(255,(.299*d[i]+.587*d[i+1]+.114*d[i+2])*k);if(mode=='bw')v=v<175?0:255;else v=v>235?255:v*v/235;d[i]=d[i+1]=d[i+2]=v}}
+ g.putImageData(im,0,0);return c}
+$('#scok').onclick=job(async()=>{busyMsg('Straightening…');await new Promise(r=>setTimeout(r,30));try{const c=scClean(scWarp(),rv('scm'));const p=await page(c,{});p.src=p.jpg;P.push(p);scn.hidden=true;scImg=null;plist();toast('Page added. Tap Scan for the next page.')}finally{busyMsg('')}});
+$('#psc').onclick=()=>$('#pinS').click();$('#pinS').onchange=e=>{const f=e.target.files[0];e.target.value='';if(f)readImg(f,c=>c?scOpen(c):toast('This photo could not be opened.'),1)};
+addEventListener('resize',()=>{if(!scn.hidden&&scImg)scLayout()});
 
 /* ---------- theme: dark by default, light on request (remembered) ---------- */
 $('#thm').onclick=()=>{const d=document.documentElement.classList.toggle('dark');try{localStorage.theme=d?'dark':'light'}catch(e){}
