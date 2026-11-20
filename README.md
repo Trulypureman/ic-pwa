@@ -10,7 +10,7 @@ Customers send IC or driving licence screenshots to the shop phone. Printing the
 
 ## Features
 
-- Home screen with one button per service: **IC Copy**, **A5 QR Poster**, **To PDF**, **Stamp Booking**, **Name Tag**, **Unlock PDF**, **Collage**, **Passport Photo**, **Resize Photo**, **PDF Tools**, plus small **About us** and **Contact us** buttons at the top right (Contact us has opening hours with live open status, address with Google Maps, phone and WhatsApp). Synly green gradient theme, light and dark mode, smooth slide transitions. Phone back button returns home; links ending in `#ic`, `#qr`, `#pdf`, `#stamp` or `#about` open that screen directly
+- Home screen in two groups: **Booking** (Stamp Booking, Name Tag) as featured cards, and **Printing utilities** (IC Copy, Passport Photo, To PDF, PDF Tools, Unlock PDF, Resize Photo, Collage, A5 QR Poster) as a compact grid; small **About us** and **Contact us** buttons at the top right and an open/closed status pill
 
 - Pick Depan and Belakang screenshots (PNG, JPG, WebP; HEIC only where the browser supports it)
 - Free crop box for both IC and A5 QR: drag corners or edges to resize, drag inside to move, pinch or slide to zoom. Optional "Lock card shape" for IC (the cropped IC area is fitted to the 85.6 × 54 mm card)
